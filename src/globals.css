@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Design tokens — Luxury Real Estate × AI × Montreal After Dark
+   Ratio target: ~75% dark / 20% neutral / 4% electric / 1% warm
+   ============================================================ */
+
+:root {
+  /* Surfaces */
+  --background: #07080a;
+  --surface: #0d1115;
+  --surface-soft: #141a20;
+
+  /* Typography — cream on black, same plate as the first page */
+  --foreground: #f8f7f2;
+  --foreground-muted: rgba(255, 255, 255, 0.68);
+  --foreground-subtle: rgba(255, 255, 255, 0.48);
+
+  /* Accents — cool stone, no gold */
+  --electric: #d7dee6;
+  --electric-soft: #8eb4c4;
+  --warm: #e6e1d8;
+  --white: #f8f7f2;
+
+  /* Layout */
+  --container-max: 1440px;
+  --container-max-lg: 1600px;
+  --page-padding: 48px;
+  --page-padding-mobile: 20px;
+
+  /* Radii — keep restrained */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  /* Motion */
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 300ms;
+  --duration-base: 600ms;
+  --duration-slow: 1000ms;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+
+  --color-electric: var(--electric);
+  --color-electric-soft: var(--electric-soft);
+  --color-warm: var(--warm);
+  --color-white: var(--white);
+
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: ui-monospace, monospace;
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+}
+
+@layer base {
+  html {
+    background: var(--background);
+    color: var(--foreground);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: "DM Sans", system-ui, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  h1 .italic,
+  h2 .italic,
+  h3 .italic {
+    font-style: normal;
+    color: #e6e1d8;
+  }
+
+  /* Reduced motion: disable cinematic transitions globally when preferred */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Shared layout utilities (structure only — no visual design yet) */
+@layer utilities {
+  .page-container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--page-padding-mobile);
+  }
+
+  @media (min-width: 768px) {
+    .page-container {
+      padding-inline: var(--page-padding);
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .page-container {
+      max-width: var(--container-max-lg);
+    }
+  }
+}
+
+/* Gentle float for report HUD chips */
+@keyframes float-a {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes float-b {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.float-chip-a {
+  animation: float-a 7s ease-in-out infinite;
+}
+
+.float-chip-b {
+  animation: float-b 8.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-chip-a,
+  .float-chip-b {
+    animation: none !important;
+  }
+}
+
+/* Listings: calm crossfade — never goes blank */
+@keyframes listing-crossfade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.listing-crossfade {
+  animation: listing-crossfade 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .listing-crossfade {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Testimonials vertical marquee */
+@keyframes testimonials-marquee-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.testimonials-marquee {
+  animation: testimonials-marquee-up var(--marquee-duration, 40s) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonials-marquee {
+    animation: none !important;
+  }
+}
+
+@keyframes hero-logo-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  28% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes hero-logo-draw {
+  from {
+    stroke-dashoffset: 220;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes offer-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.offer-dialog {
+  animation: offer-dialog-in 0.45s var(--ease-cinematic) both;
+}
+
+.hero-logo-anim {
+  animation: hero-logo-in 3s var(--ease-cinematic) both;
+}
+
+.hero-logo-line {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+}
+
+.hero-logo-anim .hero-logo-line {
+  animation: hero-logo-draw 0.9s var(--ease-cinematic) 0.25s both;
+}
+
+/* Soften locale route swaps (View Transitions API) */
+@supports (view-transition-name: none) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.18s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}

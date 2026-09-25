@@ -33,9 +33,14 @@ export const content = {
    * Hero media — self-hosted in /public/media/
    */
   media: {
-    src: "/hero-bg.mp4",
-    poster: "/hero-poster.jpg?v=2",
+    src: "/hero-bg.mp4?v=2",
+    poster: "/hero-poster.jpg?v=3",
     logo: "/mm-property-logo.png?v=3",
+    places: [
+      { src: "/media/costa-marbella.jpg?v=1", label: "Marbella" },
+      { src: "/media/costa-fuengirola.jpg?v=1", label: "Fuengirola" },
+      { src: "/media/costa-mijas.jpg?v=1", label: "Mijas Pueblo" },
+    ],
   },
 
   experience: {
@@ -69,7 +74,7 @@ export const content = {
   processSection: {
     index: "02",
     title: "How we work",
-    background: "/media/background_image.jpg?v=2",
+    background: "/media/costa-fuengirola.jpg?v=1",
   },
 
   process: [
@@ -189,9 +194,8 @@ export const content = {
     titleItalic: "work in",
     description:
       "Marbella, Fuengirola, Benalmádena, Mijas, and also Torremolinos and Estepona.",
-    image:
-      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "Advisor meeting with homeowners",
+    image: "/media/costa-marbella.jpg?v=1",
+    imageAlt: "Playa de la Fontanilla, Marbella",
     items: [
       {
         id: "t1",
@@ -261,9 +265,8 @@ export const content = {
     cta: "Contact the office",
     ctaHref: "#contact",
     footerNote: "Benalmádena · Costa del Sol",
-    image:
-      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1000&q=80",
-    imageAlt: "Modern luxury villa exterior at dusk",
+    image: "/media/costa-mijas.jpg?v=1",
+    imageAlt: "Mijas Pueblo, on the hillside above the coast",
     items: [
       {
         question: "What does M&M Property handle?",
@@ -322,6 +325,8 @@ export const content = {
       { label: "FAQ", href: "#faq" },
     ],
     footerNote: "M&M Property · Benalmádena",
+    photoCredit:
+      "Coast photos: Los Boliches, Fuengirola · Playa de la Fontanilla, Marbella · Mijas Pueblo. Wikimedia Commons, CC BY-SA.",
   },
 
   offer: {

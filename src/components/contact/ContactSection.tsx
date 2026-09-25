@@ -177,9 +177,14 @@ export function ContactSection() {
               ))}
             </nav>
 
-            <p className="text-[11px] tracking-wide text-foreground-subtle md:text-right">
-              {footerNote}
-            </p>
+            <div className="md:text-right">
+              <p className="text-[11px] tracking-wide text-foreground-subtle">
+                {footerNote}
+              </p>
+              <p className="mt-1 max-w-sm text-[10px] leading-snug text-foreground-subtle/80 md:ml-auto">
+                {content.contact.photoCredit}
+              </p>
+            </div>
           </div>
         </Reveal>
       </div>

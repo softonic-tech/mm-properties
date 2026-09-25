@@ -201,32 +201,32 @@
   }
 }
 
-@keyframes hero-logo-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.86);
-  }
-  28% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  72% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
+@keyframes hero-ken {
+  from {
     transform: scale(1.04);
+  }
+  to {
+    transform: scale(1.12);
   }
 }
 
-@keyframes hero-logo-draw {
+@keyframes hero-place-in {
   from {
-    stroke-dashoffset: 220;
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
   }
   to {
-    stroke-dashoffset: 0;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
+}
+
+.hero-ken {
+  animation: hero-ken 7.2s var(--ease-cinematic) both;
+}
+
+.hero-place {
+  animation: hero-place-in 0.8s var(--ease-cinematic) both;
 }
 
 @keyframes offer-dialog-in {
@@ -242,19 +242,6 @@
 
 .offer-dialog {
   animation: offer-dialog-in 0.45s var(--ease-cinematic) both;
-}
-
-.hero-logo-anim {
-  animation: hero-logo-in 3s var(--ease-cinematic) both;
-}
-
-.hero-logo-line {
-  stroke-dasharray: 220;
-  stroke-dashoffset: 220;
-}
-
-.hero-logo-anim .hero-logo-line {
-  animation: hero-logo-draw 0.9s var(--ease-cinematic) 0.25s both;
 }
 
 /* Soften locale route swaps (View Transitions API) */

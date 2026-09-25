@@ -45,7 +45,7 @@ export function Process() {
           alt=""
           fill
           sizes="100vw"
-          className="object-cover object-[center_28%]"
+          className="object-cover object-center"
           priority={false}
         />
         <div className="absolute inset-0 bg-background/40" />

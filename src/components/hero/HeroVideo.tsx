@@ -2,52 +2,39 @@ import { useEffect, useRef, useState } from "react";
 import { useContent } from "@/content/language";
 import { prefersReducedMotion } from "@/lib/utils";
 
-const LOGO_START = 5;
-const LOGO_END = 8;
+const HOLD_MS = 5600;
 
 /**
- * Hero background — original loop, with the logo in place of the video from 5s to 8s.
+ * Hero background — ocean, then the towns the agency sells in.
  */
 export function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const showingLogo = useRef(false);
-  const [showLogo, setShowLogo] = useState(false);
-  const [logoCycle, setLogoCycle] = useState(0);
-  const { src, poster, logo } = useContent().media;
+  const { src, poster, places } = useContent().media;
+  const [index, setIndex] = useState(0);
+  const reduced = prefersReducedMotion();
+  const count = 1 + places.length;
+  const place = index > 0 ? places[index - 1] : null;
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (prefersReducedMotion()) {
+    video.muted = true;
+    if (reduced || index !== 0) {
       video.pause();
-      video.currentTime = 0;
       return;
     }
 
-    video.muted = true;
-
-    const onTime = () => {
-      const inWindow = video.currentTime >= LOGO_START && video.currentTime < LOGO_END;
-      if (inWindow && !showingLogo.current) {
-        showingLogo.current = true;
-        setLogoCycle((cycle) => cycle + 1);
-        setShowLogo(true);
-      } else if (!inWindow && showingLogo.current) {
-        showingLogo.current = false;
-        setShowLogo(false);
-      }
-    };
-
-    video.addEventListener("timeupdate", onTime);
-    video.addEventListener("seeked", onTime);
     void video.play().catch(() => {});
+  }, [index, reduced]);
 
-    return () => {
-      video.removeEventListener("timeupdate", onTime);
-      video.removeEventListener("seeked", onTime);
-    };
-  }, []);
+  useEffect(() => {
+    if (reduced) return;
+    const id = window.setInterval(() => {
+      setIndex((current) => (current + 1) % count);
+    }, HOLD_MS);
+    return () => window.clearInterval(id);
+  }, [count, reduced]);
 
   return (
     <div
@@ -57,8 +44,8 @@ export function HeroVideo() {
     >
       <video
         ref={videoRef}
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-          showLogo ? "opacity-0" : "opacity-100"
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+          index === 0 ? "opacity-100" : "opacity-0"
         }`}
         src={src}
         poster={poster}
@@ -69,29 +56,19 @@ export function HeroVideo() {
         preload="metadata"
       />
 
-      <div
-        className={`absolute inset-0 flex items-center justify-center bg-[#07080a] transition-opacity duration-500 ${
-          showLogo ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-      >
-        {showLogo ? (
-          <div key={logoCycle} className="hero-logo-anim">
-            <img src={logo} alt="" className="h-36 w-auto md:h-48" />
-            <svg viewBox="0 0 220 8" className="mx-auto mt-3 h-2 w-40" aria-hidden="true">
-              <line
-                x1="0"
-                y1="4"
-                x2="220"
-                y2="4"
-                stroke="#f0c74f"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                className="hero-logo-line"
-              />
-            </svg>
-          </div>
-        ) : null}
-      </div>
+      {places.map((item, i) => {
+        const active = index === i + 1;
+        return (
+          <img
+            key={item.src}
+            src={item.src}
+            alt=""
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+              active ? "opacity-100" : "opacity-0"
+            } ${active && !reduced ? "hero-ken" : ""}`}
+          />
+        );
+      })}
 
       <div
         className="absolute inset-0"
@@ -114,6 +91,15 @@ export function HeroVideo() {
             "linear-gradient(to bottom, rgba(7,9,11,0.55) 0%, transparent 22%)",
         }}
       />
+
+      {place ? (
+        <p
+          key={place.label}
+          className="hero-place absolute top-24 left-1/2 text-[11px] tracking-[0.32em] text-white/90 uppercase md:top-28"
+        >
+          {place.label}
+        </p>
+      ) : null}
     </div>
   );
 }

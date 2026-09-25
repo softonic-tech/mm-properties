@@ -27,7 +27,7 @@ export const es: SiteContent = {
   },
   media: {
     src: "/hero-bg.mp4",
-    poster: "/hero-poster.jpg",
+    poster: "/hero-poster.jpg?v=2",
     logo: "/mm-property-logo.png?v=3",
   },
   experience: {

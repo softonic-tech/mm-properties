@@ -1,13 +1,28 @@
 import { Image } from "@/components/ui/Image";
 import { Reveal } from "@/components/motion/Reveal";
-import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { useContent } from "@/content/language";
+
+function CheckIcon() {
+  return (
+    <span className="mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-foreground text-background">
+      <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none" aria-hidden>
+        <path
+          d="M2.2 6.2 4.7 8.6 9.8 3.4"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  );
+}
 
 /**
  * Four ways to search — new build, villas, resale, rent.
  */
 export function Paths() {
-  const { index, eyebrow, title, description, items } = useContent().paths;
+  const { title, description, items } = useContent().paths;
 
   return (
     <section
@@ -18,20 +33,19 @@ export function Paths() {
     >
       <div className="page-container">
         <Reveal>
-          <div data-motion className="max-w-2xl">
-            <SectionEyebrow index={index} label={eyebrow} />
+          <div data-motion className="mx-auto max-w-3xl text-center">
             <h2
               id="paths-title"
-              className="mt-4 max-w-xl text-[clamp(1.85rem,3.2vw,2.85rem)] leading-[1.15] font-medium tracking-[-0.02em] text-foreground"
+              className="text-[clamp(1.85rem,3.2vw,2.85rem)] leading-[1.15] font-medium tracking-[-0.02em] text-foreground"
             >
               {title}
             </h2>
-            <p className="mt-4 max-w-md text-[15px] leading-[1.75] text-foreground-muted">
+            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-[1.75] text-foreground-muted">
               {description}
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+          <div className="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
             {items.map((item) => (
               <a
                 key={item.title}
@@ -41,21 +55,32 @@ export function Paths() {
                 rel="noreferrer"
                 className="group block"
               >
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl ring-1 ring-white/10">
+                <div className="relative aspect-[16/10] overflow-hidden rounded-xl">
                   <Image
                     src={item.image}
                     alt={item.alt}
                     fill
-                    sizes="(max-width: 640px) 90vw, 25vw"
+                    sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 22vw"
                     className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent px-5 pt-20 pb-5">
-                    <h3 className="font-serif text-2xl text-white">{item.title}</h3>
-                  </div>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-foreground-muted">
+                <h3 className="mt-5 font-serif text-[1.35rem] leading-snug tracking-tight text-foreground">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
                   {item.text}
                 </p>
+                <ul className="mt-4 flex flex-col gap-2">
+                  {item.points.map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-start gap-2.5 text-sm leading-snug text-foreground"
+                    >
+                      <CheckIcon />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </a>
             ))}
           </div>

@@ -27,7 +27,7 @@ export const content = {
     ctaHref: "https://www.mmproperty.es/en",
     scrollLabel: "SCROLL TO EXPLORE",
     stats: [
-      { value: "15+", label: "Years on the coast" },
+      { value: "20+", label: "Years on the coast" },
       { value: "Sale & rent", label: "New build and resale" },
       { value: "Benalmádena", label: "Office on the coast" },
     ],

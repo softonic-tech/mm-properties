@@ -24,7 +24,7 @@ export const es: SiteContent = {
     ctaHref: "https://www.mmproperty.es/es",
     scrollLabel: "DESLIZA PARA VER",
     stats: [
-      { value: "15+", label: "Años en la costa" },
+      { value: "20+", label: "Años en la costa" },
       { value: "Venta y alquiler", label: "Obra nueva y segunda mano" },
       { value: "Benalmádena", label: "Oficina en la costa" },
     ],

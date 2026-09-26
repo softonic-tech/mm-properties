@@ -8,7 +8,7 @@ type ImageProps = {
   onAnimationEnd?: () => void;
 };
 
-export function Image({ src, alt, className = "", fill, onAnimationEnd }: ImageProps) {
+export function Image({ src, alt, className = "", fill, priority, onAnimationEnd }: ImageProps) {
   return (
     <img
       src={src}

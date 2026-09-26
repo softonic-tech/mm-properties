@@ -1,5 +1,6 @@
 import { useContent } from "@/content/language";
 import { FusedCtaButton } from "@/components/ui/FusedCtaButton";
+import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { Reveal } from "@/components/motion/Reveal";
 
 const floaterPosition: Record<string, string> = {
@@ -31,6 +32,8 @@ const glassReport = {
  */
 export function ReportSection() {
   const {
+    index,
+    eyebrow,
     title,
     description,
     sample,
@@ -43,10 +46,10 @@ export function ReportSection() {
     <section
       id="report"
       data-section="report"
-      className="relative z-20 overflow-hidden bg-background md:min-h-svh"
+      className="relative z-20 overflow-hidden border-t border-white/[0.06] bg-background md:min-h-svh"
       aria-labelledby="report-title"
     >
-      <div className="page-container relative z-10 flex flex-col py-16 md:min-h-svh md:py-20 lg:py-24">
+      <div className="page-container relative z-10 flex flex-col py-20 md:min-h-svh md:py-24 lg:py-28">
         {/*
           2×2-style split (like Experience):
           Left column = editorial stack + CTA
@@ -55,21 +58,22 @@ export function ReportSection() {
         <Reveal className="grid min-w-0 flex-1 grid-cols-1 items-stretch gap-8 md:gap-12 lg:grid-cols-12 lg:gap-10">
           {/* ── Left — section copy + CTA ─────────────────── */}
           <div className="contents lg:col-span-5 lg:flex lg:flex-col">
-            <div className="order-1">
+            <div data-motion className="order-1">
+              <SectionEyebrow index={index} label={eyebrow} />
               <h2
                 id="report-title"
-                className="max-w-md text-[clamp(1.65rem,7vw,2.85rem)] font-medium leading-[1.15] tracking-[-0.02em] text-foreground md:text-[clamp(1.85rem,3.2vw,2.85rem)]"
+                className="mt-4 max-w-md text-[clamp(1.85rem,3.2vw,2.85rem)] font-medium leading-[1.15] tracking-[-0.02em] text-foreground"
               >
                 {title}
               </h2>
 
-              <p className="mt-5 max-w-sm text-sm leading-[1.75] text-foreground-muted">
+              <p className="mt-5 max-w-sm text-[15px] leading-[1.75] text-foreground-muted">
                 {description}
               </p>
             </div>
 
             {/* Same vertical axis as the left copy on desktop; after the card on mobile */}
-            <div className="order-3 pt-2 md:mt-auto md:pt-12 lg:pt-16">
+            <div data-motion className="order-3 pt-2 md:mt-auto md:pt-12 lg:pt-16">
               <FusedCtaButton href={ctaHref} label={cta} />
             </div>
           </div>
@@ -111,6 +115,7 @@ export function ReportSection() {
               ))}
 
               <article
+                data-motion="scale"
                 className="relative z-10 w-full max-w-full rounded-2xl border border-white/15 px-4 py-6 backdrop-blur-xl md:px-6 md:py-8"
                 style={glassReport}
                 aria-label="Sample valuation report preview"
@@ -145,7 +150,7 @@ export function ReportSection() {
                     {sample.rangeLabel}
                   </p>
                   <p
-                    className="mt-2 font-medium tracking-tight text-foreground"
+                    className="mt-2 font-medium tracking-tight text-foreground tabular-nums"
                     style={{ fontSize: "clamp(1.6rem, 3.2vw, 2.1rem)" }}
                   >
                     <span className="text-warm">{sample.rangeLow}</span>

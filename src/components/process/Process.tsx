@@ -1,5 +1,11 @@
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
 import { Image } from "@/components/ui/Image";
+import { Reveal } from "@/components/motion/Reveal";
+import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { useContent } from "@/content/language";
+import { gsap, registerGsap } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/utils";
 
 /** Vertical stagger: top / bottom / top */
 const staggerClass = [
@@ -17,9 +23,9 @@ const warmOrbClass = [
 
 const glassStyle = {
   background:
-    "linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(215,168,102,0.06) 40%, rgba(255,255,255,0.03) 100%)",
+    "linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(215,222,230,0.06) 42%, rgba(255,255,255,0.03) 100%)",
   boxShadow:
-    "inset 0 1px 0 rgba(255,255,255,0.28), inset 1px 0 0 rgba(215,168,102,0.15), 0 12px 40px rgba(0,0,0,0.35)",
+    "inset 0 1px 0 rgba(255,255,255,0.28), inset 1px 0 0 rgba(215,222,230,0.12), 0 16px 40px rgba(0,0,0,0.32)",
 } as const;
 
 /**
@@ -28,9 +34,37 @@ const glassStyle = {
  */
 export function Process() {
   const { processSection, process } = useContent();
+  const sectionRef = useRef<HTMLElement>(null);
+  const photoRef = useRef<HTMLDivElement>(null);
+  registerGsap();
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      const photo = photoRef.current;
+      if (!section || !photo || prefersReducedMotion()) return;
+
+      gsap.fromTo(
+        photo,
+        { scale: 1.08 },
+        {
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
+      );
+    },
+    { scope: sectionRef },
+  );
 
   return (
     <section
+      ref={sectionRef}
       id="process"
       data-section="process"
       className="relative z-20 min-h-[130svh]"
@@ -40,6 +74,7 @@ export function Process() {
         className="sticky top-0 h-svh w-full overflow-hidden"
         aria-hidden="true"
       >
+        <div ref={photoRef} className="absolute inset-0">
         <Image
           src={processSection.background}
           alt=""
@@ -48,14 +83,16 @@ export function Process() {
           className="object-cover object-center"
           priority={false}
         />
+        </div>
         <div className="absolute inset-0 bg-background/40" />
       </div>
 
-      <div className="page-container relative z-10 -mt-[100svh] flex min-h-[130svh] flex-col justify-center py-14 md:py-16 lg:py-20">
-        <header className="mb-5 md:mb-6">
+      <Reveal className="page-container relative z-10 -mt-[100svh] flex min-h-[130svh] flex-col justify-center py-14 md:py-16 lg:py-20" stagger={0.14}>
+        <header data-motion className="mb-8 md:mb-10">
+          <SectionEyebrow index={processSection.index} label={processSection.eyebrow} light />
           <h2
             id="process-title"
-            className="mt-2 text-[clamp(2rem,4vw,3.25rem)] font-medium tracking-[-0.02em] text-white"
+            className="mt-4 text-[clamp(2rem,4vw,3.15rem)] leading-[1.12] font-medium tracking-[-0.02em] text-white"
           >
             {processSection.title}
           </h2>
@@ -74,7 +111,7 @@ export function Process() {
                 ].join(" ")}
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(215,168,102,0.45) 0%, rgba(215,168,102,0.12) 45%, transparent 70%)",
+                    "radial-gradient(circle, rgba(215,222,230,0.28) 0%, rgba(215,222,230,0.08) 45%, transparent 70%)",
                 }}
                 aria-hidden="true"
               />
@@ -82,15 +119,15 @@ export function Process() {
                 className="pointer-events-none absolute -bottom-2 right-8 h-16 w-24 rounded-full blur-xl"
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(215,168,102,0.28) 0%, transparent 70%)",
+                    "radial-gradient(circle, rgba(215,222,230,0.18) 0%, transparent 70%)",
                 }}
                 aria-hidden="true"
               />
 
-              <div className="relative z-[1]">
+              <div data-motion className="relative z-[1]">
                 <div className="mb-3 flex items-center gap-3">
                   <span
-                    className="rounded-full border border-electric/30 px-3 py-[5px] text-[10px] tracking-[0.18em] text-electric/90 uppercase backdrop-blur-md"
+                    className="rounded-full border border-white/25 px-3 py-[5px] text-[10px] tracking-[0.18em] text-white/90 uppercase backdrop-blur-md"
                     style={{
                       background:
                         "linear-gradient(135deg, rgba(114,215,255,0.12) 0%, rgba(255,255,255,0.04) 100%)",
@@ -99,16 +136,16 @@ export function Process() {
                     {step.tag}
                   </span>
                   <span
-                    className="h-px max-w-[3.5rem] flex-1 bg-gradient-to-r from-electric-soft/50 to-transparent"
+                    className="h-px max-w-[3.5rem] flex-1 bg-gradient-to-r from-white/40 to-transparent"
                     aria-hidden="true"
                   />
-                  <span className="text-[10px] tracking-[0.2em] text-[#d7a866]/80">
+                  <span className="text-[10px] tracking-[0.2em] text-white/55 tabular-nums">
                     {step.number}
                   </span>
                 </div>
 
                 <div
-                  className="rounded-2xl border border-white/20 px-5 py-6 backdrop-blur-[14px] transition-colors duration-300 hover:border-[#d7a866]/30 md:min-h-[11rem]"
+                  className="rounded-2xl border border-white/20 px-5 py-6 backdrop-blur-[14px] transition-colors duration-300 hover:border-white/40 md:min-h-[12.5rem]"
                   style={glassStyle}
                 >
                   <h3 className="text-lg font-medium tracking-tight text-white md:text-xl">
@@ -122,7 +159,7 @@ export function Process() {
             </li>
           ))}
         </ol>
-      </div>
+      </Reveal>
     </section>
   );
 }

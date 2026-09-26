@@ -1,5 +1,6 @@
 import { FusedCtaButton } from "@/components/ui/FusedCtaButton";
 import { Reveal } from "@/components/motion/Reveal";
+import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { useContent } from "@/content/language";
 
 function InstagramIcon({ className }: { className?: string }) {
@@ -62,6 +63,8 @@ const socialIcons: Record<
 export function ContactSection() {
   const content = useContent();
   const {
+    index,
+    eyebrow,
     tagline,
     line1Light,
     line1Muted,
@@ -81,18 +84,21 @@ export function ContactSection() {
     <section
       id="contact"
       data-section="contact"
-      className="relative z-20 overflow-hidden bg-background pt-16 pb-24 md:pt-28 md:pb-12"
+      className="relative z-20 overflow-hidden border-t border-white/[0.06] bg-background pt-20 pb-24 md:pt-28 md:pb-14"
       aria-labelledby="contact-title"
     >
       <div className="page-container relative z-10">
         <Reveal>
           {/* Meta row */}
-          <p className="text-right text-[10px] tracking-[0.22em] text-foreground-subtle uppercase">
-            {tagline}
-          </p>
+          <div data-motion className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <SectionEyebrow index={index} label={eyebrow} />
+            <p className="text-[11px] tracking-[0.18em] text-foreground-subtle uppercase">
+              {tagline}
+            </p>
+          </div>
 
           {/* Headline + body — two lines: title, then value [cta] with us */}
-          <div className="mt-10 flex flex-col gap-10 md:mt-14 md:flex-row md:items-end md:justify-between md:gap-12 lg:gap-16">
+          <div data-motion className="mt-10 flex flex-col gap-10 md:mt-14 md:flex-row md:items-end md:justify-between md:gap-12 lg:gap-16">
             <h2
               id="contact-title"
               className="min-w-0 flex-1 text-[clamp(1.85rem,5.5vw,4.75rem)] font-medium leading-[1.08] tracking-[-0.035em]"
@@ -109,13 +115,13 @@ export function ContactSection() {
               </span>
             </h2>
 
-            <p className="max-w-70 shrink-0 text-sm leading-relaxed text-foreground-muted md:pb-1.5 md:text-right md:text-[13px]">
+            <p className="max-w-70 shrink-0 text-[15px] leading-relaxed text-foreground-muted md:pb-1.5 md:text-right md:text-[13px]">
               {body}
             </p>
           </div>
 
           {/* Chips + socials */}
-          <div className="mt-14 flex flex-col gap-8 md:mt-20 md:flex-row md:items-end md:justify-between">
+          <div data-motion className="mt-14 flex flex-col gap-8 md:mt-20 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="flex flex-wrap gap-2">
                 {chips.map((chip) => (
@@ -154,9 +160,10 @@ export function ContactSection() {
               </a>
             </div>
           </div>
+        </Reveal>
 
           {/* Footer bar */}
-          <div className="mt-16 flex flex-col gap-6 border-t border-white/10 pt-8 md:mt-20 md:flex-row md:items-center md:justify-between">
+          <Reveal className="mt-16 flex flex-col gap-6 border-t border-white/10 pt-8 md:mt-20 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center">
               <img
                 src="/mm-property-logo.png?v=3"
@@ -185,8 +192,7 @@ export function ContactSection() {
                 {content.contact.photoCredit}
               </p>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
       </div>
     </section>
   );

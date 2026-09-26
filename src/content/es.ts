@@ -54,11 +54,63 @@ export const es: SiteContent = {
     body: "Agencia de la Costa del Sol con más de 15 años en la venta de todo tipo de viviendas. La búsqueda, el asesoramiento y la compra se hacen juntos, tanto si se muda como si compra para invertir.",
     cta: "Cómo trabajamos",
     ctaHref: "#process",
+    images: [
+      {
+        src: "/listings/mijas-pueblo.jpg",
+        alt: "Villa con piscina en Mijas Pueblo",
+        label: "Mijas Pueblo",
+        caption: "Villa en venta",
+      },
+      {
+        src: "/media/costa-marbella.jpg?v=1",
+        alt: "Playa de la Fontanilla, Marbella",
+        label: "Marbella",
+        caption: "Playa de la Fontanilla",
+      },
+    ],
+  },
+  paths: {
+    index: "02",
+    eyebrow: "LA BÚSQUEDA",
+    title: "Venta, alquiler, obra nueva o una villa.",
+    description:
+      "La oficina de Benalmádena sigue la búsqueda desde Torremolinos hasta Estepona, y continúa hasta la notaría.",
+    items: [
+      {
+        title: "Obra nueva",
+        text: "Viviendas aún en construcción, incluido El Higuerón, a un paso de la playa.",
+        image: "/listings/higueron.jpg",
+        alt: "Terraza de una vivienda nueva en El Higuerón, Fuengirola",
+        href: "https://www.mmproperty.es/es/piso-en-venta-en-el-higueron-fuengirola/279799/s2",
+      },
+      {
+        title: "Villas",
+        text: "Casas en Mijas Pueblo y en las colinas sobre la costa.",
+        image: "/listings/mijas-pueblo.jpg",
+        alt: "Villa con piscina en Mijas Pueblo",
+        href: "https://www.mmproperty.es/es/villa-en-venta-en-mijas-pueblo-pena-blanquilla/273381/s2",
+      },
+      {
+        title: "Segunda mano",
+        text: "Pisos listos para visitar en Fuengirola, Benalmádena y Marbella.",
+        image: "/listings/fuengirola.jpg",
+        alt: "Piso en venta en Fuengirola",
+        href: "https://www.mmproperty.es/es/piso-en-venta-en-fuengirola/279182/s2",
+      },
+      {
+        title: "Alquiler",
+        text: "Los alquileres están en mmproperty.es, junto a las viviendas en venta.",
+        image: "/media/costa-fuengirola.jpg?v=1",
+        alt: "Playa de Los Boliches, Fuengirola",
+        href: "https://www.mmproperty.es/es",
+      },
+    ],
   },
   processSection: {
-    index: "02",
+    index: "03",
+    eyebrow: "El proceso",
     title: "Cómo trabajamos",
-    background: "/media/costa-fuengirola.jpg?v=1",
+    background: "/section2.png",
   },
   process: [
     {
@@ -84,7 +136,7 @@ export const es: SiteContent = {
     },
   ],
   report: {
-    index: "03",
+    index: "04",
     eyebrow: "UNA VIVIENDA",
     title: "Una casa para vivir, o una casa para invertir.",
     description:
@@ -115,8 +167,25 @@ export const es: SiteContent = {
     cta: "Ver viviendas",
     ctaHref: "https://www.mmproperty.es/es",
   },
+  feature: {
+    index: "05",
+    eyebrow: "UNA CASA",
+    place: "Mijas Pueblo",
+    title: "Una villa con piscina, sobre la costa.",
+    text: "Cuatro dormitorios en Mijas Pueblo. La misma oficina que la anuncia acompaña al comprador en el precio, la visita y la escritura.",
+    image: "/listings/mijas-pueblo.jpg",
+    imageAlt: "Villa con piscina en Mijas Pueblo",
+    facts: [
+      { label: "Dormitorios", value: "4" },
+      { label: "Exterior", value: "Piscina" },
+      { label: "Precio", value: "1.965.000 €" },
+    ],
+    cta: "Ver esta vivienda",
+    ctaHref:
+      "https://www.mmproperty.es/es/villa-en-venta-en-mijas-pueblo-pena-blanquilla/273381/s2",
+  },
   listings: {
-    index: "04",
+    index: "06",
     eyebrow: "VIVIENDAS",
     title: "Pisos, villas y obra nueva a lo largo de la costa.",
     description:
@@ -167,7 +236,7 @@ export const es: SiteContent = {
     ],
   },
   testimonials: {
-    index: "05",
+    index: "07",
     eyebrow: "ZONAS",
     titleBefore: "Municipios en los",
     titleItalic: "que trabajamos",
@@ -233,7 +302,7 @@ export const es: SiteContent = {
     cta: "Hablar con la oficina",
   },
   faq: {
-    index: "06",
+    index: "08",
     eyebrow: "FAQ",
     title: "Preguntas frecuentes",
     subtitle: "Compra, venta o una duda sobre un anuncio.",
@@ -271,7 +340,7 @@ export const es: SiteContent = {
     ],
   },
   contact: {
-    index: "07",
+    index: "09",
     eyebrow: "CONTACTO",
     tagline: "Compra y venta · Costa del Sol",
     line1Light: "Hable con la oficina de",

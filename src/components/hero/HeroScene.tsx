@@ -92,60 +92,66 @@ export function HeroScene({ children }: { children: React.ReactNode }) {
       }
 
       // ── Pin + reveal scrub ────────────────────────────────
+      // Desktop only. On a phone the next section is tall enough to
+      // slide over the pinned hero and cover the headline.
       if (reduced) return;
 
-      const foreground = root.querySelector('[data-hero="foreground"]');
-      const dim = root.querySelector('[data-hero="dim"]');
-      const videoLayer = root.querySelector('[data-component="hero-video"]');
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 768px)", () => {
+        const foreground = root.querySelector('[data-hero="foreground"]');
+        const dim = root.querySelector('[data-hero="dim"]');
+        const videoLayer = root.querySelector('[data-component="hero-video"]');
 
-      const scrub = gsap.timeline({
-        scrollTrigger: {
-          trigger: root,
-          start: "top top",
-          end: "+=45%",
-          pin: true,
-          scrub: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
+        const scrub = gsap.timeline({
+          scrollTrigger: {
+            trigger: root,
+            start: "top top",
+            end: "+=45%",
+            pin: true,
+            scrub: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        if (foreground) {
+          scrub.to(
+            foreground,
+            {
+              y: -40,
+              opacity: 0,
+              ease: "none",
+            },
+            0,
+          );
+        }
+
+        if (dim) {
+          scrub.to(
+            dim,
+            {
+              opacity: 0.5,
+              ease: "none",
+            },
+            0,
+          );
+        }
+
+        if (videoLayer) {
+          scrub.to(
+            videoLayer,
+            {
+              scale: 1.02,
+              transformOrigin: "center center",
+              ease: "none",
+            },
+            0,
+          );
+        }
       });
 
-      if (foreground) {
-        scrub.to(
-          foreground,
-          {
-            y: -40,
-            opacity: 0,
-            ease: "none",
-          },
-          0,
-        );
-      }
-
-      if (dim) {
-        scrub.to(
-          dim,
-          {
-            opacity: 0.5,
-            ease: "none",
-          },
-          0,
-        );
-      }
-
-      if (videoLayer) {
-        scrub.to(
-          videoLayer,
-          {
-            scale: 1.02,
-            transformOrigin: "center center",
-            ease: "none",
-          },
-          0,
-        );
-      }
-
       requestAnimationFrame(() => ScrollTrigger.refresh());
+      return () => mm.revert();
     },
     { scope: containerRef, dependencies: [] },
   );

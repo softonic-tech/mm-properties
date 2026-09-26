@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { AdminPage } from "@/components/admin/AdminPage";
 import { Hero } from "@/components/hero/Hero";
 import { Experience } from "@/components/experience/Experience";
+import { Paths } from "@/components/paths/Paths";
 import { Process } from "@/components/process/Process";
 import { ReportSection } from "@/components/report/ReportSection";
+import { FeatureHome } from "@/components/feature/FeatureHome";
 import { ListingsSection } from "@/components/listings/ListingsSection";
 import { TestimonialsSection } from "@/components/testimonials/TestimonialsSection";
 import { FAQ } from "@/components/faq/FAQ";
@@ -35,8 +37,10 @@ export default function App() {
     <main>
       <Hero />
       <Experience />
+      <Paths />
       <Process />
       <ReportSection />
+      <FeatureHome />
       <ListingsSection />
       <TestimonialsSection />
       <FAQ />

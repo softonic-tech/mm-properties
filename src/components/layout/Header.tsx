@@ -11,10 +11,10 @@ export function Header() {
   return (
     <header
       data-hero="header"
-      className="absolute inset-x-0 top-0 z-50 px-5 py-5 md:px-10 md:py-6"
+      className="absolute inset-x-0 top-0 z-50"
       aria-label="Primary navigation"
     >
-      <div className="flex items-center justify-between">
+      <div className="page-container flex items-center justify-between py-5 md:py-6">
         <div data-hero="logo" className="flex items-center">
           <img
             src="/mm-property-logo.png?v=3"

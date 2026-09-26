@@ -31,16 +31,13 @@ export function Hero() {
         <Header />
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0">
-          <div className="page-container pointer-events-auto pb-20 sm:pb-10 md:pb-14">
+          <div className="page-container pointer-events-auto flex items-end justify-between gap-10 pb-20 sm:pb-10 md:pb-12">
             <HeroContent />
+            <div className="mb-1 hidden shrink-0 items-end gap-6 sm:flex">
+              <HeroStats />
+              <ScrollIndicator />
+            </div>
           </div>
-        </div>
-
-        <div className="absolute bottom-8 right-5 hidden items-end gap-5 sm:flex md:bottom-10 md:right-12">
-          <div className="hidden sm:block">
-            <HeroStats />
-          </div>
-          <ScrollIndicator />
         </div>
       </div>
     </HeroScene>

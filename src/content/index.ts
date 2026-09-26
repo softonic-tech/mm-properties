@@ -69,12 +69,65 @@ export const content = {
     body: "A Costa del Sol agency with more than 15 years in the sale of every kind of home. The search, the advice and the purchase are handled together, whether you are moving here or buying to invest.",
     cta: "How we work",
     ctaHref: "#process",
+    images: [
+      {
+        src: "/listings/mijas-pueblo.jpg",
+        alt: "Villa with a pool in Mijas Pueblo",
+        label: "Mijas Pueblo",
+        caption: "Villa for sale",
+      },
+      {
+        src: "/media/costa-marbella.jpg?v=1",
+        alt: "Playa de la Fontanilla, Marbella",
+        label: "Marbella",
+        caption: "Playa de la Fontanilla",
+      },
+    ],
+  },
+
+  paths: {
+    index: "02",
+    eyebrow: "THE SEARCH",
+    title: "Sale, rent, new build, or a villa.",
+    description:
+      "The Benalmádena office follows the search from Torremolinos to Estepona, then stays through to the notary.",
+    items: [
+      {
+        title: "New build",
+        text: "Homes still under construction, including El Higuerón, a short walk from the beach.",
+        image: "/listings/higueron.jpg",
+        alt: "Terrace of a new home in El Higuerón, Fuengirola",
+        href: "https://www.mmproperty.es/en/flat-for-sale-in-el-higueron-fuengirola/279799/s2",
+      },
+      {
+        title: "Villas",
+        text: "Houses in Mijas Pueblo and on the hills above the coast.",
+        image: "/listings/mijas-pueblo.jpg",
+        alt: "Villa with a pool in Mijas Pueblo",
+        href: "https://www.mmproperty.es/en/villa-for-sale-in-mijas-pueblo-pena-blanquilla/273381/s2",
+      },
+      {
+        title: "Resale",
+        text: "Apartments ready to view in Fuengirola, Benalmádena and Marbella.",
+        image: "/listings/fuengirola.jpg",
+        alt: "Apartment for sale in Fuengirola",
+        href: "https://www.mmproperty.es/en/flat-for-sale-in-fuengirola/279182/s2",
+      },
+      {
+        title: "Rent",
+        text: "Rentals sit on mmproperty.es next to the homes for sale.",
+        image: "/media/costa-fuengirola.jpg?v=1",
+        alt: "Los Boliches beach, Fuengirola",
+        href: "https://www.mmproperty.es/en",
+      },
+    ],
   },
 
   processSection: {
-    index: "02",
+    index: "03",
+    eyebrow: "The process",
     title: "How we work",
-    background: "/media/costa-fuengirola.jpg?v=1",
+    background: "/section2.png",
   },
 
   process: [
@@ -102,7 +155,7 @@ export const content = {
   ],
 
   report: {
-    index: "03",
+    index: "04",
     eyebrow: "YOUR REPORT",
     title: "A home to live in, or a home to invest in.",
     description:
@@ -134,8 +187,26 @@ export const content = {
     ctaHref: "https://www.mmproperty.es/en",
   },
 
+  feature: {
+    index: "05",
+    eyebrow: "ONE HOME",
+    place: "Mijas Pueblo",
+    title: "A villa with a pool, above the coast.",
+    text: "Four bedrooms in Mijas Pueblo. The same office that lists it walks the buyer through the price, the viewing and the deed.",
+    image: "/listings/mijas-pueblo.jpg",
+    imageAlt: "Villa with a pool in Mijas Pueblo",
+    facts: [
+      { label: "Bedrooms", value: "4" },
+      { label: "Outside", value: "Pool" },
+      { label: "Asking", value: "1.965.000 €" },
+    ],
+    cta: "View this home",
+    ctaHref:
+      "https://www.mmproperty.es/en/villa-for-sale-in-mijas-pueblo-pena-blanquilla/273381/s2",
+  },
+
   listings: {
-    index: "04",
+    index: "06",
     eyebrow: "LISTINGS",
     title:
       "Apartments, villas and new homes along the coast.",
@@ -188,8 +259,8 @@ export const content = {
   },
 
   testimonials: {
-    index: "05",
-    eyebrow: "VOICES",
+    index: "07",
+    eyebrow: "THE COAST",
     titleBefore: "Towns we",
     titleItalic: "work in",
     description:
@@ -258,7 +329,7 @@ export const content = {
   },
 
   faq: {
-    index: "06",
+    index: "08",
     eyebrow: "FAQ",
     title: "Frequently asked questions",
     subtitle: "Purchase, sale, or a question about a listing.",
@@ -297,7 +368,7 @@ export const content = {
   },
 
   contact: {
-    index: "07",
+    index: "09",
     eyebrow: "CONTACT",
     tagline: "Purchase and sale · Costa del Sol",
     line1Light: "Talk to the",

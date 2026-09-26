@@ -1,0 +1,22 @@
+{
+  "name": "M&M Property",
+  "short_name": "M&M Property",
+  "description": "Homes for sale and rent on the Costa del Sol. Office in Benalmádena.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#07080a",
+  "theme_color": "#07080a",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/mm-property-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

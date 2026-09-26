@@ -21,9 +21,20 @@ const LocaleContext = createContext<{
   content: SiteContent;
 } | null>(null);
 
+function localeFromUrl(): Locale | null {
+  const lang = new URLSearchParams(window.location.search).get("lang");
+  return lang === "en" || lang === "es" ? lang : null;
+}
+
 function storedLocale(): Locale {
-  const saved = localStorage.getItem("mm-locale");
-  return saved === "en" || saved === "es" ? saved : "en";
+  return localeFromUrl() ?? (localStorage.getItem("mm-locale") === "es" ? "es" : "en");
+}
+
+function writeLocaleUrl(next: Locale) {
+  const url = new URL(window.location.href);
+  if (next === "es") url.searchParams.set("lang", "es");
+  else url.searchParams.delete("lang");
+  window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
@@ -31,15 +42,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLocale = (next: Locale) => {
     localStorage.setItem("mm-locale", next);
+    writeLocaleUrl(next);
     setLocaleState(next);
   };
 
   useEffect(() => {
     document.documentElement.lang = locale;
-    document.title =
-      locale === "es"
-        ? "M&M Property | Costa del Sol"
-        : "M&M Property | Costa del Sol";
   }, [locale]);
 
   return (

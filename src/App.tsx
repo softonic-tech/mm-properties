@@ -13,6 +13,7 @@ import { ContactSection } from "@/components/contact/ContactSection";
 import { WhatsAppButton } from "@/components/contact/WhatsAppButton";
 import { OfferDialog } from "@/components/offer/OfferDialog";
 import { LanguageProvider } from "@/content/language";
+import { AdminSeo, Seo } from "@/components/seo/Seo";
 
 const VISIT_KEY = "mm-visit-logged";
 
@@ -30,10 +31,18 @@ export default function App() {
     });
   }, [isAdmin]);
 
-  if (isAdmin) return <AdminPage />;
+  if (isAdmin) {
+    return (
+      <>
+        <AdminSeo />
+        <AdminPage />
+      </>
+    );
+  }
 
   return (
     <LanguageProvider>
+    <Seo />
     <main>
       <Hero />
       <Experience />

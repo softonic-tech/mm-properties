@@ -19,7 +19,7 @@ export default function App() {
 
   useEffect(() => {
     if (isAdmin || sessionStorage.getItem(VISIT_KEY)) return;
-    const locale = localStorage.getItem("mm-locale") === "en" ? "en" : "es";
+    const locale = localStorage.getItem("mm-locale") === "es" ? "es" : "en";
     sessionStorage.setItem(VISIT_KEY, "1");
     void fetch("/api/visits", {
       method: "POST",

@@ -45,7 +45,7 @@ export function Header() {
 
         <div className="flex items-center gap-3">
           <div className="flex items-center rounded-full border border-white/20 bg-black/35 p-0.5 text-[11px] tracking-[0.12em] text-white/80">
-            {(["es", "en"] as const).map((code) => (
+            {(["en", "es"] as const).map((code) => (
               <button
                 key={code}
                 type="button"

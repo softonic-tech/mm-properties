@@ -59,7 +59,7 @@ function siteDataPlugin(password: string): Connect.NextHandleFunction {
     }
 
     if (url === "/api/visits" && req.method === "POST") {
-      const locale = String(JSON.parse((await readBody(req)) || "{}").locale ?? "es");
+      const locale = String(JSON.parse((await readBody(req)) || "{}").locale ?? "en");
       const visits = readJson<Visit[]>(visitsFile, []);
       visits.push({
         id: `${Date.now()}`,

@@ -1,5 +1,5 @@
 /**
- * English site content — secondary locale.
+ * English site content — default locale.
  */
 
 export const content = {

@@ -8,7 +8,7 @@ import {
 import { content as en, type SiteContent } from "@/content";
 import { es } from "@/content/es";
 
-export type Locale = "es" | "en";
+export type Locale = "en" | "es";
 
 const dictionaries: Record<Locale, SiteContent> = {
   es,
@@ -23,7 +23,7 @@ const LocaleContext = createContext<{
 
 function storedLocale(): Locale {
   const saved = localStorage.getItem("mm-locale");
-  return saved === "en" || saved === "es" ? saved : "es";
+  return saved === "en" || saved === "es" ? saved : "en";
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

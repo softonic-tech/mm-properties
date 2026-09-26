@@ -4,3 +4,4 @@ Disallow: /admin
 Disallow: /api/
 
 Sitemap: https://mmproperty.io/sitemap.xml
+Sitemap: https://mmproperty.io/sitemap.txt

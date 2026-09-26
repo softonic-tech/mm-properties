@@ -30,9 +30,9 @@ export const es: SiteContent = {
     poster: "/hero-poster.jpg?v=3",
     logo: "/mm-property-logo.png?v=3",
     places: [
-      { src: "/media/costa-marbella.jpg?v=1", label: "Marbella" },
-      { src: "/media/costa-fuengirola.jpg?v=1", label: "Fuengirola" },
-      { src: "/media/costa-mijas.jpg?v=1", label: "Mijas Pueblo" },
+      { src: "/media/costa-marbella.png?v=1", label: "Marbella" },
+      { src: "/media/costa-fuengirola.png?v=1", label: "Fuengirola" },
+      { src: "/media/costa-mijas.png?v=1", label: "Mijas Pueblo" },
     ],
   },
   experience: {
@@ -56,13 +56,13 @@ export const es: SiteContent = {
     ctaHref: "#process",
     images: [
       {
-        src: "/listings/mijas-pueblo.jpg",
+        src: "/listings/mijas-pueblo.jpg?v=1",
         alt: "Villa con piscina en Mijas Pueblo",
         label: "Mijas Pueblo",
         caption: "Villa en venta",
       },
       {
-        src: "/media/costa-marbella.jpg?v=1",
+        src: "/media/costa-marbella.png?v=1",
         alt: "Playa de la Fontanilla, Marbella",
         label: "Marbella",
         caption: "Playa de la Fontanilla",
@@ -79,28 +79,28 @@ export const es: SiteContent = {
       {
         title: "Obra nueva",
         text: "Viviendas aún en construcción, incluido El Higuerón, a un paso de la playa.",
-        image: "/listings/higueron.jpg",
+        image: "/listings/higueron.png?v=1",
         alt: "Terraza de una vivienda nueva en El Higuerón, Fuengirola",
         href: "https://www.mmproperty.es/es/piso-en-venta-en-el-higueron-fuengirola/279799/s2",
       },
       {
         title: "Villas",
         text: "Casas en Mijas Pueblo y en las colinas sobre la costa.",
-        image: "/listings/mijas-pueblo.jpg",
+        image: "/listings/mijas-pueblo.jpg?v=1",
         alt: "Villa con piscina en Mijas Pueblo",
         href: "https://www.mmproperty.es/es/villa-en-venta-en-mijas-pueblo-pena-blanquilla/273381/s2",
       },
       {
         title: "Segunda mano",
         text: "Pisos listos para visitar en Fuengirola, Benalmádena y Marbella.",
-        image: "/listings/fuengirola.jpg",
+        image: "/listings/fuengirola.png?v=1",
         alt: "Piso en venta en Fuengirola",
         href: "https://www.mmproperty.es/es/piso-en-venta-en-fuengirola/279182/s2",
       },
       {
         title: "Alquiler",
         text: "Los alquileres están en mmproperty.es, junto a las viviendas en venta.",
-        image: "/media/costa-fuengirola.jpg?v=1",
+        image: "/media/costa-fuengirola.png?v=1",
         alt: "Playa de Los Boliches, Fuengirola",
         href: "https://www.mmproperty.es/es",
       },
@@ -173,7 +173,7 @@ export const es: SiteContent = {
     place: "Mijas Pueblo",
     title: "Una villa con piscina, sobre la costa.",
     text: "Cuatro dormitorios en Mijas Pueblo. La misma oficina que la anuncia acompaña al comprador en el precio, la visita y la escritura.",
-    image: "/listings/mijas-pueblo.jpg",
+    image: "/listings/mijas-pueblo.jpg?v=1",
     imageAlt: "Villa con piscina en Mijas Pueblo",
     facts: [
       { label: "Dormitorios", value: "4" },
@@ -195,42 +195,42 @@ export const es: SiteContent = {
         id: "higueron",
         title: "Piso en venta en El Higuerón (Fuengirola)",
         meta: "116 m² · 2 dorm. · 495.000 €",
-        image: "/listings/higueron.jpg",
+        image: "/listings/higueron.png?v=1",
         href: "https://www.mmproperty.es/es/piso-en-venta-en-el-higueron-fuengirola/279799/s2",
       },
       {
         id: "fuengirola",
         title: "Piso en venta en Fuengirola",
         meta: "123 m² · 3 dorm. · 1.051.500 €",
-        image: "/listings/fuengirola.jpg",
+        image: "/listings/fuengirola.png?v=1",
         href: "https://www.mmproperty.es/es/piso-en-venta-en-fuengirola/279182/s2",
       },
       {
         id: "mijas-pueblo",
         title: "Villa en venta en Mijas Pueblo",
         meta: "4 dorm. · 1.965.000 €",
-        image: "/listings/mijas-pueblo.jpg",
+        image: "/listings/mijas-pueblo.jpg?v=1",
         href: "https://www.mmproperty.es/es/villa-en-venta-en-mijas-pueblo-pena-blanquilla/273381/s2",
       },
       {
         id: "monteros",
         title: "Piso en venta en Alto de los Monteros",
         meta: "125 m² · 3 dorm. · 835.000 €",
-        image: "/listings/monteros.jpg",
+        image: "/listings/monteros.png?v=1",
         href: "https://www.mmproperty.es/es/piso-en-venta-en-alto-de-los-monteros-marbella/273145/s2",
       },
       {
         id: "monteros-two",
         title: "Piso en venta en Alto de los Monteros",
         meta: "98 m² · 2 dorm. · 530.000 €",
-        image: "/listings/monteros-2.jpg",
+        image: "/listings/monteros-2.jpg?v=1",
         href: "https://www.mmproperty.es/es/piso-en-venta-en-alto-de-los-monteros-marbella/273116/s2",
       },
       {
         id: "mijas-hipodromo",
         title: "Piso en venta en Cerrado del Águila",
         meta: "117 m² · 3 dorm. · 425.000 €",
-        image: "/listings/mijas-aguila.jpg",
+        image: "/listings/mijas-aguila.png?v=1",
         href: "https://www.mmproperty.es/es/piso-en-venta-en-hipodromo-cerrado-del-aguila-mijas/273062/s2",
       },
     ],
@@ -242,7 +242,7 @@ export const es: SiteContent = {
     titleItalic: "que trabajamos",
     description:
       "Marbella, Fuengirola, Benalmádena, Mijas, y también Torremolinos y Estepona.",
-    image: "/media/costa-marbella.jpg?v=1",
+    image: "/media/costa-marbella.png?v=1",
     imageAlt: "Playa de la Fontanilla, Marbella",
     items: [
       {
@@ -309,7 +309,7 @@ export const es: SiteContent = {
     cta: "Contactar con la oficina",
     ctaHref: "#contact",
     footerNote: "Benalmádena · Costa del Sol",
-    image: "/media/costa-mijas.jpg?v=1",
+    image: "/media/costa-mijas.png?v=1",
     imageAlt: "Mijas Pueblo, en la ladera sobre la costa",
     items: [
       {

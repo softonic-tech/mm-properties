@@ -1,41 +1,57 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FusedCtaButton } from "@/components/ui/FusedCtaButton";
 import { useContent, useLocale } from "@/content/language";
+import { usePathname } from "@/lib/router";
 
-export function Header() {
+export function Header({ solid = false }: { solid?: boolean }) {
   const content = useContent();
   const { locale, setLocale } = useLocale();
-  const { brand, nav, experience } = content;
+  const path = usePathname();
+  const { brand, nav } = content;
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const current = (href: string) => path === href || (href !== "/" && path.startsWith(`${href}/`));
 
   return (
     <header
       data-hero="header"
-      className="absolute inset-x-0 top-0 z-50"
+      className={
+        solid
+          ? "relative z-50 lg:sticky lg:top-0 lg:bg-background/40 lg:backdrop-blur-md"
+          : "absolute inset-x-0 top-0 z-50"
+      }
       aria-label="Primary navigation"
     >
-      <div className="page-container flex items-center justify-between py-5 md:py-6">
-        <div data-hero="logo" className="flex items-center">
+      <div className="page-container grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 py-5 md:py-6">
+        <a href="/" data-hero="logo" className="flex items-center" onClick={() => setOpen(false)}>
           <img
             src="/mm-property-logo.png?v=3"
             alt={brand.name}
             className="h-14 w-auto md:h-20"
           />
-        </div>
+        </a>
 
         <nav
-          className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 md:flex"
+          className="hidden items-center justify-center gap-3 lg:flex"
           aria-label="Main"
         >
-          {nav.map((item, i) => (
+          {nav.map((item) => (
             <a
               key={item.href}
               data-hero="nav-item"
               href={item.href}
+              aria-current={current(item.href) ? "page" : undefined}
               className={
-                i === 0
-                  ? "rounded-full bg-white px-4 py-[7px] text-[12px] tracking-[0.08em] text-black shadow-[0_2px_12px_rgba(0,0,0,0.15)] transition-all duration-200 hover:bg-white/90"
-                  : "rounded-full border border-white/18 bg-white/[0.07] px-4 py-[7px] text-[12px] tracking-[0.08em] text-white/85 backdrop-blur-[6px] transition-all duration-200 hover:border-white/30 hover:bg-white/[0.12] hover:text-white"
+                current(item.href)
+                  ? "rounded-full border border-white/40 bg-white/20 px-5 py-2 text-[13px] font-medium tracking-[0.04em] text-white backdrop-blur-md"
+                  : "rounded-full border border-white/20 bg-white/10 px-5 py-2 text-[13px] font-medium tracking-[0.04em] text-white backdrop-blur-md transition-colors duration-200 hover:bg-white/20"
               }
             >
               {item.label}
@@ -43,15 +59,15 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <div className="flex items-center rounded-full border border-white/20 bg-black/35 p-0.5 text-[11px] tracking-[0.12em] text-white/80">
+        <div className="col-start-3 flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center rounded-full border border-white/25 bg-white/10 p-0.5 text-[11px] tracking-[0.12em] text-white/80 backdrop-blur-md">
             {(["en", "es"] as const).map((code) => (
               <button
                 key={code}
                 type="button"
                 onClick={() => setLocale(code)}
                 className={`rounded-full px-2.5 py-1 uppercase ${
-                  locale === code ? "bg-white text-black" : "text-white/75"
+                  locale === code ? "bg-white/25 text-white" : "text-white/75"
                 }`}
                 aria-pressed={locale === code}
               >
@@ -60,29 +76,29 @@ export function Header() {
             ))}
           </div>
           <FusedCtaButton
-            href="#experience"
-            label={experience.cta}
+            href={brand.phoneHref}
+            label={brand.phone}
             dataAttr="header-cta"
             className="hidden md:block"
           />
           <button
             type="button"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white transition-colors duration-300 md:hidden"
+            className="flex h-11 w-11 items-center justify-center text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] lg:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((value) => !value)}
           >
             <span className="relative block h-3 w-4">
-              <span className={`absolute left-0 h-px w-full bg-white transition-transform duration-300 ${open ? "top-1.5 rotate-45" : "top-0"}`} />
-              <span className={`absolute top-1.5 left-0 h-px w-full bg-white transition-opacity duration-200 ${open ? "opacity-0" : "opacity-100"}`} />
-              <span className={`absolute left-0 h-px w-full bg-white transition-transform duration-300 ${open ? "top-1.5 -rotate-45" : "top-3"}`} />
+              <span className={`absolute left-0 h-0.5 w-full rounded-full bg-white transition-transform duration-300 ${open ? "top-1.5 rotate-45" : "top-0"}`} />
+              <span className={`absolute top-1.5 left-0 h-0.5 w-full rounded-full bg-white transition-opacity duration-200 ${open ? "opacity-0" : "opacity-100"}`} />
+              <span className={`absolute left-0 h-0.5 w-full rounded-full bg-white transition-transform duration-300 ${open ? "top-1.5 -rotate-45" : "top-3"}`} />
             </span>
           </button>
         </div>
       </div>
 
       <nav
-        className={`absolute inset-x-0 top-[calc(100%-4px)] grid px-5 transition-[grid-template-rows,opacity] duration-300 ease-out md:hidden ${
+        className={`absolute inset-x-0 top-full grid max-h-[calc(100svh-5.5rem)] overflow-y-auto px-5 pt-3 transition-[grid-template-rows,opacity] duration-300 ease-out lg:hidden ${
           open ? "grid-rows-[1fr] opacity-100" : "pointer-events-none grid-rows-[0fr] opacity-0"
         }`}
         aria-label="Mobile"
@@ -90,31 +106,26 @@ export function Header() {
       >
         <div className="overflow-hidden">
           <div
-            className={`overflow-hidden rounded-2xl border border-white/15 bg-[#07080a]/88 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-transform duration-300 ease-out ${
+            className={`flex flex-col gap-1 rounded-2xl border border-white/15 bg-white/10 p-2 shadow-[0_16px_40px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-transform duration-300 ease-out ${
               open ? "translate-y-0" : "-translate-y-2"
             }`}
           >
-            {nav.map((item, i) => (
+            {nav.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="flex h-12 items-center justify-between border-b border-white/10 px-5 text-[12px] tracking-[0.16em] text-white/90 uppercase"
+                aria-current={current(item.href) ? "page" : undefined}
+                className={`flex h-11 items-center rounded-lg px-3 text-[15px] font-medium text-white ${
+                  current(item.href) ? "bg-white/15" : "hover:bg-white/10"
+                }`}
                 onClick={() => setOpen(false)}
               >
-                <span className="flex items-center gap-3">
-                  <span className={i === 0 ? "h-1 w-1 rounded-full bg-white" : "h-1 w-1 rounded-full bg-white/25"} />
-                  {item.label}
-                </span>
-                <span className="text-white/35">→</span>
+                {item.label}
               </a>
             ))}
-            <a
-              href={experience.ctaHref}
-              className="flex h-12 items-center justify-center bg-white text-[12px] font-semibold tracking-[0.16em] text-black uppercase"
-              onClick={() => setOpen(false)}
-            >
-              {experience.cta}
-            </a>
+            <div className="flex justify-center pt-1">
+              <FusedCtaButton href={brand.phoneHref} label={brand.phone} />
+            </div>
           </div>
         </div>
       </nav>

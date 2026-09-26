@@ -14,8 +14,8 @@ export function SectionEyebrow({
 }) {
   return (
     <p className="flex items-center gap-3 text-[11px] leading-none tracking-[0.22em] uppercase">
-      <span className="tabular-nums text-foreground/90">{index}</span>
-      <span className="h-px w-8 bg-white/30" aria-hidden="true" />
+      {index ? <span className="tabular-nums text-foreground/90">{index}</span> : null}
+      {index ? <span className="h-px w-8 bg-white/30" aria-hidden="true" /> : null}
       <span className={light ? "text-foreground/75" : "text-electric-soft"}>
         {label}
       </span>

@@ -59,7 +59,7 @@ export function FusedCtaButton({
             "pointer-events-none absolute left-0 top-0 flex h-full items-center font-semibold uppercase text-black",
             inline
               ? "pl-[0.38em] pr-[0.95em] text-[0.28em] leading-none tracking-[0.06em]"
-              : "pl-5 pr-[52px] text-[10px] tracking-[0.12em]",
+              : "pl-5 pr-[52px] text-[10px] tracking-[0.08em] whitespace-nowrap",
           ].join(" ")}
         >
           {label}

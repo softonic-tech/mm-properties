@@ -48,6 +48,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = locale;
+    localStorage.setItem("mm-locale", locale);
   }, [locale]);
 
   return (

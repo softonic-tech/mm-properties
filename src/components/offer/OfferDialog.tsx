@@ -1,5 +1,5 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { FusedCtaButton } from "@/components/ui/FusedCtaButton";
+import { useEffect, useState } from "react";
+import { InquiryForm } from "@/components/contact/InquiryForm";
 import { useContent } from "@/content/language";
 
 const SEEN_KEY = "mm-offer-seen";
@@ -7,8 +7,6 @@ const SEEN_KEY = "mm-offer-seen";
 export function OfferDialog() {
   const offer = useContent().offer;
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
 
   useEffect(() => {
     if (sessionStorage.getItem(SEEN_KEY)) return;
@@ -21,23 +19,6 @@ export function OfferDialog() {
     setOpen(false);
   };
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
-    setStatus("saving");
-    try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      if (!response.ok) throw new Error("save failed");
-      sessionStorage.setItem(SEEN_KEY, "1");
-      window.location.href = offer.href;
-    } catch {
-      setStatus("error");
-    }
-  };
-
   if (!open) return null;
 
   return (
@@ -46,7 +27,7 @@ export function OfferDialog() {
         role="dialog"
         aria-modal="true"
         aria-labelledby="offer-title"
-        className="offer-dialog relative w-full max-w-[22.5rem] rounded-[1.4rem] border border-white/14 bg-[#101216] px-6 pt-5 pb-6 text-white shadow-[0_28px_80px_rgba(0,0,0,0.55)]"
+        className="offer-dialog relative max-h-[calc(100svh-2.5rem)] w-full max-w-[22.5rem] overflow-y-auto rounded-[1.4rem] border border-white/14 bg-[#101216] px-6 pt-5 pb-6 text-white shadow-[0_28px_80px_rgba(0,0,0,0.55)]"
       >
         <button
           type="button"
@@ -67,23 +48,16 @@ export function OfferDialog() {
         </h2>
         <p className="mt-3 text-[13px] leading-relaxed text-white/68">{offer.text}</p>
 
-        <form className="mt-5 flex flex-col gap-3.5" onSubmit={submit}>
-          <label className="text-[10px] tracking-[0.16em] text-white/50 uppercase">
-            {offer.emailLabel}
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder={offer.placeholder}
-              className="mt-2 w-full rounded-full border border-white/16 bg-white/[0.04] px-4 py-2.5 text-sm tracking-normal text-white normal-case outline-none placeholder:text-white/30 focus:border-white/40"
-            />
-          </label>
-          {status === "error" ? (
-            <p className="text-sm text-white/70">{offer.error}</p>
-          ) : null}
-          <FusedCtaButton type="submit" label={offer.submit} disabled={status === "saving"} />
-        </form>
+        <div className="mt-5">
+          <InquiryForm
+            emailOnly
+            submitLabel={offer.submit}
+            onSaved={() => {
+              sessionStorage.setItem(SEEN_KEY, "1");
+              window.location.href = offer.href;
+            }}
+          />
+        </div>
       </div>
     </div>
   );

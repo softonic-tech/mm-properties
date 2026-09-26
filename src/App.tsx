@@ -12,24 +12,15 @@ import { FAQ } from "@/components/faq/FAQ";
 import { ContactSection } from "@/components/contact/ContactSection";
 import { WhatsAppButton } from "@/components/contact/WhatsAppButton";
 import { OfferDialog } from "@/components/offer/OfferDialog";
-import { LanguageProvider } from "@/content/language";
+import { LanguageProvider, useContent } from "@/content/language";
+import { matchPage } from "@/lib/pages";
+import { RouteProvider, usePathname } from "@/lib/router";
+import { InnerPages } from "@/pages/InnerPages";
 import { AdminSeo, Seo } from "@/components/seo/Seo";
-
-const VISIT_KEY = "mm-visit-logged";
+import { trackPage } from "@/lib/track";
 
 export default function App() {
   const isAdmin = window.location.pathname === "/admin";
-
-  useEffect(() => {
-    if (isAdmin || sessionStorage.getItem(VISIT_KEY)) return;
-    const locale = localStorage.getItem("mm-locale") === "es" ? "es" : "en";
-    sessionStorage.setItem(VISIT_KEY, "1");
-    void fetch("/api/visits", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ locale }),
-    });
-  }, [isAdmin]);
 
   if (isAdmin) {
     return (
@@ -42,21 +33,42 @@ export default function App() {
 
   return (
     <LanguageProvider>
-    <Seo />
-    <main>
-      <Hero />
-      <Experience />
-      <Paths />
-      <Process />
-      <ReportSection />
-      <FeatureHome />
-      <ListingsSection />
-      <TestimonialsSection />
-      <FAQ />
-      <ContactSection />
-      <WhatsAppButton />
-      <OfferDialog />
-    </main>
+      <RouteProvider>
+        <Site />
+      </RouteProvider>
     </LanguageProvider>
+  );
+}
+
+function Site() {
+  const path = usePathname();
+  const match = matchPage(path, useContent());
+
+  useEffect(() => {
+    trackPage(path);
+  }, [path]);
+
+  return (
+    <>
+      <Seo />
+      {match.id === "home" ? (
+        <main>
+          <Hero />
+          <Experience />
+          <Paths />
+          <Process />
+          <ReportSection />
+          <FeatureHome />
+          <ListingsSection />
+          <TestimonialsSection />
+          <FAQ />
+          <ContactSection />
+          <OfferDialog />
+        </main>
+      ) : (
+        <InnerPages match={match} />
+      )}
+      <WhatsAppButton />
+    </>
   );
 }

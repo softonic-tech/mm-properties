@@ -7,12 +7,16 @@ export const content = {
     initials: "M&M",
     name: "M&M Property",
     title: "Homes for sale and rent on the Costa del Sol",
+    phone: "+34 653 223 015",
+    phoneHref: "tel:+34653223015",
+    phoneAria: "Call +34 653 223 015",
   },
 
   nav: [
-    { label: "The agency", href: "#experience" },
-    { label: "Homes", href: "#listings" },
-    { label: "Contact", href: "#contact" },
+    { label: "Homes", href: "/homes" },
+    { label: "Areas", href: "/areas" },
+    { label: "How we work", href: "/sell" },
+    { label: "Contact", href: "/contact" },
   ],
 
   hero: {
@@ -68,7 +72,7 @@ export const content = {
     ],
     body: "A Costa del Sol agency with more than 15 years in the sale of every kind of home. The search, the advice and the purchase are handled together, whether you are moving here or buying to invest.",
     cta: "How we work",
-    ctaHref: "#process",
+    ctaHref: "/sell",
     images: [
       {
         src: "/listings/mijas-pueblo.jpg?v=2",
@@ -219,6 +223,7 @@ export const content = {
     items: [
       {
         id: "higueron",
+        area: "fuengirola",
         title: "Flat for sale in El Higuerón (Fuengirola)",
         meta: "116 m² · 2 bed · 495.000 €",
         image: "/listings/higueron.jpg?v=2",
@@ -226,6 +231,7 @@ export const content = {
       },
       {
         id: "fuengirola",
+        area: "fuengirola",
         title: "Flat for sale in Fuengirola",
         meta: "123 m² · 3 bed · 1.051.500 €",
         image: "/listings/fuengirola.jpg?v=2",
@@ -233,6 +239,7 @@ export const content = {
       },
       {
         id: "mijas-pueblo",
+        area: "mijas",
         title: "Villa for sale in Mijas Pueblo",
         meta: "4 bed · 1.965.000 €",
         image: "/listings/mijas-pueblo.jpg?v=2",
@@ -240,6 +247,7 @@ export const content = {
       },
       {
         id: "monteros",
+        area: "marbella",
         title: "Flat for sale in Alto de los Monteros",
         meta: "125 m² · 3 bed · 835.000 €",
         image: "/listings/monteros.jpg?v=2",
@@ -247,6 +255,7 @@ export const content = {
       },
       {
         id: "monteros-two",
+        area: "marbella",
         title: "Flat for sale in Alto de los Monteros",
         meta: "98 m² · 2 bed · 530.000 €",
         image: "/listings/monteros-2.jpg?v=2",
@@ -254,6 +263,7 @@ export const content = {
       },
       {
         id: "mijas-hipodromo",
+        area: "mijas",
         title: "Flat for sale in Cerrado del Águila",
         meta: "117 m² · 3 bed · 425.000 €",
         image: "/listings/mijas-aguila.jpg?v=2",
@@ -269,11 +279,14 @@ export const content = {
     titleItalic: "work in",
     description:
       "Marbella, Fuengirola, Benalmádena, Mijas, and also Torremolinos and Estepona.",
+    moreLabel: "Each town",
+    moreHref: "/areas",
     image: "/media/costa-marbella.jpg?v=2",
     imageAlt: "Playa de la Fontanilla, Marbella",
     items: [
       {
         id: "t1",
+        slug: "marbella",
         quote:
           "Luxury villas for sale, including Alto de los Monteros and the wider Marbella market.",
         name: "Marbella",
@@ -282,6 +295,7 @@ export const content = {
       },
       {
         id: "t2",
+        slug: "fuengirola",
         quote:
           "El Higuerón, beachfront homes and new builds about 150 metres from the sea.",
         name: "Fuengirola",
@@ -290,6 +304,7 @@ export const content = {
       },
       {
         id: "t3",
+        slug: "benalmadena",
         quote:
           "Pueblo and Costa, including new homes a short walk from the beach. The office is here.",
         name: "Benalmádena",
@@ -298,6 +313,7 @@ export const content = {
       },
       {
         id: "t4",
+        slug: "mijas",
         quote:
           "Mijas Costa, La Cala and Mijas Pueblo, from golf-side townhouses to hillside villas.",
         name: "Mijas",
@@ -306,6 +322,7 @@ export const content = {
       },
       {
         id: "t5",
+        slug: "torremolinos",
         quote:
           "Further listings along the bay, between Málaga and Benalmádena.",
         name: "Torremolinos",
@@ -314,6 +331,7 @@ export const content = {
       },
       {
         id: "t6",
+        slug: "estepona",
         quote:
           "Homes further west, when the search reaches past Marbella.",
         name: "Estepona",
@@ -338,7 +356,7 @@ export const content = {
     title: "Frequently asked questions",
     subtitle: "Purchase, sale, or a question about a listing.",
     cta: "Contact the office",
-    ctaHref: "#contact",
+    ctaHref: "/contact",
     footerNote: "Benalmádena · Costa del Sol",
     image: "/media/costa-mijas.jpg?v=2",
     imageAlt: "Mijas Pueblo, on the hillside above the coast",
@@ -382,6 +400,12 @@ export const content = {
     cta: "Email us",
     ctaHref: "mailto:info@mmproperty.es",
     body: "Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena. +34 653 223 015.",
+    pageTitle: "The Benalmádena office.",
+    pageText: "Call, write, or leave your details. The same team stays with you from the first question to the notary.",
+    writeLabel: "Write to the office",
+    address: ["Avd. de Tívoli, C.C. Las Ventas", "Local 48A", "29630 Benalmádena, Málaga"],
+    image: "/section2.png",
+    imageAlt: "Evening terrace overlooking the coast",
     email: "info@mmproperty.es",
     whatsapp: {
       phone: "34653223015",
@@ -394,24 +418,159 @@ export const content = {
     ],
     chips: ["Purchase & sale", "Costa del Sol"],
     footerNav: [
-      { label: "The agency", href: "#experience" },
-      { label: "Homes", href: "#listings" },
-      { label: "How we work", href: "#process" },
-      { label: "FAQ", href: "#faq" },
+      { label: "Homes", href: "/homes" },
+      { label: "Areas", href: "/areas" },
+      { label: "How we work", href: "/sell" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Contact", href: "/contact" },
     ],
     footerNote: "M&M Property · Benalmádena",
     photoCredit:
-      "Coast photos: Los Boliches, Fuengirola · Playa de la Fontanilla, Marbella · Mijas Pueblo. Wikimedia Commons, CC BY-SA.",
+      "Coast photos: Los Boliches, Fuengirola · Playa de la Fontanilla, Marbella · Mijas Pueblo · Benalmádena cable car (robbie jim, CC BY 2.0) · Playamar, Torremolinos (Hans Olav Lien, CC BY-SA 3.0) · Estepona (kallerna, CC BY-SA 4.0). Wikimedia Commons.",
+  },
+
+  pages: {
+    homeLabel: "Home",
+    backHome: "Back to the home page",
+    backToAreas: "All towns",
+    emptyHomes: "Ask the office for current homes in this town. The live list is on mmproperty.es.",
+    portfolio: "Open the live portfolio",
+    homes: {
+      eyebrow: "HOMES",
+      title: "Homes for sale on the Costa del Sol.",
+      description:
+        "Apartments, villas and new builds from the Benalmádena office. This is a selection. Confirm the price on the live listing.",
+      seoTitle: "Homes for sale on the Costa del Sol | M&M Property",
+      seoDescription:
+        "Apartments, villas and new builds for sale in Marbella, Fuengirola, Benalmádena and Mijas. M&M Property, office in Benalmádena.",
+      viewListing: "View on mmproperty.es",
+      links: [
+        { label: "All homes", href: "https://www.mmproperty.es/en/properties/s1/1907" },
+        { label: "For sale", href: "https://www.mmproperty.es/en/browser/s1?quick_search[tof]=1" },
+        { label: "For rent", href: "https://www.mmproperty.es/en/browser/s1?quick_search[tof]=2" },
+      ],
+    },
+    areas: {
+      eyebrow: "THE COAST",
+      title: "Towns we work in.",
+      description:
+        "The office is in Benalmádena. The search runs from Torremolinos to Estepona.",
+      seoTitle: "Costa del Sol towns | M&M Property",
+      seoDescription:
+        "M&M Property works in Marbella, Fuengirola, Benalmádena, Mijas, Torremolinos and Estepona. Office in Benalmádena.",
+      towns: [
+        {
+          slug: "marbella",
+          name: "Marbella",
+          role: "Villas and apartments",
+          text: "Luxury villas for sale, including Alto de los Monteros and the wider Marbella market.",
+          image: "/media/costa-marbella.jpg?v=2",
+          imageAlt: "Playa de la Fontanilla, Marbella",
+          seoTitle: "Homes for sale in Marbella | M&M Property",
+          seoDescription:
+            "Villas and apartments for sale in Marbella, including Alto de los Monteros. M&M Property, Benalmádena.",
+        },
+        {
+          slug: "fuengirola",
+          name: "Fuengirola",
+          role: "New build and resale",
+          text: "El Higuerón, beachfront homes and new builds about 150 metres from the sea.",
+          image: "/media/costa-fuengirola.jpg?v=2",
+          imageAlt: "Los Boliches, Fuengirola",
+          seoTitle: "Homes for sale in Fuengirola | M&M Property",
+          seoDescription:
+            "Apartments and new builds for sale in Fuengirola and El Higuerón. M&M Property, Benalmádena.",
+        },
+        {
+          slug: "benalmadena",
+          name: "Benalmádena",
+          role: "Home of the agency",
+          text: "Pueblo and Costa, including new homes a short walk from the beach. The office is here, at C.C. Las Ventas on Avenida de Tívoli.",
+          image: "/media/costa-benalmadena.jpg?v=1",
+          imageAlt: "Benalmádena cable car above the coast",
+          seoTitle: "Homes for sale in Benalmádena | M&M Property",
+          seoDescription:
+            "The M&M Property office is in Benalmádena. Homes for sale in Benalmádena Pueblo and Benalmádena Costa.",
+        },
+        {
+          slug: "mijas",
+          name: "Mijas",
+          role: "Costa and pueblo",
+          text: "Mijas Costa, La Cala and Mijas Pueblo, from golf-side townhouses to hillside villas.",
+          image: "/media/costa-mijas.jpg?v=2",
+          imageAlt: "Mijas Pueblo",
+          seoTitle: "Homes for sale in Mijas | M&M Property",
+          seoDescription:
+            "Villas and apartments for sale in Mijas Pueblo, Mijas Costa and La Cala. M&M Property, Benalmádena.",
+        },
+        {
+          slug: "torremolinos",
+          name: "Torremolinos",
+          role: "On the same coast",
+          text: "Further listings along the bay, between Málaga and Benalmádena.",
+          image: "/media/costa-torremolinos.jpg?v=1",
+          imageAlt: "Playamar beach in Torremolinos",
+          seoTitle: "Homes for sale in Torremolinos | M&M Property",
+          seoDescription:
+            "Homes for sale in Torremolinos, between Málaga and Benalmádena. Ask the M&M Property office.",
+        },
+        {
+          slug: "estepona",
+          name: "Estepona",
+          role: "West of Marbella",
+          text: "Homes further west, when the search reaches past Marbella.",
+          image: "/media/costa-estepona.jpg?v=1",
+          imageAlt: "Aerial view of Estepona and the marina",
+          seoTitle: "Homes for sale in Estepona | M&M Property",
+          seoDescription:
+            "Homes for sale in Estepona, west of Marbella. M&M Property, office in Benalmádena.",
+        },
+      ],
+    },
+    sell: {
+      eyebrow: "HOW WE WORK",
+      title: "From the first viewing to the notary.",
+      description:
+        "The same Benalmádena team handles the search, the price and the signing, whether you are buying or selling.",
+      seoTitle: "How we sell and buy homes | M&M Property",
+      seoDescription:
+        "M&M Property advises on the price, prepares the photos and stays with the sale or purchase until the notary. Office in Benalmádena.",
+      imageAlt: "Evening terrace overlooking the coast",
+    },
+    contact: {
+      seoTitle: "Contact the Benalmádena office | M&M Property",
+      seoDescription:
+        "Call +34 653 223 015 or email info@mmproperty.es. M&M Property, Avenida de Tívoli, C.C. Las Ventas, Benalmádena.",
+    },
+    faq: {
+      seoTitle: "Questions about buying or selling | M&M Property",
+      seoDescription:
+        "What M&M Property handles, where the office is, and which Costa del Sol towns the agency covers.",
+    },
+    notFound: {
+      title: "This page is not on the site.",
+      description: "The home page, the homes and the towns are still here.",
+      cta: "Back to the home page",
+    },
   },
 
   offer: {
     eyebrow: "EARLY ACCESS",
     title: "Homes on the Costa del Sol.",
     text: "Leave your email and go to the live portfolio. We use it only to tell you about new listings.",
-    error: "We could not save that email. Please try again.",
+    formIntro: "Send your details and the office can call or email you about homes you are interested in.",
+    error: "We could not save those details. Please try again.",
+    sent: "Saved. The office can reach you on this phone or email.",
+    nameLabel: "Name",
+    namePlaceholder: "Your name",
+    phoneLabel: "Phone",
+    phonePlaceholder: "+34 …",
     emailLabel: "Email",
     placeholder: "you@email.com",
+    noteLabel: "What are you looking for?",
+    notePlaceholder: "A flat in Fuengirola, a villa in Mijas…",
     submit: "View properties",
+    send: "Send",
     href: "https://www.mmproperty.es/en",
     close: "Close",
   },

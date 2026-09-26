@@ -8,7 +8,8 @@ import { useContent } from "@/content/language";
 /**
  * FAQ — accordion list + large atmospheric image (reference layout).
  */
-export function FAQ() {
+export function FAQ({ heading = "h2" }: { heading?: "h1" | "h2" }) {
+  const Title = heading;
   const {
     index,
     eyebrow,
@@ -37,12 +38,12 @@ export function FAQ() {
           <div data-motion className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="max-w-xl">
               <SectionEyebrow index={index} label={eyebrow} />
-              <h2
+              <Title
                 id="faq-title"
                 className="mt-4 text-[clamp(1.85rem,3.2vw,2.85rem)] font-medium leading-[1.15] tracking-[-0.02em] text-foreground"
               >
                 {title}
-              </h2>
+              </Title>
               <p className="mt-3 text-[15px] leading-relaxed text-foreground-muted">
                 {subtitle}
               </p>

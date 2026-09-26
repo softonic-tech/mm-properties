@@ -5,11 +5,15 @@ export const es: SiteContent = {
     initials: "M&M",
     name: "M&M Property",
     title: "Viviendas en venta y alquiler en la Costa del Sol",
+    phone: "+34 653 223 015",
+    phoneHref: "tel:+34653223015",
+    phoneAria: "Llamar al +34 653 223 015",
   },
   nav: [
-    { label: "La agencia", href: "#experience" },
-    { label: "Viviendas", href: "#listings" },
-    { label: "Contacto", href: "#contact" },
+    { label: "Viviendas", href: "/homes" },
+    { label: "Zonas", href: "/areas" },
+    { label: "Cómo trabajamos", href: "/sell" },
+    { label: "Contacto", href: "/contact" },
   ],
   hero: {
     titleBefore: "Viviendas en la",
@@ -53,7 +57,7 @@ export const es: SiteContent = {
     ],
     body: "Agencia de la Costa del Sol con más de 15 años en la venta de todo tipo de viviendas. La búsqueda, el asesoramiento y la compra se hacen juntos, tanto si se muda como si compra para invertir.",
     cta: "Cómo trabajamos",
-    ctaHref: "#process",
+    ctaHref: "/sell",
     images: [
       {
         src: "/listings/mijas-pueblo.jpg?v=2",
@@ -197,6 +201,7 @@ export const es: SiteContent = {
     items: [
       {
         id: "higueron",
+        area: "fuengirola",
         title: "Piso en venta en El Higuerón (Fuengirola)",
         meta: "116 m² · 2 dorm. · 495.000 €",
         image: "/listings/higueron.jpg?v=2",
@@ -204,6 +209,7 @@ export const es: SiteContent = {
       },
       {
         id: "fuengirola",
+        area: "fuengirola",
         title: "Piso en venta en Fuengirola",
         meta: "123 m² · 3 dorm. · 1.051.500 €",
         image: "/listings/fuengirola.jpg?v=2",
@@ -211,6 +217,7 @@ export const es: SiteContent = {
       },
       {
         id: "mijas-pueblo",
+        area: "mijas",
         title: "Villa en venta en Mijas Pueblo",
         meta: "4 dorm. · 1.965.000 €",
         image: "/listings/mijas-pueblo.jpg?v=2",
@@ -218,6 +225,7 @@ export const es: SiteContent = {
       },
       {
         id: "monteros",
+        area: "marbella",
         title: "Piso en venta en Alto de los Monteros",
         meta: "125 m² · 3 dorm. · 835.000 €",
         image: "/listings/monteros.jpg?v=2",
@@ -225,6 +233,7 @@ export const es: SiteContent = {
       },
       {
         id: "monteros-two",
+        area: "marbella",
         title: "Piso en venta en Alto de los Monteros",
         meta: "98 m² · 2 dorm. · 530.000 €",
         image: "/listings/monteros-2.jpg?v=2",
@@ -232,6 +241,7 @@ export const es: SiteContent = {
       },
       {
         id: "mijas-hipodromo",
+        area: "mijas",
         title: "Piso en venta en Cerrado del Águila",
         meta: "117 m² · 3 dorm. · 425.000 €",
         image: "/listings/mijas-aguila.jpg?v=2",
@@ -246,11 +256,14 @@ export const es: SiteContent = {
     titleItalic: "que trabajamos",
     description:
       "Marbella, Fuengirola, Benalmádena, Mijas, y también Torremolinos y Estepona.",
+    moreLabel: "Cada municipio",
+    moreHref: "/areas",
     image: "/media/costa-marbella.jpg?v=2",
     imageAlt: "Playa de la Fontanilla, Marbella",
     items: [
       {
         id: "t1",
+        slug: "marbella",
         quote:
           "Villas de lujo en venta, incluido Alto de los Monteros y el resto del mercado de Marbella.",
         name: "Marbella",
@@ -259,6 +272,7 @@ export const es: SiteContent = {
       },
       {
         id: "t2",
+        slug: "fuengirola",
         quote:
           "El Higuerón, viviendas junto al mar y obra nueva a unos 150 metros del mar.",
         name: "Fuengirola",
@@ -267,6 +281,7 @@ export const es: SiteContent = {
       },
       {
         id: "t3",
+        slug: "benalmadena",
         quote:
           "Pueblo y Costa, incluidas viviendas nuevas a un paso de la playa. La oficina está aquí.",
         name: "Benalmádena",
@@ -275,6 +290,7 @@ export const es: SiteContent = {
       },
       {
         id: "t4",
+        slug: "mijas",
         quote:
           "Mijas Costa, La Cala y Mijas Pueblo, de adosados junto al golf a villas en la ladera.",
         name: "Mijas",
@@ -283,6 +299,7 @@ export const es: SiteContent = {
       },
       {
         id: "t5",
+        slug: "torremolinos",
         quote: "Más viviendas en la bahía, entre Málaga y Benalmádena.",
         name: "Torremolinos",
         role: "En la misma costa",
@@ -290,6 +307,7 @@ export const es: SiteContent = {
       },
       {
         id: "t6",
+        slug: "estepona",
         quote: "Viviendas más al oeste, cuando la búsqueda pasa de Marbella.",
         name: "Estepona",
         role: "Al oeste de Marbella",
@@ -311,7 +329,7 @@ export const es: SiteContent = {
     title: "Preguntas frecuentes",
     subtitle: "Compra, venta o una duda sobre un anuncio.",
     cta: "Contactar con la oficina",
-    ctaHref: "#contact",
+    ctaHref: "/contact",
     footerNote: "Benalmádena · Costa del Sol",
     image: "/media/costa-mijas.jpg?v=2",
     imageAlt: "Mijas Pueblo, en la ladera sobre la costa",
@@ -354,6 +372,12 @@ export const es: SiteContent = {
     cta: "Escríbanos",
     ctaHref: "mailto:info@mmproperty.es",
     body: "Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena. +34 653 223 015.",
+    pageTitle: "La oficina de Benalmádena.",
+    pageText: "Llame, escriba o deje sus datos. El mismo equipo le acompaña desde la primera pregunta hasta el notario.",
+    writeLabel: "Escriba a la oficina",
+    address: ["Avd. de Tívoli, C.C. Las Ventas", "Local 48A", "29630 Benalmádena, Málaga"],
+    image: "/section2.png",
+    imageAlt: "Terraza al atardecer con vistas a la costa",
     email: "info@mmproperty.es",
     whatsapp: {
       phone: "34653223015",
@@ -366,23 +390,158 @@ export const es: SiteContent = {
     ],
     chips: ["Compra y venta", "Costa del Sol"],
     footerNav: [
-      { label: "La agencia", href: "#experience" },
-      { label: "Viviendas", href: "#listings" },
-      { label: "Cómo trabajamos", href: "#process" },
-      { label: "FAQ", href: "#faq" },
+      { label: "Viviendas", href: "/homes" },
+      { label: "Zonas", href: "/areas" },
+      { label: "Cómo trabajamos", href: "/sell" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Contacto", href: "/contact" },
     ],
     footerNote: "M&M Property · Benalmádena",
     photoCredit:
-      "Fotos de la costa: Los Boliches, Fuengirola · Playa de la Fontanilla, Marbella · Mijas Pueblo. Wikimedia Commons, CC BY-SA.",
+      "Fotos de la costa: Los Boliches, Fuengirola · Playa de la Fontanilla, Marbella · Mijas Pueblo · Teleférico de Benalmádena (robbie jim, CC BY 2.0) · Playamar, Torremolinos (Hans Olav Lien, CC BY-SA 3.0) · Estepona (kallerna, CC BY-SA 4.0). Wikimedia Commons.",
+  },
+  pages: {
+    homeLabel: "Inicio",
+    backHome: "Volver al inicio",
+    backToAreas: "Todos los municipios",
+    emptyHomes:
+      "Pregunte en la oficina por las viviendas actuales de este municipio. La lista en vivo está en mmproperty.es.",
+    portfolio: "Abrir la cartera en vivo",
+    homes: {
+      eyebrow: "VIVIENDAS",
+      title: "Viviendas en venta en la Costa del Sol.",
+      description:
+        "Pisos, villas y obra nueva desde la oficina de Benalmádena. Es una selección. Confirme el precio en el anuncio.",
+      seoTitle: "Viviendas en venta en la Costa del Sol | M&M Property",
+      seoDescription:
+        "Pisos, villas y obra nueva en venta en Marbella, Fuengirola, Benalmádena y Mijas. M&M Property, oficina en Benalmádena.",
+      viewListing: "Ver en mmproperty.es",
+      links: [
+        { label: "Todas las viviendas", href: "https://www.mmproperty.es/es/propiedades/s1/1907" },
+        { label: "En venta", href: "https://www.mmproperty.es/es/browser/s1?quick_search[tof]=1" },
+        { label: "En alquiler", href: "https://www.mmproperty.es/es/browser/s1?quick_search[tof]=2" },
+      ],
+    },
+    areas: {
+      eyebrow: "LA COSTA",
+      title: "Municipios en los que trabajamos.",
+      description:
+        "La oficina está en Benalmádena. La búsqueda va de Torremolinos a Estepona.",
+      seoTitle: "Municipios de la Costa del Sol | M&M Property",
+      seoDescription:
+        "M&M Property trabaja en Marbella, Fuengirola, Benalmádena, Mijas, Torremolinos y Estepona. Oficina en Benalmádena.",
+      towns: [
+        {
+          slug: "marbella",
+          name: "Marbella",
+          role: "Villas y pisos",
+          text: "Villas de lujo en venta, incluido Alto de los Monteros y el resto del mercado de Marbella.",
+          image: "/media/costa-marbella.jpg?v=2",
+          imageAlt: "Playa de la Fontanilla, Marbella",
+          seoTitle: "Viviendas en venta en Marbella | M&M Property",
+          seoDescription:
+            "Villas y pisos en venta en Marbella, incluido Alto de los Monteros. M&M Property, Benalmádena.",
+        },
+        {
+          slug: "fuengirola",
+          name: "Fuengirola",
+          role: "Obra nueva y segunda mano",
+          text: "El Higuerón, viviendas junto al mar y obra nueva a unos 150 metros del mar.",
+          image: "/media/costa-fuengirola.jpg?v=2",
+          imageAlt: "Los Boliches, Fuengirola",
+          seoTitle: "Viviendas en venta en Fuengirola | M&M Property",
+          seoDescription:
+            "Pisos y obra nueva en venta en Fuengirola y El Higuerón. M&M Property, Benalmádena.",
+        },
+        {
+          slug: "benalmadena",
+          name: "Benalmádena",
+          role: "Sede de la agencia",
+          text: "Pueblo y Costa, incluidas viviendas nuevas a un paso de la playa. La oficina está aquí, en el C.C. Las Ventas de la Avenida de Tívoli.",
+          image: "/media/costa-benalmadena.jpg?v=1",
+          imageAlt: "Teleférico de Benalmádena sobre la costa",
+          seoTitle: "Viviendas en venta en Benalmádena | M&M Property",
+          seoDescription:
+            "La oficina de M&M Property está en Benalmádena. Viviendas en venta en Benalmádena Pueblo y Benalmádena Costa.",
+        },
+        {
+          slug: "mijas",
+          name: "Mijas",
+          role: "Costa y pueblo",
+          text: "Mijas Costa, La Cala y Mijas Pueblo, de adosados junto al golf a villas en la ladera.",
+          image: "/media/costa-mijas.jpg?v=2",
+          imageAlt: "Mijas Pueblo",
+          seoTitle: "Viviendas en venta en Mijas | M&M Property",
+          seoDescription:
+            "Villas y pisos en venta en Mijas Pueblo, Mijas Costa y La Cala. M&M Property, Benalmádena.",
+        },
+        {
+          slug: "torremolinos",
+          name: "Torremolinos",
+          role: "En la misma costa",
+          text: "Más viviendas en la bahía, entre Málaga y Benalmádena.",
+          image: "/media/costa-torremolinos.jpg?v=1",
+          imageAlt: "Playa de Playamar, Torremolinos",
+          seoTitle: "Viviendas en venta en Torremolinos | M&M Property",
+          seoDescription:
+            "Viviendas en venta en Torremolinos, entre Málaga y Benalmádena. Consulte la oficina de M&M Property.",
+        },
+        {
+          slug: "estepona",
+          name: "Estepona",
+          role: "Al oeste de Marbella",
+          text: "Viviendas más al oeste, cuando la búsqueda pasa de Marbella.",
+          image: "/media/costa-estepona.jpg?v=1",
+          imageAlt: "Vista aérea de Estepona y el puerto",
+          seoTitle: "Viviendas en venta en Estepona | M&M Property",
+          seoDescription:
+            "Viviendas en venta en Estepona, al oeste de Marbella. M&M Property, oficina en Benalmádena.",
+        },
+      ],
+    },
+    sell: {
+      eyebrow: "CÓMO TRABAJAMOS",
+      title: "De la primera visita a la notaría.",
+      description:
+        "El mismo equipo de Benalmádena lleva la búsqueda, el precio y la firma, tanto si compra como si vende.",
+      seoTitle: "Cómo compramos y vendemos | M&M Property",
+      seoDescription:
+        "M&M Property asesora sobre el precio, prepara las fotos y acompaña la compra o la venta hasta la notaría. Oficina en Benalmádena.",
+      imageAlt: "Terraza al atardecer con vistas a la costa",
+    },
+    contact: {
+      seoTitle: "Contacto con la oficina de Benalmádena | M&M Property",
+      seoDescription:
+        "Llame al +34 653 223 015 o escriba a info@mmproperty.es. M&M Property, Avenida de Tívoli, C.C. Las Ventas, Benalmádena.",
+    },
+    faq: {
+      seoTitle: "Preguntas sobre comprar o vender | M&M Property",
+      seoDescription:
+        "Qué gestiona M&M Property, dónde está la oficina y qué municipios de la Costa del Sol cubre.",
+    },
+    notFound: {
+      title: "Esta página no está en el sitio.",
+      description: "El inicio, las viviendas y los municipios siguen aquí.",
+      cta: "Volver al inicio",
+    },
   },
   offer: {
     eyebrow: "ACCESO ANTICIPADO",
     title: "Viviendas en la Costa del Sol.",
     text: "Deje su email y vaya a la cartera en vivo. Solo lo usamos para avisarle de nuevos anuncios.",
-    error: "No hemos podido guardar el email. Inténtelo de nuevo.",
+    formIntro: "Envíe sus datos y la oficina puede llamarle o escribirle sobre las viviendas que le interesan.",
+    error: "No hemos podido guardar los datos. Inténtelo de nuevo.",
+    sent: "Guardado. La oficina puede localizarle en este teléfono o email.",
+    nameLabel: "Nombre",
+    namePlaceholder: "Su nombre",
+    phoneLabel: "Teléfono",
+    phonePlaceholder: "+34 …",
     emailLabel: "Email",
     placeholder: "usted@email.com",
+    noteLabel: "¿Qué está buscando?",
+    notePlaceholder: "Un piso en Fuengirola, una villa en Mijas…",
     submit: "Ver viviendas",
+    send: "Enviar",
     href: "https://www.mmproperty.es/es",
     close: "Cerrar",
   },

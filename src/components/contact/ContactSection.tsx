@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { FusedCtaButton } from "@/components/ui/FusedCtaButton";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
@@ -76,8 +77,6 @@ export function ContactSection() {
     email,
     socials,
     chips,
-    footerNav,
-    footerNote,
   } = content.contact;
 
   return (
@@ -162,38 +161,8 @@ export function ContactSection() {
           </div>
         </Reveal>
 
-          {/* Footer bar */}
-          <Reveal className="mt-16 flex flex-col gap-6 border-t border-white/10 pt-8 md:mt-20 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center">
-              <img
-                src="/mm-property-logo.png?v=3"
-                alt={content.brand.name}
-                className="h-16 w-auto md:h-20"
-              />
-            </div>
-
-            <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer">
-              {footerNav.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-[12px] text-foreground-muted transition-colors hover:text-foreground"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-
-            <div className="md:text-right">
-              <p className="text-[11px] tracking-wide text-foreground-subtle">
-                {footerNote}
-              </p>
-              <p className="mt-1 max-w-sm text-[10px] leading-snug text-foreground-subtle/80 md:ml-auto">
-                {content.contact.photoCredit}
-              </p>
-            </div>
-          </Reveal>
       </div>
+      <SiteFooter />
     </section>
   );
 }

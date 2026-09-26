@@ -17,8 +17,9 @@ export const seo = {
   },
 } as const;
 
-export function pageUrl(locale: "en" | "es") {
-  return locale === "es" ? `${SITE_URL}/?lang=es` : `${SITE_URL}/`;
+export function pageUrl(locale: "en" | "es", path = "/") {
+  const base = path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`;
+  return locale === "es" ? `${base}?lang=es` : base;
 }
 
 export function upsertMeta(attr: "name" | "property", key: string, content: string) {

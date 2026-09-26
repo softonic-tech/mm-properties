@@ -8,8 +8,9 @@ type Testimonial = SiteContent["testimonials"]["items"][number];
 
 function TestimonialCard({ item }: { item: Testimonial }) {
   return (
-    <article
-      className="w-full rounded-2xl border border-white/12 p-5"
+    <a
+      href={`/areas/${item.slug}`}
+      className="block w-full rounded-2xl border border-white/12 p-5"
       style={{
         background:
           "linear-gradient(160deg, rgba(16,20,24,0.96) 0%, rgba(10,12,14,0.94) 100%)",
@@ -24,7 +25,7 @@ function TestimonialCard({ item }: { item: Testimonial }) {
         {item.name}
       </h3>
       <p className="mt-3 text-sm leading-relaxed text-foreground-muted">{item.quote}</p>
-    </article>
+    </a>
   );
 }
 
@@ -95,6 +96,12 @@ export function TestimonialsSection() {
               <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-foreground-muted">
                 {testimonials.description}
               </p>
+              <a
+                href={testimonials.moreHref}
+                className="mt-5 text-[12px] tracking-[0.14em] text-electric-soft uppercase"
+              >
+                {testimonials.moreLabel} →
+              </a>
 
               <div className="relative mt-8 aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl ring-1 ring-white/10">
                 <Image

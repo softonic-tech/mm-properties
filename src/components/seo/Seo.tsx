@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useContent, useLocale } from "@/content/language";
+import { matchPage, pageSeo } from "@/lib/pages";
+import { usePathname } from "@/lib/router";
 import { LOGO_URL, OG_IMAGE, SITE_URL, pageUrl, seo, upsertLink, upsertMeta } from "@/lib/seo";
 
 function setJsonLd(id: string, data: Record<string, unknown>) {
@@ -15,29 +17,37 @@ function setJsonLd(id: string, data: Record<string, unknown>) {
 
 export function Seo() {
   const { locale } = useLocale();
-  const { faq, brand, contact } = useContent();
-  const copy = seo[locale];
-  const url = pageUrl(locale);
+  const path = usePathname();
+  const content = useContent();
+  const { faq, brand, contact } = content;
+  const match = matchPage(path, content);
+  const copy = pageSeo(match, content, seo[locale]);
+  const url = pageUrl(locale, match.id === "notFound" ? "/" : match.path);
 
   useEffect(() => {
     document.documentElement.lang = locale;
     document.title = copy.title;
 
     upsertMeta("name", "description", copy.description);
-    upsertMeta("name", "robots", "index, follow, max-image-preview:large");
+    upsertMeta(
+      "name",
+      "robots",
+      match.id === "notFound" ? "noindex, nofollow" : "index, follow, max-image-preview:large",
+    );
     upsertMeta("property", "og:title", copy.title);
     upsertMeta("property", "og:description", copy.description);
     upsertMeta("property", "og:url", url);
-    upsertMeta("property", "og:locale", copy.locale);
+    upsertMeta("property", "og:locale", seo[locale].locale);
     upsertMeta("property", "og:image", OG_IMAGE);
     upsertMeta("name", "twitter:title", copy.title);
     upsertMeta("name", "twitter:description", copy.description);
     upsertMeta("name", "twitter:image", OG_IMAGE);
 
+    const canonicalPath = match.id === "notFound" ? "/" : match.path;
     upsertLink("canonical", url);
-    upsertLink("alternate", pageUrl("en"), { hreflang: "en" });
-    upsertLink("alternate", pageUrl("es"), { hreflang: "es" });
-    upsertLink("alternate", pageUrl("en"), { hreflang: "x-default" });
+    upsertLink("alternate", pageUrl("en", canonicalPath), { hreflang: "en" });
+    upsertLink("alternate", pageUrl("es", canonicalPath), { hreflang: "es" });
+    upsertLink("alternate", pageUrl("en", canonicalPath), { hreflang: "x-default" });
 
     setJsonLd("schema-website", {
       "@context": "https://schema.org",
@@ -48,15 +58,32 @@ export function Seo() {
       publisher: { "@id": `${SITE_URL}/#agency` },
     });
 
-    setJsonLd("schema-faq", {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faq.items.map((item) => ({
-        "@type": "Question",
-        name: item.question,
-        acceptedAnswer: { "@type": "Answer", text: item.answer },
-      })),
-    });
+    if (match.id === "home" || match.id === "faq") {
+      setJsonLd("schema-faq", {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faq.items.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: { "@type": "Answer", text: item.answer },
+        })),
+      });
+    } else {
+      document.getElementById("schema-faq")?.remove();
+    }
+
+    if (match.id !== "home" && match.id !== "notFound") {
+      setJsonLd("schema-breadcrumb", {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: content.pages.homeLabel, item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: copy.title, item: pageUrl("en", match.path) },
+        ],
+      });
+    } else {
+      document.getElementById("schema-breadcrumb")?.remove();
+    }
 
     setJsonLd("schema-agency", {
       "@context": "https://schema.org",
@@ -97,7 +124,7 @@ export function Seo() {
       ],
       priceRange: "€€€",
     });
-  }, [brand.name, contact.email, contact.socials, copy.description, copy.locale, copy.title, faq.items, locale, url]);
+  }, [brand.name, contact.email, contact.socials, content.pages.homeLabel, copy.description, copy.title, faq.items, locale, match.id, match.path, url]);
 
   return null;
 }

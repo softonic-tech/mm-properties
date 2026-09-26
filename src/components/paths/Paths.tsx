@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { Image } from "@/components/ui/Image";
 import { Reveal } from "@/components/motion/Reveal";
 import { useContent } from "@/content/language";
@@ -23,6 +24,28 @@ function CheckIcon() {
  */
 export function Paths() {
   const { title, description, items } = useContent().paths;
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+
+  const syncActive = () => {
+    const root = scrollerRef.current;
+    if (!root) return;
+    const cards = [...root.querySelectorAll<HTMLElement>("[data-path-card]")];
+    const edge = root.getBoundingClientRect().left;
+    let index = 0;
+    cards.forEach((card, i) => {
+      if (card.getBoundingClientRect().left - edge < root.clientWidth * 0.5) index = i;
+    });
+    setActive((current) => (current === index ? current : index));
+  };
+
+  const showCard = (index: number) => {
+    const root = scrollerRef.current;
+    const card = root?.querySelectorAll<HTMLElement>("[data-path-card]")[index];
+    setActive(index);
+    if (!root || !card) return;
+    root.scrollTo({ left: card.offsetLeft - root.offsetLeft, behavior: "smooth" });
+  };
 
   return (
     <section
@@ -45,15 +68,20 @@ export function Paths() {
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+          <div
+            ref={scrollerRef}
+            onScroll={syncActive}
+            className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:mt-12 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible lg:mt-16 lg:grid-cols-4 [&::-webkit-scrollbar]:hidden"
+          >
             {items.map((item) => (
               <a
                 key={item.title}
                 data-motion
+                data-path-card
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group block"
+                className="group block w-full shrink-0 snap-start sm:w-auto"
               >
                 <div className="relative aspect-[16/10] overflow-hidden rounded-xl">
                   <Image
@@ -82,6 +110,22 @@ export function Paths() {
                   ))}
                 </ul>
               </a>
+            ))}
+          </div>
+
+          <div className="mt-5 flex items-center justify-center gap-2 sm:hidden" role="tablist" aria-label={title}>
+            {items.map((item, index) => (
+              <button
+                key={item.title}
+                type="button"
+                role="tab"
+                aria-selected={active === index}
+                aria-label={item.title}
+                onClick={() => showCard(index)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  active === index ? "w-6 bg-foreground" : "w-1.5 bg-foreground/30"
+                }`}
+              />
             ))}
           </div>
         </Reveal>

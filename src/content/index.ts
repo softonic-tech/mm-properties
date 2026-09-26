@@ -37,9 +37,9 @@ export const content = {
     poster: "/hero-poster.jpg?v=3",
     logo: "/mm-property-logo.png?v=3",
     places: [
-      { src: "/media/costa-marbella.png?v=1", label: "Marbella" },
-      { src: "/media/costa-fuengirola.png?v=1", label: "Fuengirola" },
-      { src: "/media/costa-mijas.png?v=1", label: "Mijas Pueblo" },
+      { src: "/media/costa-marbella.jpg?v=2", label: "Marbella" },
+      { src: "/media/costa-fuengirola.jpg?v=2", label: "Fuengirola" },
+      { src: "/media/costa-mijas.jpg?v=2", label: "Mijas Pueblo" },
     ],
   },
 
@@ -71,13 +71,13 @@ export const content = {
     ctaHref: "#process",
     images: [
       {
-        src: "/listings/mijas-pueblo.jpg?v=1",
+        src: "/listings/mijas-pueblo.jpg?v=2",
         alt: "Villa with a pool in Mijas Pueblo",
         label: "Mijas Pueblo",
         caption: "Villa for sale",
       },
       {
-        src: "/media/costa-marbella.png?v=1",
+        src: "/media/costa-marbella.jpg?v=2",
         alt: "Playa de la Fontanilla, Marbella",
         label: "Marbella",
         caption: "Playa de la Fontanilla",
@@ -95,28 +95,28 @@ export const content = {
       {
         title: "New build",
         text: "Homes still under construction, including El Higuerón, a short walk from the beach.",
-        image: "/listings/higueron.png?v=1",
+        image: "/listings/higueron.jpg?v=2",
         alt: "Terrace of a new home in El Higuerón, Fuengirola",
         href: "https://www.mmproperty.es/en/flat-for-sale-in-el-higueron-fuengirola/279799/s2",
       },
       {
         title: "Villas",
         text: "Houses in Mijas Pueblo and on the hills above the coast.",
-        image: "/listings/mijas-pueblo.jpg?v=1",
+        image: "/listings/mijas-pueblo.jpg?v=2",
         alt: "Villa with a pool in Mijas Pueblo",
         href: "https://www.mmproperty.es/en/villa-for-sale-in-mijas-pueblo-pena-blanquilla/273381/s2",
       },
       {
         title: "Resale",
         text: "Apartments ready to view in Fuengirola, Benalmádena and Marbella.",
-        image: "/listings/fuengirola.png?v=1",
+        image: "/listings/fuengirola.jpg?v=2",
         alt: "Apartment for sale in Fuengirola",
         href: "https://www.mmproperty.es/en/flat-for-sale-in-fuengirola/279182/s2",
       },
       {
         title: "Rent",
         text: "Rentals sit on mmproperty.es next to the homes for sale.",
-        image: "/media/costa-fuengirola.png?v=1",
+        image: "/media/costa-fuengirola.jpg?v=2",
         alt: "Los Boliches beach, Fuengirola",
         href: "https://www.mmproperty.es/en",
       },
@@ -193,7 +193,7 @@ export const content = {
     place: "Mijas Pueblo",
     title: "A villa with a pool, above the coast.",
     text: "Four bedrooms in Mijas Pueblo. The same office that lists it walks the buyer through the price, the viewing and the deed.",
-    image: "/listings/mijas-pueblo.jpg?v=1",
+    image: "/listings/mijas-pueblo.jpg?v=2",
     imageAlt: "Villa with a pool in Mijas Pueblo",
     facts: [
       { label: "Bedrooms", value: "4" },
@@ -217,42 +217,42 @@ export const content = {
         id: "higueron",
         title: "Flat for sale in El Higuerón (Fuengirola)",
         meta: "116 m² · 2 bed · 495.000 €",
-        image: "/listings/higueron.png?v=1",
+        image: "/listings/higueron.jpg?v=2",
         href: "https://www.mmproperty.es/en/flat-for-sale-in-el-higueron-fuengirola/279799/s2",
       },
       {
         id: "fuengirola",
         title: "Flat for sale in Fuengirola",
         meta: "123 m² · 3 bed · 1.051.500 €",
-        image: "/listings/fuengirola.png?v=1",
+        image: "/listings/fuengirola.jpg?v=2",
         href: "https://www.mmproperty.es/en/flat-for-sale-in-fuengirola/279182/s2",
       },
       {
         id: "mijas-pueblo",
         title: "Villa for sale in Mijas Pueblo",
         meta: "4 bed · 1.965.000 €",
-        image: "/listings/mijas-pueblo.jpg?v=1",
+        image: "/listings/mijas-pueblo.jpg?v=2",
         href: "https://www.mmproperty.es/en/villa-for-sale-in-mijas-pueblo-pena-blanquilla/273381/s2",
       },
       {
         id: "monteros",
         title: "Flat for sale in Alto de los Monteros",
         meta: "125 m² · 3 bed · 835.000 €",
-        image: "/listings/monteros.png?v=1",
+        image: "/listings/monteros.jpg?v=2",
         href: "https://www.mmproperty.es/en/flat-for-sale-in-alto-de-los-monteros-marbella/273145/s2",
       },
       {
         id: "monteros-two",
         title: "Flat for sale in Alto de los Monteros",
         meta: "98 m² · 2 bed · 530.000 €",
-        image: "/listings/monteros-2.jpg?v=1",
+        image: "/listings/monteros-2.jpg?v=2",
         href: "https://www.mmproperty.es/en/flat-for-sale-in-alto-de-los-monteros-marbella/273116/s2",
       },
       {
         id: "mijas-hipodromo",
         title: "Flat for sale in Cerrado del Águila",
         meta: "117 m² · 3 bed · 425.000 €",
-        image: "/listings/mijas-aguila.png?v=1",
+        image: "/listings/mijas-aguila.jpg?v=2",
         href: "https://www.mmproperty.es/en/flat-for-sale-in-hipodromo-cerrado-del-aguila-mijas/273062/s2",
       },
     ],
@@ -265,7 +265,7 @@ export const content = {
     titleItalic: "work in",
     description:
       "Marbella, Fuengirola, Benalmádena, Mijas, and also Torremolinos and Estepona.",
-    image: "/media/costa-marbella.png?v=1",
+    image: "/media/costa-marbella.jpg?v=2",
     imageAlt: "Playa de la Fontanilla, Marbella",
     items: [
       {
@@ -336,7 +336,7 @@ export const content = {
     cta: "Contact the office",
     ctaHref: "#contact",
     footerNote: "Benalmádena · Costa del Sol",
-    image: "/media/costa-mijas.png?v=1",
+    image: "/media/costa-mijas.jpg?v=2",
     imageAlt: "Mijas Pueblo, on the hillside above the coast",
     items: [
       {

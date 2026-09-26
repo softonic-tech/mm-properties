@@ -13,6 +13,8 @@ export function Image({ src, alt, className = "", fill, onAnimationEnd }: ImageP
     <img
       src={src}
       alt={alt}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
       onAnimationEnd={onAnimationEnd}
       className={fill ? `absolute inset-0 h-full w-full ${className}` : className}
     />

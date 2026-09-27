@@ -1,6 +1,8 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { handleNode } from "../server/http.ts";
+import { handleNode } from "../server/http.js";
 
-export default function handler(req: IncomingMessage, res: ServerResponse) {
-  return handleNode(req, res, "/api/leads");
+export const config = { maxDuration: 15 };
+
+export default async function handler(req: IncomingMessage, res: ServerResponse) {
+  await handleNode(req, res, "/api/leads");
 }

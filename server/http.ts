@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { dispatch } from "./store.ts";
+import { dispatch } from "./store.js";
 
 function send(res: ServerResponse, status: number, payload: unknown) {
   if (res.writableEnded) return;
@@ -10,18 +10,38 @@ function send(res: ServerResponse, status: number, payload: unknown) {
 }
 
 async function readBody(req: IncomingMessage & { body?: unknown }) {
+  const method = req.method ?? "GET";
+  if (method === "GET" || method === "HEAD" || method === "OPTIONS") return "";
   if (typeof req.body === "string") return req.body.slice(0, 20_000);
-  if (req.body && typeof req.body === "object") return JSON.stringify(req.body).slice(0, 20_000);
-
-  const chunks: Buffer[] = [];
-  let size = 0;
-  for await (const chunk of req) {
-    const block = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
-    size += block.length;
-    if (size > 20_000) break;
-    chunks.push(block);
+  if (req.body && typeof req.body === "object" && !Buffer.isBuffer(req.body)) {
+    return JSON.stringify(req.body).slice(0, 20_000);
   }
-  return Buffer.concat(chunks).toString("utf8");
+  if (req.readableEnded || req.complete) return "";
+
+  return await new Promise<string>((resolve) => {
+    const chunks: Buffer[] = [];
+    let finished = false;
+    const done = () => {
+      if (finished) return;
+      finished = true;
+      resolve(Buffer.concat(chunks).toString("utf8"));
+    };
+    const timer = setTimeout(done, 2000);
+    req.on("data", (chunk) => {
+      const block = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+      if (chunks.reduce((sum, item) => sum + item.length, 0) + block.length <= 20_000) {
+        chunks.push(block);
+      }
+    });
+    req.on("end", () => {
+      clearTimeout(timer);
+      done();
+    });
+    req.on("error", () => {
+      clearTimeout(timer);
+      done();
+    });
+  });
 }
 
 function parseBody(text: string) {
@@ -45,6 +65,6 @@ export async function handleNode(req: IncomingMessage & { body?: unknown }, res:
     });
     send(res, result.status, result.body);
   } catch {
-    send(res, 500, { ok: false });
+    send(res, 500, { ok: false, error: "storage" });
   }
 }

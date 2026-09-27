@@ -3,10 +3,10 @@ import fs from "node:fs";
 import type { IncomingHttpHeaders } from "node:http";
 import os from "node:os";
 import path from "node:path";
-import { get, put } from "@vercel/blob";
-import { MongoClient, type Db, type Document } from "mongodb";
+import { fileURLToPath } from "node:url";
 
-const dataDir = path.resolve(import.meta.dirname, "../data");
+const here = path.dirname(fileURLToPath(import.meta.url));
+const dataDir = path.resolve(here, "../data");
 const tempDir = path.join(os.tmpdir(), "mm-admin");
 
 export type Visit = {
@@ -49,8 +49,11 @@ export type AdminPayload = {
 };
 
 type Bucket = "visits.json" | "leads.json" | "settings.json" | "admin.json";
+type Stored = { _id?: string; [key: string]: unknown };
+type MongoClient = import("mongodb").MongoClient;
+type Db = import("mongodb").Db;
 
-let envPassword = "mmproperty";
+let envPassword = process.env.ADMIN_PASSWORD || "mmproperty";
 let queue: Promise<unknown> = Promise.resolve();
 
 export function setEnvPassword(password: string) {
@@ -82,15 +85,26 @@ function mongoUri() {
 
 type MongoGlobal = typeof globalThis & { __mmMongo?: Promise<MongoClient> };
 
-function mongoClient() {
+async function mongoClient() {
   const uri = mongoUri();
   if (!uri) throw new Error("MONGODB_URI is not set");
+  const { MongoClient } = await import("mongodb");
   const scope = globalThis as MongoGlobal;
-  scope.__mmMongo ??= new MongoClient(uri, { maxPoolSize: 5 }).connect();
+  if (!scope.__mmMongo) {
+    scope.__mmMongo = new MongoClient(uri, {
+      maxPoolSize: 1,
+      minPoolSize: 0,
+      serverSelectionTimeoutMS: 8000,
+      connectTimeoutMS: 8000,
+    })
+      .connect()
+      .catch((error: unknown) => {
+        scope.__mmMongo = undefined;
+        throw error;
+      });
+  }
   return scope.__mmMongo;
 }
-
-type Stored = { _id?: string; [key: string]: unknown };
 
 function collectionName(name: Bucket) {
   if (name === "visits.json") return "visits";
@@ -103,7 +117,7 @@ function docs(database: Db, name: string) {
   return database.collection<Stored>(name);
 }
 
-function withoutId(doc: Document) {
+function withoutId(doc: Stored) {
   const copy = { ...doc };
   delete copy._id;
   return copy;
@@ -141,7 +155,7 @@ async function seedAtlas() {
     for (const name of ["visits.json", "leads.json"] as const) {
       const collection = docs(database, collectionName(name));
       if ((await collection.countDocuments()) > 0) continue;
-      const rows = parseList<Document>(readText(localFile(name))).map(withoutId);
+      const rows = parseList<Stored>(readText(localFile(name))).map(withoutId);
       if (rows.length > 0) await collection.insertMany(rows);
     }
     for (const name of ["settings.json", "admin.json"] as const) {
@@ -149,7 +163,7 @@ async function seedAtlas() {
       if (await collection.findOne({ _id: "current" })) continue;
       const text = readText(localFile(name));
       if (!text) continue;
-      const value = JSON.parse(text) as Document;
+      const value = JSON.parse(text) as Stored;
       delete value._id;
       await collection.insertOne({ _id: "current", ...value });
     }
@@ -178,19 +192,12 @@ async function writeAtlas(name: Bucket, text: string) {
   const client = await mongoClient();
   const collection = docs(client.db(), collectionName(name));
   if (name === "visits.json" || name === "leads.json") {
-    const rows = parseList<Document>(text).map(withoutId);
-    const session = client.startSession();
-    try {
-      await session.withTransaction(async () => {
-        await collection.deleteMany({}, { session });
-        if (rows.length > 0) await collection.insertMany(rows, { session });
-      });
-    } finally {
-      await session.endSession();
-    }
+    const rows = parseList<Stored>(text).map(withoutId);
+    await collection.deleteMany({});
+    if (rows.length > 0) await collection.insertMany(rows);
     return;
   }
-  const value = JSON.parse(text) as Document;
+  const value = JSON.parse(text) as Stored;
   delete value._id;
   await collection.replaceOne({ _id: "current" }, { _id: "current", ...value }, { upsert: true });
 }
@@ -216,6 +223,7 @@ function writeText(file: string, text: string) {
 }
 
 async function readBlob(name: Bucket) {
+  const { get } = await import("@vercel/blob");
   const result = await get(`mm-admin/${name}`, { access: "private", useCache: false });
   if (!result) return null;
   if (result.statusCode !== 200 || !result.stream) throw new Error("Blob could not be read");
@@ -223,6 +231,7 @@ async function readBlob(name: Bucket) {
 }
 
 async function writeBlob(name: Bucket, text: string) {
+  const { put } = await import("@vercel/blob");
   await put(`mm-admin/${name}`, text, {
     access: "private",
     addRandomSuffix: false,

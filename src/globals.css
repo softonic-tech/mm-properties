@@ -67,11 +67,17 @@
     color: var(--foreground);
   }
 
+  html,
+  body {
+    /* clip, not hidden: hidden on the body makes Safari desktop
+       treat the body as the scroller and the page will not move. */
+    overflow-x: clip;
+  }
+
   body {
     background: var(--background);
     color: var(--foreground);
     font-family: "DM Sans", system-ui, sans-serif;
-    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

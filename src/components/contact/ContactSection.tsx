@@ -1,62 +1,9 @@
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { FacebookMark, InstagramMark } from "@/components/layout/SocialMarks";
 import { FusedCtaButton } from "@/components/ui/FusedCtaButton";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { useContent } from "@/content/language";
-
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden
-    >
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-
-function FacebookIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className} aria-hidden>
-      <path d="M14 8h2V5h-2c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.2l.8-3H13V9c0-.6.4-1 1-1z" />
-    </svg>
-  );
-}
-
-function LinkedInIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden
-    >
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <path d="M8 11v5M8 8v.01M12 16v-5c1.5 0 3 1 3 3v2" />
-    </svg>
-  );
-}
-
-const socialIcons: Record<
-  string,
-  (props: { className?: string }) => React.JSX.Element
-> = {
-  Instagram: InstagramIcon,
-  Facebook: FacebookIcon,
-  LinkedIn: LinkedInIcon,
-};
 
 /**
  * Contact — large dual-tone headline + fused CTA inline in the line + socials/footer.
@@ -133,22 +80,23 @@ export function ContactSection() {
                 ))}
               </div>
 
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-10">
-                {socials.map((s) => {
-                  const Icon = socialIcons[s.label];
-                  return (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      className="group inline-flex items-center gap-2.5 text-sm text-foreground transition-colors hover:text-warm"
-                    >
-                      {Icon ? (
-                        <Icon className="size-4 text-foreground-muted transition-colors group-hover:text-warm" />
-                      ) : null}
-                      <span className="tracking-wide">{s.handle}</span>
-                    </a>
-                  );
-                })}
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+                {socials.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 text-sm text-foreground"
+                  >
+                    {s.label === "Instagram" ? (
+                      <InstagramMark className="size-12" />
+                    ) : s.label === "Facebook" ? (
+                      <FacebookMark className="size-12" />
+                    ) : null}
+                    <span className="tracking-wide">{s.handle}</span>
+                  </a>
+                ))}
               </div>
 
               <a

@@ -9,10 +9,16 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(here, "../data");
 const tempDir = path.join(os.tmpdir(), "mm-admin");
 
+type Locale = "en" | "es" | "nl" | "sv" | "de";
+
+function asLocale(value: unknown): Locale {
+  return value === "es" || value === "nl" || value === "sv" || value === "de" ? value : "en";
+}
+
 export type Visit = {
   id: string;
   at: string;
-  locale: "en" | "es";
+  locale: Locale;
   visitorId: string;
   path: string;
   referrer: string;
@@ -33,7 +39,7 @@ export type Lead = {
   joinedAt: string;
   path: string;
   source: string;
-  locale: "en" | "es";
+  locale: Locale;
 };
 
 export type Settings = {
@@ -441,7 +447,7 @@ function normalizeVisit(raw: Partial<Visit>): Visit {
   return {
     id: raw.id || randomUUID(),
     at: raw.at || new Date(0).toISOString(),
-    locale: raw.locale === "es" ? "es" : "en",
+    locale: asLocale(raw.locale),
     visitorId: raw.visitorId || raw.id || "",
     path: raw.path || "",
     referrer: raw.referrer || "",
@@ -479,7 +485,7 @@ function normalizeLead(raw: Partial<Lead>): Lead | null {
     joinedAt: raw.joinedAt || new Date(0).toISOString(),
     path: raw.path || "",
     source: raw.source || "",
-    locale: raw.locale === "es" ? "es" : "en",
+    locale: asLocale(raw.locale),
   };
 }
 
@@ -523,7 +529,7 @@ async function recordVisit(headers: IncomingHttpHeaders, input: Record<string, u
   const visit: Visit = {
     id: randomUUID(),
     at: new Date().toISOString(),
-    locale: input.locale === "es" ? "es" : "en",
+    locale: asLocale(input.locale),
     visitorId,
     path: pathName,
     referrer,
@@ -572,7 +578,7 @@ async function recordLead(input: Record<string, unknown>) {
     joinedAt: existing?.joinedAt ?? new Date().toISOString(),
     path: cleanPath(input.path),
     source: sourceFrom(referrer, utm),
-    locale: input.locale === "es" ? "es" : "en",
+    locale: asLocale(input.locale),
   });
   await writeRaw("leads.json", JSON.stringify(next, null, 2));
   return json(200, { ok: true });

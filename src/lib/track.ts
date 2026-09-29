@@ -1,3 +1,5 @@
+import { isLocale } from "@/lib/locales";
+
 const VISITOR_KEY = "mm-visitor";
 const LANDED_KEY = "mm-landed";
 const RECENT_KEY = "mm-track-recent";
@@ -13,8 +15,9 @@ function visitorId() {
 
 function localeNow() {
   const lang = new URLSearchParams(window.location.search).get("lang");
-  if (lang === "es" || lang === "en") return lang;
-  return localStorage.getItem("mm-locale") === "es" ? "es" : "en";
+  if (isLocale(lang)) return lang;
+  const stored = localStorage.getItem("mm-locale");
+  return isLocale(stored) ? stored : "en";
 }
 
 function campaignNow() {

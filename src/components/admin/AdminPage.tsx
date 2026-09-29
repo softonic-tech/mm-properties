@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { localeName } from "@/lib/locales";
 
 type Visit = {
   id: string;
   at: string;
-  locale: "en" | "es";
+  locale: "en" | "es" | "nl" | "sv" | "de";
   visitorId: string;
   path: string;
   referrer: string;
@@ -24,7 +25,7 @@ type Lead = {
   joinedAt: string;
   path: string;
   source: string;
-  locale: "en" | "es";
+  locale: "en" | "es" | "nl" | "sv" | "de";
 };
 
 type AdminData = {
@@ -194,7 +195,7 @@ export function AdminPage() {
       days,
       sources: tally(arrivals.map(sourceLabel)).slice(0, 6),
       pages: tally(people.map(pageLabel)).slice(0, 6),
-      locales: tally(arrivals.map((visit) => (visit.locale === "es" ? "Spanish" : "English"))),
+      locales: tally(arrivals.map((visit) => localeName(visit.locale))),
       devices: tally(arrivals.map((visit) => visit.device).filter(Boolean)),
       countries: tally(arrivals.map((visit) => countryName(visit.country)).filter((name) => name !== "—")),
     };

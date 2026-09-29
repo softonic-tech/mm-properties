@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useContent, useLocale } from "@/content/language";
 import { matchPage, pageSeo } from "@/lib/pages";
 import { usePathname } from "@/lib/router";
-import { LOGO_URL, OG_IMAGE, SITE_URL, pageUrl, seo, upsertLink, upsertMeta } from "@/lib/seo";
+import { LOCALES, LOGO_URL, OG_IMAGE, SITE_URL, pageUrl, seo, upsertLink, upsertMeta } from "@/lib/seo";
 
 function setJsonLd(id: string, data: Record<string, unknown>) {
   let script = document.getElementById(id) as HTMLScriptElement | null;
@@ -39,14 +39,16 @@ export function Seo() {
     upsertMeta("property", "og:url", url);
     upsertMeta("property", "og:locale", seo[locale].locale);
     upsertMeta("property", "og:image", OG_IMAGE);
+    upsertMeta("property", "og:image:alt", brand.name);
     upsertMeta("name", "twitter:title", copy.title);
     upsertMeta("name", "twitter:description", copy.description);
     upsertMeta("name", "twitter:image", OG_IMAGE);
 
     const canonicalPath = match.id === "notFound" ? "/" : match.path;
     upsertLink("canonical", url);
-    upsertLink("alternate", pageUrl("en", canonicalPath), { hreflang: "en" });
-    upsertLink("alternate", pageUrl("es", canonicalPath), { hreflang: "es" });
+    for (const code of LOCALES) {
+      upsertLink("alternate", pageUrl(code, canonicalPath), { hreflang: code });
+    }
     upsertLink("alternate", pageUrl("en", canonicalPath), { hreflang: "x-default" });
 
     setJsonLd("schema-website", {
@@ -54,7 +56,7 @@ export function Seo() {
       "@type": "WebSite",
       name: brand.name,
       url: SITE_URL,
-      inLanguage: [seo.en.locale, seo.es.locale],
+      inLanguage: LOCALES.map((code) => seo[code].locale),
       publisher: { "@id": `${SITE_URL}/#agency` },
     });
 
@@ -78,7 +80,7 @@ export function Seo() {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: content.pages.homeLabel, item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: copy.title, item: pageUrl("en", match.path) },
+          { "@type": "ListItem", position: 2, name: copy.title, item: pageUrl(locale, match.path) },
         ],
       });
     } else {

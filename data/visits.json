@@ -1473,5 +1473,20 @@
     "device": "Desktop",
     "utm": "",
     "bot": false
+  },
+  {
+    "id": "5533db30-89b7-4991-8fe4-708c796576ff",
+    "at": "2026-09-29T12:09:47.918Z",
+    "locale": "en",
+    "visitorId": "ad13f71e-0b91-428e-a216-7fbdf8d0202e",
+    "path": "/",
+    "referrer": "",
+    "source": "Direct",
+    "landing": true,
+    "language": "en-US",
+    "country": "",
+    "device": "Desktop",
+    "utm": "",
+    "bot": false
   }
 ]

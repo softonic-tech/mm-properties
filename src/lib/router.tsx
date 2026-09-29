@@ -5,6 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { isLocale } from "@/lib/locales";
 import { normalizePath } from "@/lib/pages";
 
 const RouteContext = createContext<string | null>(null);
@@ -16,13 +17,13 @@ function isInternalLink(anchor: HTMLAnchorElement, href: string) {
   return url.origin === window.location.origin;
 }
 
-/** Keep the Spanish query on in-site links so each page stays in the chosen language. */
+/** Keep the chosen language on in-site links. */
 function destination(url: URL) {
-  const spanish =
-    new URLSearchParams(window.location.search).get("lang") === "es" ||
-    localStorage.getItem("mm-locale") === "es";
-  if (spanish) url.searchParams.set("lang", "es");
-  else url.searchParams.delete("lang");
+  const fromQuery = new URLSearchParams(window.location.search).get("lang");
+  const stored = localStorage.getItem("mm-locale");
+  const lang = isLocale(fromQuery) ? fromQuery : isLocale(stored) ? stored : "en";
+  if (lang === "en") url.searchParams.delete("lang");
+  else url.searchParams.set("lang", lang);
   return `${url.pathname}${url.search}${url.hash}`;
 }
 

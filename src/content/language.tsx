@@ -7,12 +7,20 @@ import {
 } from "react";
 import { content as en, type SiteContent } from "@/content";
 import { es } from "@/content/es";
+import { nl } from "@/content/nl";
+import { sv } from "@/content/sv";
+import { de } from "@/content/de";
+import { LOCALES, isLocale, localeName, type Locale } from "@/lib/locales";
 
-export type Locale = "en" | "es";
+export type { Locale };
+export { LOCALES, isLocale, localeName };
 
 const dictionaries: Record<Locale, SiteContent> = {
-  es,
   en: en as unknown as SiteContent,
+  es,
+  nl,
+  sv,
+  de,
 };
 
 const LocaleContext = createContext<{
@@ -23,17 +31,17 @@ const LocaleContext = createContext<{
 
 function localeFromUrl(): Locale | null {
   const lang = new URLSearchParams(window.location.search).get("lang");
-  return lang === "en" || lang === "es" ? lang : null;
+  return isLocale(lang) ? lang : null;
 }
 
 function storedLocale(): Locale {
-  return localeFromUrl() ?? (localStorage.getItem("mm-locale") === "es" ? "es" : "en");
+  return localeFromUrl() ?? (isLocale(localStorage.getItem("mm-locale")) ? localStorage.getItem("mm-locale") as Locale : "en");
 }
 
-function writeLocaleUrl(next: Locale) {
+export function writeLocaleUrl(next: Locale) {
   const url = new URL(window.location.href);
-  if (next === "es") url.searchParams.set("lang", "es");
-  else url.searchParams.delete("lang");
+  if (next === "en") url.searchParams.delete("lang");
+  else url.searchParams.set("lang", next);
   window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
@@ -50,6 +58,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = locale;
     localStorage.setItem("mm-locale", locale);
   }, [locale]);
+
+  useEffect(() => {
+    const sync = () => setLocaleState(storedLocale());
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale, content: dictionaries[locale] }}>

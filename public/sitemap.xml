@@ -3,218 +3,722 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://mmproperty.io/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/" />
   </url>
   <url>
     <loc>https://mmproperty.io/?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/" />
   </url>
   <url>
     <loc>https://mmproperty.io/homes</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/homes" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/homes?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/homes?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/homes?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/homes?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/homes" />
   </url>
   <url>
     <loc>https://mmproperty.io/homes?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/homes" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/homes?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/homes?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/homes?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/homes?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/homes" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/homes?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/homes" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/homes?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/homes?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/homes?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/homes?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/homes" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/homes?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/homes" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/homes?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/homes?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/homes?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/homes?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/homes" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/homes?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/homes" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/homes?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/homes?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/homes?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/homes?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/homes" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/marbella</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/marbella" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/marbella?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/marbella?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/marbella?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/marbella?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/marbella" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/marbella?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/marbella" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/marbella?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/marbella?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/marbella?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/marbella?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/marbella" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/marbella?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/marbella" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/marbella?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/marbella?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/marbella?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/marbella?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/marbella" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/marbella?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/marbella" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/marbella?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/marbella?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/marbella?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/marbella?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/marbella" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/marbella?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/marbella" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/marbella?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/marbella?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/marbella?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/marbella?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/marbella" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/fuengirola</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/fuengirola" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/fuengirola?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/fuengirola?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/fuengirola?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/fuengirola?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/fuengirola" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/fuengirola?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/fuengirola" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/fuengirola?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/fuengirola?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/fuengirola?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/fuengirola?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/fuengirola" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/fuengirola?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/fuengirola" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/fuengirola?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/fuengirola?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/fuengirola?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/fuengirola?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/fuengirola" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/fuengirola?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/fuengirola" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/fuengirola?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/fuengirola?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/fuengirola?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/fuengirola?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/fuengirola" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/fuengirola?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/fuengirola" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/fuengirola?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/fuengirola?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/fuengirola?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/fuengirola?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/fuengirola" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/benalmadena</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/benalmadena" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/benalmadena?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/benalmadena?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/benalmadena?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/benalmadena?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/benalmadena" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/benalmadena?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/benalmadena" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/benalmadena?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/benalmadena?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/benalmadena?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/benalmadena?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/benalmadena" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/benalmadena?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/benalmadena" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/benalmadena?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/benalmadena?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/benalmadena?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/benalmadena?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/benalmadena" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/benalmadena?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/benalmadena" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/benalmadena?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/benalmadena?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/benalmadena?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/benalmadena?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/benalmadena" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/benalmadena?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/benalmadena" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/benalmadena?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/benalmadena?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/benalmadena?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/benalmadena?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/benalmadena" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/mijas</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/mijas" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/mijas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/mijas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/mijas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/mijas?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/mijas" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/mijas?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/mijas" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/mijas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/mijas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/mijas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/mijas?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/mijas" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/mijas?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/mijas" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/mijas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/mijas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/mijas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/mijas?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/mijas" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/mijas?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/mijas" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/mijas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/mijas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/mijas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/mijas?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/mijas" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/mijas?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/mijas" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/mijas?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/mijas?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/mijas?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/mijas?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/mijas" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/torremolinos</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/torremolinos" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/torremolinos?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/torremolinos?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/torremolinos?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/torremolinos?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/torremolinos" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/torremolinos?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/torremolinos" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/torremolinos?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/torremolinos?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/torremolinos?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/torremolinos?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/torremolinos" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/torremolinos?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/torremolinos" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/torremolinos?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/torremolinos?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/torremolinos?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/torremolinos?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/torremolinos" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/torremolinos?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/torremolinos" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/torremolinos?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/torremolinos?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/torremolinos?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/torremolinos?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/torremolinos" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/torremolinos?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/torremolinos" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/torremolinos?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/torremolinos?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/torremolinos?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/torremolinos?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/torremolinos" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/estepona</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/estepona" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/estepona?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/estepona?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/estepona?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/estepona?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/estepona" />
   </url>
   <url>
     <loc>https://mmproperty.io/areas/estepona?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/estepona" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/estepona?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/estepona?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/estepona?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/estepona?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/estepona" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/estepona?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/estepona" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/estepona?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/estepona?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/estepona?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/estepona?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/estepona" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/estepona?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/estepona" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/estepona?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/estepona?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/estepona?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/estepona?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/estepona" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/areas/estepona?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/areas/estepona" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/areas/estepona?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/areas/estepona?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/areas/estepona?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/areas/estepona?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/areas/estepona" />
   </url>
   <url>
     <loc>https://mmproperty.io/sell</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/sell" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/sell?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/sell?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/sell?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/sell?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/sell" />
   </url>
   <url>
     <loc>https://mmproperty.io/sell?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/sell" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/sell?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/sell?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/sell?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/sell?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/sell" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/sell?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/sell" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/sell?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/sell?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/sell?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/sell?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/sell" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/sell?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/sell" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/sell?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/sell?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/sell?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/sell?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/sell" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/sell?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/sell" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/sell?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/sell?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/sell?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/sell?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/sell" />
   </url>
   <url>
     <loc>https://mmproperty.io/contact</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/contact" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/contact?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/contact?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/contact?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/contact?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/contact" />
   </url>
   <url>
     <loc>https://mmproperty.io/contact?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/contact" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/contact?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/contact?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/contact?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/contact?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/contact" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/contact?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/contact" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/contact?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/contact?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/contact?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/contact?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/contact" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/contact?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/contact" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/contact?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/contact?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/contact?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/contact?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/contact" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/contact?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/contact" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/contact?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/contact?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/contact?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/contact?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/contact" />
   </url>
   <url>
     <loc>https://mmproperty.io/faq</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/faq" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/faq?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/faq?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/faq?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/faq?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/faq" />
   </url>
   <url>
     <loc>https://mmproperty.io/faq?lang=es</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/faq" />
     <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/faq?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/faq?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/faq?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/faq?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/faq" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/faq?lang=nl</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/faq" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/faq?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/faq?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/faq?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/faq?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/faq" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/faq?lang=sv</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/faq" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/faq?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/faq?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/faq?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/faq?lang=de" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/faq" />
+  </url>
+  <url>
+    <loc>https://mmproperty.io/faq?lang=de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mmproperty.io/faq" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://mmproperty.io/faq?lang=es" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://mmproperty.io/faq?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://mmproperty.io/faq?lang=sv" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://mmproperty.io/faq?lang=de" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mmproperty.io/faq" />
   </url>
 </urlset>

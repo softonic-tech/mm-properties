@@ -10,10 +10,10 @@ import { es } from "@/content/es";
 import { nl } from "@/content/nl";
 import { sv } from "@/content/sv";
 import { de } from "@/content/de";
-import { LOCALES, isLocale, localeName, type Locale } from "@/lib/locales";
+import { LOCALES, isLocale, localeLabel, localeName, type Locale } from "@/lib/locales";
 
 export type { Locale };
-export { LOCALES, isLocale, localeName };
+export { LOCALES, isLocale, localeLabel, localeName };
 
 const dictionaries: Record<Locale, SiteContent> = {
   en: en as unknown as SiteContent,
@@ -35,7 +35,7 @@ function localeFromUrl(): Locale | null {
 }
 
 function storedLocale(): Locale {
-  return localeFromUrl() ?? (isLocale(localStorage.getItem("mm-locale")) ? localStorage.getItem("mm-locale") as Locale : "en");
+  return localeFromUrl() ?? "en";
 }
 
 export function writeLocaleUrl(next: Locale) {

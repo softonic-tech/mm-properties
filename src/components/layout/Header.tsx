@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { FusedCtaButton } from "@/components/ui/FusedCtaButton";
-import { LOCALES, localeName, useContent, useLocale } from "@/content/language";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { useContent } from "@/content/language";
 import { usePathname } from "@/lib/router";
 
 export function Header({ solid = false }: { solid?: boolean }) {
   const content = useContent();
-  const { locale, setLocale } = useLocale();
   const path = usePathname();
   const { brand, nav } = content;
   const [open, setOpen] = useState(false);
@@ -60,22 +60,7 @@ export function Header({ solid = false }: { solid?: boolean }) {
         </nav>
 
         <div className="col-start-3 flex items-center gap-2 sm:gap-3">
-          <div className="flex max-w-[14rem] flex-wrap items-center justify-end rounded-full border border-white/25 bg-white/10 p-0.5 text-[10px] tracking-[0.12em] text-white/80 backdrop-blur-md sm:max-w-none sm:text-[11px]">
-            {LOCALES.map((code) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => setLocale(code)}
-                className={`rounded-full px-1.5 py-1 uppercase sm:px-2.5 ${
-                  locale === code ? "bg-white/25 text-white" : "text-white/75"
-                }`}
-                aria-pressed={locale === code}
-                aria-label={localeName(code)}
-              >
-                {code}
-              </button>
-            ))}
-          </div>
+          <LanguageSwitcher />
           <FusedCtaButton
             href={brand.phoneHref}
             label={brand.phone}
@@ -124,24 +109,6 @@ export function Header({ solid = false }: { solid?: boolean }) {
                 {item.label}
               </a>
             ))}
-            <div className="flex flex-wrap gap-1 px-2 pt-2">
-              {LOCALES.map((code) => (
-                <button
-                  key={code}
-                  type="button"
-                  onClick={() => {
-                    setLocale(code);
-                    setOpen(false);
-                  }}
-                  className={`rounded-full px-3 py-1.5 text-[12px] tracking-[0.08em] ${
-                    locale === code ? "bg-white/20 text-white" : "text-white/75 hover:bg-white/10"
-                  }`}
-                  aria-pressed={locale === code}
-                >
-                  {localeName(code)}
-                </button>
-              ))}
-            </div>
             <div className="flex justify-center pt-1">
               <FusedCtaButton href={brand.phoneHref} label={brand.phone} />
             </div>

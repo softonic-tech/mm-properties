@@ -15,9 +15,7 @@ function visitorId() {
 
 function localeNow() {
   const lang = new URLSearchParams(window.location.search).get("lang");
-  if (isLocale(lang)) return lang;
-  const stored = localStorage.getItem("mm-locale");
-  return isLocale(stored) ? stored : "en";
+  return isLocale(lang) ? lang : "en";
 }
 
 function campaignNow() {

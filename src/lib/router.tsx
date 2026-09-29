@@ -20,8 +20,7 @@ function isInternalLink(anchor: HTMLAnchorElement, href: string) {
 /** Keep the chosen language on in-site links. */
 function destination(url: URL) {
   const fromQuery = new URLSearchParams(window.location.search).get("lang");
-  const stored = localStorage.getItem("mm-locale");
-  const lang = isLocale(fromQuery) ? fromQuery : isLocale(stored) ? stored : "en";
+  const lang = isLocale(fromQuery) ? fromQuery : "en";
   if (lang === "en") url.searchParams.delete("lang");
   else url.searchParams.set("lang", lang);
   return `${url.pathname}${url.search}${url.hash}`;

@@ -16,6 +16,7 @@ export const content = {
     { label: "Homes", href: "/homes" },
     { label: "Areas", href: "/areas" },
     { label: "How we work", href: "/sell" },
+    { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
   ],
 
@@ -27,9 +28,9 @@ export const content = {
     ctaHref: "https://www.mmproperty.es/en",
     scrollLabel: "SCROLL TO EXPLORE",
     stats: [
-      { value: "20+", label: "Years on the coast" },
-      { value: "Sale & rent", label: "New build and resale" },
-      { value: "Benalmádena", label: "Office on the coast" },
+      { value: "29+", label: "Years on the coast", href: "/about" },
+      { value: "Buy · Sell · Rent", label: "Contact the office", href: "/contact" },
+      { value: "Benalmádena", label: "Office on the coast", href: "" },
     ],
   },
 
@@ -70,7 +71,7 @@ export const content = {
         { text: "Benalmádena and Mijas.", tone: "strong" },
       ],
     ],
-    body: "A Costa del Sol agency with more than 15 years in the sale of every kind of home. The search, the advice and the purchase are handled together, whether you are moving here or buying to invest.",
+    body: "A Costa del Sol agency with more than 29 years in the sale of every kind of home. The search, the advice and the purchase are handled together, whether you are moving here or buying to invest.",
     cta: "How we work",
     ctaHref: "/sell",
     images: [
@@ -186,7 +187,7 @@ export const content = {
         "Prices are taken from the live portfolio and can change. Confirm the current listing on mmproperty.es.",
     },
     floaters: [
-      { label: "YEARS", value: "15+", position: "left-top" },
+      { label: "YEARS", value: "29+", position: "left-top" },
       { label: "OFFICE", value: "Benalmádena", position: "right-top" },
       { label: "NEW", value: "Build", position: "left-bottom" },
       { label: "RESALE", value: "Homes", position: "right-bottom" },
@@ -413,14 +414,18 @@ export const content = {
       message: "Hello, I would like to know more about a property with M&M Property.",
     },
     socials: [
+      { label: "WhatsApp", handle: "+34 653 223 015", href: "https://wa.me/34653223015" },
       { label: "Instagram", handle: "@mmpropertyrealestate", href: "https://www.instagram.com/mmpropertyrealestate/" },
       { label: "Facebook", handle: "M&M Property", href: "https://www.facebook.com/share/19nwa7Rp6i/?mibextid=wwXIfr" },
+      { label: "TikTok", handle: "@mmproperty.io", href: "https://www.tiktok.com/@mmproperty.io" },
+      { label: "LinkedIn", handle: "M&M Property", href: "https://www.linkedin.com/in/mm-property-7b792843b/" },
     ],
     chips: ["Purchase & sale", "Costa del Sol"],
     footerNav: [
       { label: "Homes", href: "/homes" },
       { label: "Areas", href: "/areas" },
       { label: "How we work", href: "/sell" },
+      { label: "About", href: "/about" },
       { label: "FAQ", href: "/faq" },
       { label: "Contact", href: "/contact" },
     ],
@@ -546,6 +551,30 @@ export const content = {
       seoTitle: "Questions about buying or selling | M&M Property",
       seoDescription:
         "What M&M Property handles, where the office is, and which Costa del Sol towns the agency covers.",
+    },
+    about: {
+      eyebrow: "COMPANY",
+      title: "A Costa del Sol agency.",
+      seoTitle: "About M&M Property | Costa del Sol agency",
+      seoDescription:
+        "M&M Property is a Costa del Sol agency with more than 29 years selling homes of every kind, from the search through to the deed before a notary.",
+      image: "/section2.png",
+      imageAlt: "Evening terrace overlooking the Costa del Sol",
+      paragraphs: [
+        "M&M Property is a real estate agency specialising in the Costa del Sol, with more than 29 years of experience selling homes of every kind. The service runs from finding the right home for each client, through the advice, to closing the purchase by signing the deed before a notary.",
+        "The office offers apartments, houses, luxury villas, townhouses and semi-detached homes, both resale and a wide range of new builds.",
+        "Whether you want a home to live in, or a property to invest in on the Costa del Sol, the office will look for the right one. The portfolio includes luxury villas for sale in Marbella, apartments in Benalmádena, new developments in Fuengirola, homes in Mijas Costa, and other properties in Torremolinos and Estepona.",
+        "If you own a home and want a trusted agency to sell it, the office advises on the market price and every step of the sale, then takes the photos and video used to advertise the property.",
+      ],
+      close: "Do not hesitate to get in touch. The team will be glad to meet you.",
+      phones: [
+        { label: "+34 653 223 015", href: "tel:+34653223015" },
+        { label: "+34 951 542 193", href: "tel:+34951542193" },
+        { label: "+34 648 766 318", href: "tel:+34648766318" },
+      ],
+      email: "info@mmproperty.es",
+      address: ["Avd. de Tívoli", "Centro comercial Las Ventas, Local 48A", "29630 Benalmádena"],
+      contactLabel: "The office",
     },
     notFound: {
       title: "This page is not on the site.",

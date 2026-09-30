@@ -13,6 +13,7 @@ export const de: SiteContent = {
     { label: "Wohnungen", href: "/homes" },
     { label: "Gebiete", href: "/areas" },
     { label: "So arbeiten wir", href: "/sell" },
+    { label: "Über uns", href: "/about" },
     { label: "Kontakt", href: "/contact" },
   ],
   hero: {
@@ -24,9 +25,9 @@ export const de: SiteContent = {
     ctaHref: "https://www.mmproperty.es/en",
     scrollLabel: "SCROLLEN ZUM ENTDECKEN",
     stats: [
-      { value: "20+", label: "Jahre an der Küste" },
-      { value: "Kauf & Miete", label: "Neubau und Bestand" },
-      { value: "Benalmádena", label: "Büro an der Küste" },
+      { value: "29+", label: "Jahre an der Küste", href: "/about" },
+      { value: "Kaufen · Verkaufen · Mieten", label: "Büro kontaktieren", href: "/contact" },
+      { value: "Benalmádena", label: "Büro an der Küste", href: "" },
     ],
   },
   media: {
@@ -55,7 +56,7 @@ export const de: SiteContent = {
       [{ text: "in Marbella, Fuengirola,", tone: "muted" }],
       [{ text: "Benalmádena und Mijas.", tone: "strong" }],
     ],
-    body: "Ein Maklerbüro an der Costa del Sol mit mehr als 15 Jahren Erfahrung im Verkauf jeder Art von Immobilie. Suche, Beratung und Kauf laufen zusammen, ob Sie hierherziehen oder investieren.",
+    body: "Ein Maklerbüro an der Costa del Sol mit mehr als 29 Jahren Erfahrung im Verkauf jeder Art von Immobilie. Suche, Beratung und Kauf laufen zusammen, ob Sie hierherziehen oder investieren.",
     cta: "So arbeiten wir",
     ctaHref: "/sell",
     images: [
@@ -167,7 +168,7 @@ export const de: SiteContent = {
         "Preise stammen aus dem aktuellen Angebot und können sich ändern. Bestätigen Sie die aktuelle Anzeige auf mmproperty.es.",
     },
     floaters: [
-      { label: "JAHRE", value: "20+", position: "left-top" },
+      { label: "JAHRE", value: "29+", position: "left-top" },
       { label: "BÜRO", value: "Benalmádena", position: "right-top" },
       { label: "NEU", value: "Bau", position: "left-bottom" },
       { label: "BESTAND", value: "Angebot", position: "right-bottom" },
@@ -386,14 +387,18 @@ export const de: SiteContent = {
       message: "Hallo, ich möchte mehr über eine Immobilie von M&M Property erfahren.",
     },
     socials: [
+      { label: "WhatsApp", handle: "+34 653 223 015", href: "https://wa.me/34653223015" },
       { label: "Instagram", handle: "@mmpropertyrealestate", href: "https://www.instagram.com/mmpropertyrealestate/" },
       { label: "Facebook", handle: "M&M Property", href: "https://www.facebook.com/share/19nwa7Rp6i/?mibextid=wwXIfr" },
+      { label: "TikTok", handle: "@mmproperty.io", href: "https://www.tiktok.com/@mmproperty.io" },
+      { label: "LinkedIn", handle: "M&M Property", href: "https://www.linkedin.com/in/mm-property-7b792843b/" },
     ],
     chips: ["Kauf & Verkauf", "Costa del Sol"],
     footerNav: [
       { label: "Wohnungen", href: "/homes" },
       { label: "Gebiete", href: "/areas" },
       { label: "So arbeiten wir", href: "/sell" },
+      { label: "Über uns", href: "/about" },
       { label: "FAQ", href: "/faq" },
       { label: "Kontakt", href: "/contact" },
     ],
@@ -519,6 +524,30 @@ export const de: SiteContent = {
       seoTitle: "Fragen zu Kauf oder Verkauf | M&M Property",
       seoDescription:
         "Was M&M Property macht, wo das Büro ist, und welche Orte an der Costa del Sol das Büro abdeckt.",
+    },
+    about: {
+      eyebrow: "UNTERNEHMEN",
+      title: "Ein Maklerbüro an der Costa del Sol.",
+      seoTitle: "Über M&M Property | Costa del Sol",
+      seoDescription:
+        "M&M Property ist ein Maklerbüro an der Costa del Sol mit mehr als 29 Jahren Erfahrung im Verkauf jeder Art von Immobilie, von der Suche bis zur notariellen Urkunde.",
+      image: "/section2.png",
+      imageAlt: "Terrasse am Abend mit Blick auf die Costa del Sol",
+      paragraphs: [
+        "M&M Property ist ein auf die Costa del Sol spezialisiertes Immobilienbüro mit mehr als 29 Jahren Erfahrung im Verkauf von Immobilien jeder Art. Der Service reicht von der Suche nach dem richtigen Zuhause für jeden Kunden über die Beratung bis zum Abschluss des Kaufs mit Unterzeichnung der Urkunde vor dem Notar.",
+        "Das Büro bietet Apartments, Häuser, Luxusvillen, Reihenhäuser und Doppelhaushälften, sowohl Bestandsimmobilien als auch ein breites Angebot an Neubauten.",
+        "Ob Sie eine Immobilie zum Wohnen oder zur Investition an der Costa del Sol suchen: Das Büro findet die passende. Das Portfolio umfasst Luxusvillen zum Verkauf in Marbella, Apartments in Benalmádena, Neubauvorhaben in Fuengirola, Immobilien in Mijas Costa sowie weitere Objekte in Torremolinos und Estepona.",
+        "Wenn Sie Eigentümer sind und den Verkauf Ihrer Immobilie einem vertrauenswürdigen Büro anvertrauen möchten, beraten wir Sie zum Marktpreis und zu allen Schritten des Verkaufs und erstellen die Fotos und Videos, mit denen die Immobilie beworben wird.",
+      ],
+      close: "Zögern Sie nicht und nehmen Sie Kontakt mit uns auf. Wir freuen uns, Sie kennenzulernen.",
+      phones: [
+        { label: "+34 653 223 015", href: "tel:+34653223015" },
+        { label: "+34 951 542 193", href: "tel:+34951542193" },
+        { label: "+34 648 766 318", href: "tel:+34648766318" },
+      ],
+      email: "info@mmproperty.es",
+      address: ["Avd. de Tívoli", "Centro comercial Las Ventas, Local 48A", "29630 Benalmádena"],
+      contactLabel: "Das Büro",
     },
     notFound: {
       title: "Diese Seite gibt es auf der Website nicht.",

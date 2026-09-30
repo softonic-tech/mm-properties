@@ -6,7 +6,7 @@ export function normalizePath(pathname: string) {
 }
 
 export type PageMatch =
-  | { id: "home" | "homes" | "areas" | "sell" | "contact" | "faq"; path: string }
+  | { id: "home" | "homes" | "areas" | "sell" | "contact" | "faq" | "about"; path: string }
   | { id: "area"; path: string; slug: string }
   | { id: "notFound"; path: string };
 
@@ -18,6 +18,7 @@ export function matchPage(pathname: string, content: SiteContent): PageMatch {
   if (path === "/sell") return { id: "sell", path };
   if (path === "/contact") return { id: "contact", path };
   if (path === "/faq") return { id: "faq", path };
+  if (path === "/about") return { id: "about", path };
   const area = /^\/areas\/([a-z0-9-]+)$/.exec(path);
   if (area && content.pages.areas.towns.some((town) => town.slug === area[1])) {
     return { id: "area", path, slug: area[1] };
@@ -48,6 +49,9 @@ export function pageSeo(match: PageMatch, content: SiteContent, fallback: { titl
   }
   if (match.id === "faq") {
     return { title: content.pages.faq.seoTitle, description: content.pages.faq.seoDescription };
+  }
+  if (match.id === "about") {
+    return { title: content.pages.about.seoTitle, description: content.pages.about.seoDescription };
   }
   return { title: content.pages.notFound.title, description: content.pages.notFound.description };
 }

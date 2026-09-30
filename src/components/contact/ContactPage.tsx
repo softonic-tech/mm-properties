@@ -1,13 +1,13 @@
 import { InquiryForm } from "@/components/contact/InquiryForm";
 import { Header } from "@/components/layout/Header";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SocialMark } from "@/components/layout/SocialMarks";
 import { Image } from "@/components/ui/Image";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { useContent } from "@/content/language";
 
 export function ContactPage() {
   const { brand, contact, offer, pages } = useContent();
-  const whatsapp = `https://wa.me/${contact.whatsapp.phone}?text=${encodeURIComponent(contact.whatsapp.message)}`;
 
   return (
     <div className="min-h-svh bg-background">
@@ -51,13 +51,17 @@ export function ContactPage() {
                   </span>
                 ))}
               </address>
-              <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-white">
-                <a href={whatsapp} target="_blank" rel="noreferrer" className="hover:text-white/70">
-                  {contact.whatsapp.label}
-                </a>
+              <div className="mt-8 flex flex-nowrap items-center gap-2.5 overflow-x-auto pb-1">
                 {contact.socials.map((social) => (
-                  <a key={social.label} href={social.href} target="_blank" rel="noreferrer" className="hover:text-white/70">
-                    {social.label}
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={social.label}
+                    className="social-float-item inline-flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-[0_10px_28px_rgba(0,0,0,0.35)] transition-transform hover:scale-110"
+                  >
+                    <SocialMark label={social.label} className="size-full" />
                   </a>
                 ))}
               </div>

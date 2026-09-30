@@ -1,10 +1,9 @@
-import { FacebookMark, InstagramMark } from "@/components/layout/SocialMarks";
+import { SocialMark } from "@/components/layout/SocialMarks";
 import { useContent } from "@/content/language";
 
 export function SiteFooter() {
   const content = useContent();
   const { footerNav, footerNote, photoCredit, socials } = content.contact;
-  const networks = socials.filter((item) => item.label === "Instagram" || item.label === "Facebook");
 
   return (
     <footer className="border-t border-white/10 bg-background">
@@ -14,22 +13,18 @@ export function SiteFooter() {
             <img src="/mm-property-logo.png?v=3" alt={content.brand.name} className="h-16 w-auto md:h-20" />
           </a>
 
-          <div className="flex flex-wrap items-center gap-3">
-            {networks.map((item) => (
+          <div className="flex flex-nowrap items-center gap-2.5 overflow-x-auto pb-1 md:gap-3 md:overflow-visible md:pb-0">
+            {socials.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
                 aria-label={item.label}
-                className="inline-flex items-center gap-3 rounded-full border border-white/12 bg-white/[0.04] py-1.5 pr-5 pl-1.5 text-white transition-transform hover:scale-[1.03]"
+                title={item.label}
+                className="social-float-item inline-flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-white/[0.03] shadow-[0_10px_28px_rgba(0,0,0,0.28)] transition-transform duration-200 hover:scale-110 md:size-14"
               >
-                {item.label === "Instagram" ? (
-                  <InstagramMark className="size-14" />
-                ) : (
-                  <FacebookMark className="size-14" />
-                )}
-                <span className="text-[15px] font-medium tracking-wide">{item.label}</span>
+                <SocialMark label={item.label} className="size-full" />
               </a>
             ))}
           </div>

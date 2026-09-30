@@ -119,11 +119,7 @@ export function Seo() {
         "Torremolinos",
         "Estepona",
       ],
-      sameAs: [
-        contact.socials[0].href,
-        contact.socials[1].href,
-        "https://www.mmproperty.es/en",
-      ],
+      sameAs: [...contact.socials.map((social) => social.href), "https://www.mmproperty.es/en"],
       priceRange: "€€€",
     });
   }, [brand.name, contact.email, contact.socials, content.pages.homeLabel, copy.description, copy.title, faq.items, locale, match.id, match.path, url]);

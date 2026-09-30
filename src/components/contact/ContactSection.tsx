@@ -1,5 +1,5 @@
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { FacebookMark, InstagramMark } from "@/components/layout/SocialMarks";
+import { SocialMark } from "@/components/layout/SocialMarks";
 import { FusedCtaButton } from "@/components/ui/FusedCtaButton";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
@@ -80,21 +80,18 @@ export function ContactSection() {
                 ))}
               </div>
 
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+              <div className="mt-8 flex flex-nowrap items-center gap-2.5 overflow-x-auto pb-1">
                 {socials.map((s) => (
                   <a
                     key={s.label}
                     href={s.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-3 text-sm text-foreground"
+                    aria-label={s.label}
+                    title={`${s.label} · ${s.handle}`}
+                    className="social-float-item inline-flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-[0_10px_28px_rgba(0,0,0,0.28)] transition-transform duration-200 hover:scale-110"
                   >
-                    {s.label === "Instagram" ? (
-                      <InstagramMark className="size-12" />
-                    ) : s.label === "Facebook" ? (
-                      <FacebookMark className="size-12" />
-                    ) : null}
-                    <span className="tracking-wide">{s.handle}</span>
+                    <SocialMark label={s.label} className="size-full" />
                   </a>
                 ))}
               </div>

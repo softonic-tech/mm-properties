@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AboutPage } from "@/components/about/AboutPage";
 import { AreaPage, AreasPage } from "@/components/catalog/AreasPage";
 import { HomesPage } from "@/components/catalog/HomesPage";
 import { ContactPage } from "@/components/contact/ContactPage";
@@ -89,6 +90,8 @@ export function InnerPages({ match }: { match: Exclude<PageMatch, { id: "home" }
       </Frame>
     );
   }
+
+  if (match.id === "about") return <AboutPage />;
 
   if (match.id === "contact") return <ContactPage />;
 

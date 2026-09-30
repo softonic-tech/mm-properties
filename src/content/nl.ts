@@ -13,6 +13,7 @@ export const nl: SiteContent = {
     { label: "Woningen", href: "/homes" },
     { label: "Gebieden", href: "/areas" },
     { label: "Hoe we werken", href: "/sell" },
+    { label: "Over ons", href: "/about" },
     { label: "Contact", href: "/contact" },
   ],
   hero: {
@@ -24,9 +25,9 @@ export const nl: SiteContent = {
     ctaHref: "https://www.mmproperty.es/en",
     scrollLabel: "SCROLL OM TE VERKENNEN",
     stats: [
-      { value: "20+", label: "Jaar aan de kust" },
-      { value: "Koop & huur", label: "Nieuwbouw en bestaande bouw" },
-      { value: "Benalmádena", label: "Kantoor aan de kust" },
+      { value: "29+", label: "Jaar aan de kust", href: "/about" },
+      { value: "Kopen · Verkopen · Huren", label: "Neem contact op", href: "/contact" },
+      { value: "Benalmádena", label: "Kantoor aan de kust", href: "" },
     ],
   },
   media: {
@@ -55,7 +56,7 @@ export const nl: SiteContent = {
       [{ text: "in Marbella, Fuengirola,", tone: "muted" }],
       [{ text: "Benalmádena en Mijas.", tone: "strong" }],
     ],
-    body: "Een makelaarskantoor aan de Costa del Sol met meer dan 15 jaar ervaring in de verkoop van elk type woning. Zoektocht, advies en aankoop gebeuren samen, of u nu hier komt wonen of investeert.",
+    body: "Een makelaarskantoor aan de Costa del Sol met meer dan 29 jaar ervaring in de verkoop van elk type woning. Zoektocht, advies en aankoop gebeuren samen, of u nu hier komt wonen of investeert.",
     cta: "Hoe we werken",
     ctaHref: "/sell",
     images: [
@@ -167,7 +168,7 @@ export const nl: SiteContent = {
         "Prijzen komen uit het actuele aanbod en kunnen wijzigen. Bevestig de huidige advertentie op mmproperty.es.",
     },
     floaters: [
-      { label: "JAAR", value: "20+", position: "left-top" },
+      { label: "JAAR", value: "29+", position: "left-top" },
       { label: "KANTOOR", value: "Benalmádena", position: "right-top" },
       { label: "NIEUW", value: "Bouw", position: "left-bottom" },
       { label: "BESTAAND", value: "Aanbod", position: "right-bottom" },
@@ -386,14 +387,18 @@ export const nl: SiteContent = {
       message: "Hallo, ik wil meer weten over een woning van M&M Property.",
     },
     socials: [
+      { label: "WhatsApp", handle: "+34 653 223 015", href: "https://wa.me/34653223015" },
       { label: "Instagram", handle: "@mmpropertyrealestate", href: "https://www.instagram.com/mmpropertyrealestate/" },
       { label: "Facebook", handle: "M&M Property", href: "https://www.facebook.com/share/19nwa7Rp6i/?mibextid=wwXIfr" },
+      { label: "TikTok", handle: "@mmproperty.io", href: "https://www.tiktok.com/@mmproperty.io" },
+      { label: "LinkedIn", handle: "M&M Property", href: "https://www.linkedin.com/in/mm-property-7b792843b/" },
     ],
     chips: ["Koop & verkoop", "Costa del Sol"],
     footerNav: [
       { label: "Woningen", href: "/homes" },
       { label: "Gebieden", href: "/areas" },
       { label: "Hoe we werken", href: "/sell" },
+      { label: "Over ons", href: "/about" },
       { label: "FAQ", href: "/faq" },
       { label: "Contact", href: "/contact" },
     ],
@@ -519,6 +524,30 @@ export const nl: SiteContent = {
       seoTitle: "Vragen over kopen of verkopen | M&M Property",
       seoDescription:
         "Wat M&M Property doet, waar het kantoor is, en welke plaatsen aan de Costa del Sol het kantoor dekt.",
+    },
+    about: {
+      eyebrow: "BEDRIJF",
+      title: "Een makelaarskantoor aan de Costa del Sol.",
+      seoTitle: "Over M&M Property | Costa del Sol",
+      seoDescription:
+        "M&M Property is een makelaarskantoor aan de Costa del Sol met meer dan 29 jaar ervaring in de verkoop van elk type woning, van zoektocht tot notariële akte.",
+      image: "/section2.png",
+      imageAlt: "Terras in de avond met uitzicht op de Costa del Sol",
+      paragraphs: [
+        "M&M Property is een makelaarskantoor gespecialiseerd in de Costa del Sol, met meer dan 29 jaar ervaring in de verkoop van woningen van elk type. De dienst loopt van het vinden van de juiste woning voor elke cliënt, via het advies, tot de afronding van de aankoop met ondertekening van de akte bij de notaris.",
+        "Het kantoor biedt appartementen, huizen, luxe villa’s, rijwoningen en twee-onder-een-kapwoningen, zowel bestaande bouw als een breed aanbod nieuwbouw.",
+        "Of u nu een woning zoekt om in te wonen of om in te investeren aan de Costa del Sol, het kantoor zoekt de juiste. Het aanbod omvat luxe villa’s te koop in Marbella, appartementen in Benalmádena, nieuwbouwprojecten in Fuengirola, woningen in Mijas Costa en andere objecten in Torremolinos en Estepona.",
+        "Bent u eigenaar en wilt u uw woning via een betrouwbaar kantoor verkopen, dan adviseren wij over de marktprijs en alle stappen van de verkoop, en maken we de foto’s en video’s waarmee de woning wordt geadverteerd.",
+      ],
+      close: "Aarzel niet en neem contact met ons op. We ontmoeten u graag.",
+      phones: [
+        { label: "+34 653 223 015", href: "tel:+34653223015" },
+        { label: "+34 951 542 193", href: "tel:+34951542193" },
+        { label: "+34 648 766 318", href: "tel:+34648766318" },
+      ],
+      email: "info@mmproperty.es",
+      address: ["Avd. de Tívoli", "Centro comercial Las Ventas, Local 48A", "29630 Benalmádena"],
+      contactLabel: "Het kantoor",
     },
     notFound: {
       title: "Deze pagina staat niet op de site.",

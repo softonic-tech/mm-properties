@@ -13,6 +13,7 @@ export const sv: SiteContent = {
     { label: "Bostäder", href: "/homes" },
     { label: "Områden", href: "/areas" },
     { label: "Så arbetar vi", href: "/sell" },
+    { label: "Om oss", href: "/about" },
     { label: "Kontakt", href: "/contact" },
   ],
   hero: {
@@ -24,9 +25,9 @@ export const sv: SiteContent = {
     ctaHref: "https://www.mmproperty.es/en",
     scrollLabel: "SCROLLA FÖR ATT SE",
     stats: [
-      { value: "20+", label: "År vid kusten" },
-      { value: "Köp & hyra", label: "Nyproduktion och begagnat" },
-      { value: "Benalmádena", label: "Kontor vid kusten" },
+      { value: "29+", label: "År vid kusten", href: "/about" },
+      { value: "Köpa · Sälja · Hyra", label: "Kontakta kontoret", href: "/contact" },
+      { value: "Benalmádena", label: "Kontor vid kusten", href: "" },
     ],
   },
   media: {
@@ -55,7 +56,7 @@ export const sv: SiteContent = {
       [{ text: "i Marbella, Fuengirola,", tone: "muted" }],
       [{ text: "Benalmádena och Mijas.", tone: "strong" }],
     ],
-    body: "En mäklarbyrå på Costa del Sol med mer än 15 års erfarenhet av att sälja alla typer av bostäder. Sök, rådgivning och köp sköts tillsammans, oavsett om ni flyttar hit eller investerar.",
+    body: "En mäklarbyrå på Costa del Sol med mer än 29 års erfarenhet av att sälja alla typer av bostäder. Sök, rådgivning och köp sköts tillsammans, oavsett om ni flyttar hit eller investerar.",
     cta: "Så arbetar vi",
     ctaHref: "/sell",
     images: [
@@ -167,7 +168,7 @@ export const sv: SiteContent = {
         "Priserna tas från det aktuella utbudet och kan ändras. Bekräfta den aktuella annonsen på mmproperty.es.",
     },
     floaters: [
-      { label: "ÅR", value: "20+", position: "left-top" },
+      { label: "ÅR", value: "29+", position: "left-top" },
       { label: "KONTOR", value: "Benalmádena", position: "right-top" },
       { label: "NY", value: "Produktion", position: "left-bottom" },
       { label: "BEGAGNAT", value: "Utbud", position: "right-bottom" },
@@ -386,14 +387,18 @@ export const sv: SiteContent = {
       message: "Hej, jag vill veta mer om en bostad hos M&M Property.",
     },
     socials: [
+      { label: "WhatsApp", handle: "+34 653 223 015", href: "https://wa.me/34653223015" },
       { label: "Instagram", handle: "@mmpropertyrealestate", href: "https://www.instagram.com/mmpropertyrealestate/" },
       { label: "Facebook", handle: "M&M Property", href: "https://www.facebook.com/share/19nwa7Rp6i/?mibextid=wwXIfr" },
+      { label: "TikTok", handle: "@mmproperty.io", href: "https://www.tiktok.com/@mmproperty.io" },
+      { label: "LinkedIn", handle: "M&M Property", href: "https://www.linkedin.com/in/mm-property-7b792843b/" },
     ],
     chips: ["Köp & försäljning", "Costa del Sol"],
     footerNav: [
       { label: "Bostäder", href: "/homes" },
       { label: "Områden", href: "/areas" },
       { label: "Så arbetar vi", href: "/sell" },
+      { label: "Om oss", href: "/about" },
       { label: "FAQ", href: "/faq" },
       { label: "Kontakt", href: "/contact" },
     ],
@@ -519,6 +524,30 @@ export const sv: SiteContent = {
       seoTitle: "Frågor om att köpa eller sälja | M&M Property",
       seoDescription:
         "Vad M&M Property gör, var kontoret ligger, och vilka orter på Costa del Sol byrån täcker.",
+    },
+    about: {
+      eyebrow: "FÖRETAG",
+      title: "En mäklarbyrå på Costa del Sol.",
+      seoTitle: "Om M&M Property | Costa del Sol",
+      seoDescription:
+        "M&M Property är en mäklarbyrå på Costa del Sol med mer än 29 års erfarenhet av att sälja alla typer av bostäder, från sökningen till undertecknandet hos notarien.",
+      image: "/section2.png",
+      imageAlt: "Terrass på kvällen med utsikt över Costa del Sol",
+      paragraphs: [
+        "M&M Property är en fastighetsmäklare specialiserad på Costa del Sol, med mer än 29 års erfarenhet av att sälja bostäder av alla slag. Tjänsten går från att hitta rätt hem för varje kund, via rådgivning, till avslut av köpet genom undertecknande av köpebrevet hos notarien.",
+        "Kontoret erbjuder lägenheter, hus, lyxvillor, radhus och parhus, både begagnat och ett brett utbud av nyproduktion.",
+        "Oavsett om ni söker en bostad att bo i eller att investera i på Costa del Sol hjälper kontoret er att hitta rätt. Utbudet omfattar lyxvillor till salu i Marbella, lägenheter i Benalmádena, nyproduktion i Fuengirola, bostäder i Mijas Costa och andra objekt i Torremolinos och Estepona.",
+        "Äger ni en bostad och vill anlita en pålitlig byrå för försäljningen ger vi råd om marknadspriset och alla steg i försäljningen, och tar fram foton och video som används för att annonsera bostaden.",
+      ],
+      close: "Tveka inte att kontakta oss. Vi ser fram emot att träffa er.",
+      phones: [
+        { label: "+34 653 223 015", href: "tel:+34653223015" },
+        { label: "+34 951 542 193", href: "tel:+34951542193" },
+        { label: "+34 648 766 318", href: "tel:+34648766318" },
+      ],
+      email: "info@mmproperty.es",
+      address: ["Avd. de Tívoli", "Centro comercial Las Ventas, Local 48A", "29630 Benalmádena"],
+      contactLabel: "Kontoret",
     },
     notFound: {
       title: "Den här sidan finns inte på sajten.",

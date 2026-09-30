@@ -10,7 +10,7 @@ import { ListingsSection } from "@/components/listings/ListingsSection";
 import { TestimonialsSection } from "@/components/testimonials/TestimonialsSection";
 import { FAQ } from "@/components/faq/FAQ";
 import { ContactSection } from "@/components/contact/ContactSection";
-import { WhatsAppButton } from "@/components/contact/WhatsAppButton";
+import { SocialFloat } from "@/components/contact/SocialFloat";
 import { OfferDialog } from "@/components/offer/OfferDialog";
 import { LanguageProvider, useContent } from "@/content/language";
 import { matchPage } from "@/lib/pages";
@@ -68,7 +68,7 @@ function Site() {
       ) : (
         <InnerPages match={match} />
       )}
-      <WhatsAppButton />
+      <SocialFloat />
     </>
   );
 }

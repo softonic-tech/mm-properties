@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { AboutPage } from "@/components/about/AboutPage";
 import { AreaPage, AreasPage } from "@/components/catalog/AreasPage";
 import { HomesPage } from "@/components/catalog/HomesPage";
+import { PropertyDetailPage } from "@/components/catalog/PropertyDetailPage";
 import { ContactPage } from "@/components/contact/ContactPage";
 import { FAQ } from "@/components/faq/FAQ";
 import { Header } from "@/components/layout/Header";
@@ -57,7 +58,9 @@ export function InnerPages({ match }: { match: Exclude<PageMatch, { id: "home" }
   const content = useContent();
   const { pages, process, brand } = content;
 
-  if (match.id === "homes") return <HomesPage />;
+  if (match.id === "homes") return <HomesPage page={match.page} />;
+
+  if (match.id === "property") return <PropertyDetailPage slug={match.slug} />;
 
   if (match.id === "areas") return <AreasPage />;
 
@@ -105,6 +108,29 @@ export function InnerPages({ match }: { match: Exclude<PageMatch, { id: "home" }
         <FAQ heading="h1" />
         <SiteFooter />
       </div>
+    );
+  }
+
+  if (match.id === "privacy" || match.id === "terms") {
+    const copy = match.id === "privacy" ? pages.privacy : pages.terms;
+    return (
+      <Frame eyebrow={copy.eyebrow} title={copy.title} description={copy.description}>
+        <p className="mt-4 text-[12px] tracking-wide text-foreground-subtle uppercase">{copy.updated}</p>
+        <div className="mt-10 max-w-3xl space-y-10">
+          {copy.sections.map((section) => (
+            <section key={section.title}>
+              <h2 className="font-serif text-2xl text-foreground">{section.title}</h2>
+              <div className="mt-4 space-y-3">
+                {section.paragraphs.map((paragraph) => (
+                  <p key={paragraph.slice(0, 48)} className="text-[15px] leading-[1.75] text-foreground-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </Frame>
     );
   }
 

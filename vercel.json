@@ -2,13 +2,17 @@
   "trailingSlash": false,
   "functions": {
     "api/*.ts": {
-      "maxDuration": 15,
+      "maxDuration": 30,
       "includeFiles": "data/**"
     }
   },
   "rewrites": [
     {
-      "source": "/((?!api/|sitemap\\.xml|sitemap\\.txt|robots\\.txt).*)",
+      "source": "/media/tiktok/:sig/:payload",
+      "destination": "/api/tiktok-media?sig=:sig&payload=:payload"
+    },
+    {
+      "source": "/((?!api/|media/|facebook-callback\\.html|instagram-callback\\.html|tiktok-callback\\.html|sitemap\\.xml|sitemap\\.txt|robots\\.txt).*)",
       "destination": "/index.html"
     }
   ]

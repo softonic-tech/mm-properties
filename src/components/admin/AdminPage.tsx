@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+﻿import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { localeName } from "@/lib/locales";
+import { AdminSocialPanel } from "./AdminSocialPanel";
 
 type Visit = {
   id: string;
@@ -35,7 +36,7 @@ type AdminData = {
   storage: "atlas" | "file" | "blob" | "temporary";
 };
 
-type Tab = "overview" | "traffic" | "subscribers" | "settings";
+type Tab = "overview" | "traffic" | "subscribers" | "social" | "settings";
 
 const PASSWORD_KEY = "mm-admin-password";
 
@@ -49,7 +50,7 @@ const storageNote: Record<AdminData["storage"], string> = {
 
 function formatWhen(value: string) {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "—";
+  if (Number.isNaN(date.getTime())) return "â€”";
   return new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(date);
 }
 
@@ -62,7 +63,7 @@ function dayKey(value: string) {
 }
 
 function countryName(code: string) {
-  if (!code) return "—";
+  if (!code) return "â€”";
   try {
     return new Intl.DisplayNames(["en"], { type: "region" }).of(code) ?? code;
   } catch {
@@ -166,6 +167,11 @@ export function AdminPage() {
   }, [password]);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("fb") || params.get("ig") || params.get("tt")) setTab("social");
+  }, []);
+
+  useEffect(() => {
     if (!data) return;
     setTracking(data.settings.tracking);
     setRetain(String(data.settings.retain));
@@ -197,7 +203,7 @@ export function AdminPage() {
       pages: tally(people.map(pageLabel)).slice(0, 6),
       locales: tally(arrivals.map((visit) => localeName(visit.locale))),
       devices: tally(arrivals.map((visit) => visit.device).filter(Boolean)),
-      countries: tally(arrivals.map((visit) => countryName(visit.country)).filter((name) => name !== "—")),
+      countries: tally(arrivals.map((visit) => countryName(visit.country)).filter((name) => name !== "â€”")),
     };
   }, [data]);
 
@@ -266,14 +272,16 @@ export function AdminPage() {
       <main className="min-h-svh bg-background px-5 py-10 text-foreground md:px-10">
         <div className="mx-auto max-w-sm">
           <a href="/" className="text-sm text-foreground-muted">
-            ← M&M Property
+            â† M&M Property
           </a>
           <h1 className="mt-6 font-serif text-4xl">Admin</h1>
           <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
             Traffic, subscribers, and the settings for this site.
           </p>
+          {notice ? <p className="mt-4 text-sm text-[#d7dee6]">{notice}</p> : null}
+          {error ? <p className="mt-4 text-sm text-foreground-muted">{error}</p> : null}
           {password ? (
-            <p className="mt-8 text-sm text-foreground-muted">Opening…</p>
+            <p className="mt-8 text-sm text-foreground-muted">Openingâ€¦</p>
           ) : (
             <form
               className="mt-8 flex flex-col gap-3"
@@ -309,7 +317,8 @@ export function AdminPage() {
   const tabs: { id: Tab; label: string }[] = [
     { id: "overview", label: "Overview" },
     { id: "traffic", label: "Traffic" },
-    { id: "subscribers", label: `Subscribers · ${data.leads.length}` },
+    { id: "subscribers", label: `Subscribers Â· ${data.leads.length}` },
+    { id: "social", label: "Social" },
     { id: "settings", label: "Settings" },
   ];
 
@@ -319,7 +328,7 @@ export function AdminPage() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <a href="/" className="text-sm text-foreground-muted">
-              ← M&M Property
+              â† M&M Property
             </a>
             <h1 className="mt-4 font-serif text-4xl">Admin</h1>
           </div>
@@ -494,7 +503,7 @@ export function AdminPage() {
                           ) : null}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-foreground-muted">
-                          {visit.device || "—"} · {visit.locale.toUpperCase()}
+                          {visit.device || "â€”"} Â· {visit.locale.toUpperCase()}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <button
@@ -563,7 +572,7 @@ export function AdminPage() {
                             {lead.phone}
                           </a>
                         ) : null}
-                        {lead.phone ? " · " : ""}
+                        {lead.phone ? " Â· " : ""}
                         <a href={`mailto:${lead.email}`} className="hover:text-white">
                           {lead.email}
                         </a>
@@ -571,8 +580,8 @@ export function AdminPage() {
                       {lead.note ? <span className="mt-1 block text-foreground-muted">{lead.note}</span> : null}
                       <span className="mt-1 block text-xs text-foreground-subtle">
                         {formatWhen(lead.joinedAt)}
-                        {lead.source ? ` · ${lead.source}` : ""}
-                        {lead.path ? ` · ${lead.path}` : ""}
+                        {lead.source ? ` Â· ${lead.source}` : ""}
+                        {lead.path ? ` Â· ${lead.path}` : ""}
                       </span>
                     </span>
                     <button
@@ -589,6 +598,18 @@ export function AdminPage() {
               </ul>
             )}
           </section>
+        ) : null}
+
+        {tab === "social" ? (
+          <AdminSocialPanel
+            password={password}
+            onAuthFail={() => {
+              sessionStorage.removeItem(PASSWORD_KEY);
+              setPassword("");
+              setData(null);
+              setError("That password is not correct.");
+            }}
+          />
         ) : null}
 
         {tab === "settings" ? (

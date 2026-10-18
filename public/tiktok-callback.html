@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connecting TikTok…</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #07080a;
+        color: #e8eef4;
+        font-family: system-ui, sans-serif;
+      }
+      main {
+        max-width: 28rem;
+        padding: 2rem;
+        text-align: center;
+      }
+      p {
+        line-height: 1.5;
+        color: #a8b3bf;
+      }
+      .err {
+        color: #f0b4b4;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Connecting TikTok</h1>
+      <p id="status">Saving your TikTok token… If ngrok showed a warning, click Visit Site first.</p>
+    </main>
+    <script>
+      (async () => {
+        const status = document.getElementById("status");
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get("error_description") || params.get("error");
+        if (error) {
+          status.className = "err";
+          status.textContent = error;
+          setTimeout(() => {
+            window.location.href = "/admin?tt=error&msg=" + encodeURIComponent(error);
+          }, 1200);
+          return;
+        }
+
+        const code = params.get("code") || "";
+        const state = params.get("state") || "";
+        if (!code || !state) {
+          status.className = "err";
+          status.textContent = "Missing TikTok code. Start again from Admin → Social → Connect TikTok.";
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/tiktok-callback", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "ngrok-skip-browser-warning": "true",
+            },
+            body: JSON.stringify({ code, state }),
+          });
+          const payload = await response.json();
+          if (!response.ok || payload.ok === false) {
+            throw new Error(payload.error || "Could not finish TikTok login.");
+          }
+          status.textContent = "Connected. Opening Admin…";
+          const msg = encodeURIComponent(
+            payload.username ? "Connected @" + payload.username : "TikTok connected",
+          );
+          window.location.href = "/admin?tt=connected&msg=" + msg;
+        } catch (err) {
+          const message = err && err.message ? err.message : "TikTok connect failed";
+          status.className = "err";
+          status.textContent = message;
+          setTimeout(() => {
+            window.location.href = "/admin?tt=error&msg=" + encodeURIComponent(message);
+          }, 1600);
+        }
+      })();
+    </script>
+  </body>
+</html>

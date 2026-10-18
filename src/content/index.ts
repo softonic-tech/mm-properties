@@ -193,7 +193,7 @@ export const content = {
       { label: "RESALE", value: "Homes", position: "right-bottom" },
     ],
     cta: "See all homes",
-    ctaHref: "https://www.mmproperty.es/en",
+    ctaHref: "/homes",
   },
 
   feature: {
@@ -428,6 +428,8 @@ export const content = {
       { label: "About", href: "/about" },
       { label: "FAQ", href: "/faq" },
       { label: "Contact", href: "/contact" },
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
     ],
     footerNote: "M&M Property · Benalmádena",
     photoCredit:
@@ -443,17 +445,96 @@ export const content = {
     homes: {
       eyebrow: "HOMES",
       title: "Homes for sale on the Costa del Sol.",
+      listingTitle: "Properties for sale on the Costa del Sol",
       description:
-        "Apartments, villas and new builds from the Benalmádena office. This is a selection. Confirm the price on the live listing.",
+        "Apartments, villas and new builds from the Benalmádena office. Browse the full portfolio below.",
       seoTitle: "Homes for sale on the Costa del Sol | M&M Property",
       seoDescription:
         "Apartments, villas and new builds for sale in Marbella, Fuengirola, Benalmádena and Mijas. M&M Property, office in Benalmádena.",
-      viewListing: "View on mmproperty.es",
+      viewListing: "View property",
+      prev: "Previous",
+      next: "Next",
+      pageLabel: "Page",
+      loading: "Loading homes…",
+      results: "{from}–{to} of {total} homes",
+      showing: "Showing {from} - {to} of {total}",
+      sortBy: "Sort by:",
+      sortDate: "Date",
+      sortPrice: "Price",
+      sortSize: "Size",
+      sortBeds: "Bedrooms",
+      sortDirection: "Toggle sort direction",
+      gridView: "Grid view",
+      listView: "List view",
+      searchLabel: "Search",
+      searchPlaceholder: "Title, ref or keyword…",
+      cityLabel: "City",
+      typeLabel: "Type",
+      bedsLabel: "Bedrooms",
+      priceLabel: "Max price",
+      anyCity: "All cities",
+      anyType: "All types",
+      anyBeds: "Any",
+      anyPrice: "Any price",
+      upToPrice: "Up to {price}",
+      searchButton: "Search",
+      clearButton: "Clear",
+      noResults: "No properties match your search. Try different filters.",
       links: [
-        { label: "All homes", href: "https://www.mmproperty.es/en/properties/s1/1907" },
-        { label: "For sale", href: "https://www.mmproperty.es/en/browser/s1?quick_search[tof]=1" },
-        { label: "For rent", href: "https://www.mmproperty.es/en/browser/s1?quick_search[tof]=2" },
+        { label: "All homes", href: "/homes" },
+        { label: "Towns", href: "/areas" },
+        { label: "Contact", href: "/contact" },
       ],
+    },
+    property: {
+      seoTitle: "Property | M&M Property",
+      seoDescription: "Property details from the M&M Property portfolio on the Costa del Sol.",
+      backToHomes: "All homes",
+      ref: "Ref.",
+      bedrooms: "Bedrooms",
+      bathrooms: "Bathrooms",
+      built: "Built area",
+      plot: "Plot",
+      features: "Features",
+      enquire: "Call the office",
+      enquireHint: "Ask about viewing times, price and availability.",
+      contactPage: "Contact form",
+      notFoundTitle: "Property not found",
+      notFoundDescription: "This listing is no longer available or the link is incorrect. Browse all homes instead.",
+      description: "Description",
+      characteristics: "Characteristics",
+      generals: "Generals",
+      surfaces: "Surfaces",
+      state: "State",
+      qualities: "Qualities",
+      security: "Security",
+      price: "Price",
+      pricePerM2: "per m²",
+      situation: "Situation and environment",
+      situationLabel: "Situation",
+      contact: "Contact",
+      name: "Name",
+      email: "E-mail",
+      phone: "Phone",
+      message: "Message",
+      offer: "Offer",
+      visit: "Visit",
+      privacy: "I accept the",
+      privacyLink: "Privacy Policy",
+      contactSubmit: "Contact",
+      sent: "Thanks — the office will get back to you.",
+      error: "Could not send. Please try again.",
+      construction: "Construction",
+      useful: "Useful",
+      terrace: "Terrace",
+      parking: "Parking",
+      pool: "Pool",
+      newBuild: "New build",
+      underConstruction: "Under construction",
+      yearOfConstruction: "Year of construction",
+      type: "Type",
+      prevPhoto: "Previous photo",
+      nextPhoto: "Next photo",
     },
     areas: {
       eyebrow: "THE COAST",
@@ -575,6 +656,164 @@ export const content = {
       email: "info@mmproperty.es",
       address: ["Avd. de Tívoli", "Centro comercial Las Ventas, Local 48A", "29630 Benalmádena"],
       contactLabel: "The office",
+    },
+    privacy: {
+      eyebrow: "LEGAL",
+      title: "Privacy Policy",
+      description:
+        "How M&M Property collects, uses and protects personal data on mmproperty.io, including when we connect Facebook and Instagram for publishing property listings.",
+      updated: "Last updated: 16 October 2026",
+      seoTitle: "Privacy Policy | M&M Property",
+      seoDescription:
+        "Privacy Policy for M&M Property (mmproperty.io): contact forms, cookies, and Meta Facebook/Instagram integrations for property marketing.",
+      sections: [
+        {
+          title: "Who we are",
+          paragraphs: [
+            "M&M Property (“we”, “us”) is a real-estate agency with its office at Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena, Málaga, Spain. You can contact us at info@mmproperty.es or +34 653 223 015.",
+            "This policy explains how we process personal data when you use our website mmproperty.io and related services, including social-media tools that publish content to Facebook Pages and Instagram Business accounts via Meta platforms.",
+          ],
+        },
+        {
+          title: "Data we collect",
+          paragraphs: [
+            "Contact and enquiry forms: name, email, phone number, and any message you send about a property or our services.",
+            "Technical data: IP address, browser type, device information, and pages visited, which may be collected through standard web logs or analytics to keep the site secure and improve it.",
+            "Meta (Facebook / Instagram) connection for authorised staff only: when an authorised user connects a Facebook Page or Instagram Business account in our admin tools, we receive and store access tokens and basic account identifiers (such as Page ID, Instagram Business account ID, and display name) needed to publish listing posts on your behalf. We do not use Meta login for public visitors browsing homes on this site.",
+          ],
+        },
+        {
+          title: "How we use your data",
+          paragraphs: [
+            "To respond to property enquiries and provide estate-agency services.",
+            "To operate, secure and improve mmproperty.io.",
+            "To publish property listings and related marketing content to Facebook and Instagram when an authorised staff member uses our social publishing tools, using only the permissions granted through Meta’s OAuth flow.",
+            "We do not sell personal data. We do not use Meta user data to create advertising audiences for unrelated third parties.",
+          ],
+        },
+        {
+          title: "Legal bases (GDPR)",
+          paragraphs: [
+            "Where EU/EEA data protection law applies, we process data on the basis of: (a) your consent (for example when you submit a form or accept a privacy checkbox); (b) performance of a contract or steps prior to a contract (property enquiries); (c) our legitimate interests in running and securing the website and marketing our listings, balanced against your rights; and (d) legal obligations where they apply.",
+          ],
+        },
+        {
+          title: "Sharing and processors",
+          paragraphs: [
+            "We may share data with service providers who host our website, store data (for example cloud databases), or send email, under contracts that require them to protect the data.",
+            "When you or an authorised user connect Meta accounts, Meta Platforms Ireland Ltd. / Meta Platforms, Inc. process data according to Meta’s terms and privacy policy. Content we publish appears on Facebook and Instagram under those platforms’ rules.",
+            "We may disclose data if required by law or to protect our rights, users, or the public.",
+          ],
+        },
+        {
+          title: "Retention",
+          paragraphs: [
+            "Enquiry data is kept for as long as needed to handle your request and for a reasonable period afterward for follow-up and legal records, unless a longer period is required by law.",
+            "Meta access tokens and related connection data are kept while the connection remains active for publishing. You (or an authorised admin) can disconnect Facebook or Instagram in our admin tools; we then delete or invalidate stored tokens for that connection. Meta may also notify us of deauthorisation or data-deletion requests, which we honour.",
+          ],
+        },
+        {
+          title: "Your rights",
+          paragraphs: [
+            "Depending on your location, you may have the right to access, rectify, erase, restrict or object to processing, and to data portability. You may withdraw consent where processing is based on consent. You may also lodge a complaint with your local supervisory authority (in Spain, the Agencia Española de Protección de Datos).",
+            "To exercise these rights, email info@mmproperty.es. For Instagram-related data deletion requests triggered through Meta, we process callbacks at our published data-deletion endpoint and confirm completion as required by Meta.",
+          ],
+        },
+        {
+          title: "Cookies",
+          paragraphs: [
+            "We may use essential cookies or local storage needed for the site to work (for example language preference). If we use non-essential analytics cookies, we will do so in line with applicable consent rules. You can control cookies through your browser settings.",
+          ],
+        },
+        {
+          title: "Children",
+          paragraphs: [
+            "Our services are directed at adults interested in buying, renting or selling property. We do not knowingly collect personal data from children under 16.",
+          ],
+        },
+        {
+          title: "Changes",
+          paragraphs: [
+            "We may update this Privacy Policy from time to time. The “Last updated” date at the top of this page will change when we do. Continued use of the site after updates constitutes acceptance of the revised policy where permitted by law.",
+          ],
+        },
+        {
+          title: "Contact",
+          paragraphs: [
+            "M&M Property — Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena, Málaga, Spain. Email: info@mmproperty.es. Phone: +34 653 223 015.",
+          ],
+        },
+      ],
+    },
+    terms: {
+      eyebrow: "LEGAL",
+      title: "Terms and Conditions",
+      description:
+        "Rules for using mmproperty.io and related M&M Property online services, including social publishing tools that use Meta platforms.",
+      updated: "Last updated: 16 October 2026",
+      seoTitle: "Terms and Conditions | M&M Property",
+      seoDescription:
+        "Terms and Conditions for using the M&M Property website (mmproperty.io) and related Facebook and Instagram publishing tools.",
+      sections: [
+        {
+          title: "Agreement",
+          paragraphs: [
+            "By accessing or using mmproperty.io (the “Site”) you agree to these Terms and Conditions. If you do not agree, please do not use the Site. These terms are between you and M&M Property, Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena, Málaga, Spain (info@mmproperty.es).",
+          ],
+        },
+        {
+          title: "Our services",
+          paragraphs: [
+            "The Site provides information about properties for sale or rent on the Costa del Sol and ways to contact our Benalmádena office. Listings, prices, availability and descriptions may change without notice and are not a binding offer unless confirmed in writing by M&M Property.",
+            "Authorised staff may use admin tools on the Site to connect Facebook Pages and Instagram Business accounts and to publish property-related posts through Meta’s APIs. Those tools are not available to the general public.",
+          ],
+        },
+        {
+          title: "Acceptable use",
+          paragraphs: [
+            "You must not misuse the Site (including attempting unauthorised access, scraping in a way that harms the service, introducing malware, or using the Site for unlawful purposes). You must provide accurate information in enquiry forms.",
+            "If you are authorised to use social publishing features, you must comply with Meta’s Platform Terms, Instagram and Facebook Community Standards, and applicable advertising and consumer laws. You are responsible for the content you choose to publish.",
+          ],
+        },
+        {
+          title: "Intellectual property",
+          paragraphs: [
+            "Site design, text, logos and branding belonging to M&M Property are protected. Property photos and descriptions may be owned by us or our partners; you may not copy or reuse them for commercial purposes without permission.",
+          ],
+        },
+        {
+          title: "Third-party platforms",
+          paragraphs: [
+            "Links to or integrations with Facebook, Instagram, WhatsApp or other third-party services are subject to those providers’ own terms and privacy policies. We are not responsible for third-party platforms’ availability or conduct.",
+          ],
+        },
+        {
+          title: "Disclaimer and liability",
+          paragraphs: [
+            "The Site is provided on an “as is” and “as available” basis. To the fullest extent permitted by law, we exclude warranties regarding accuracy, fitness for a particular purpose, or uninterrupted availability.",
+            "Nothing in these terms limits liability that cannot be limited under Spanish or applicable law (including for death or personal injury caused by negligence, or fraud). Subject to that, we are not liable for indirect or consequential loss arising from use of the Site or reliance on listing information alone.",
+          ],
+        },
+        {
+          title: "Privacy",
+          paragraphs: [
+            "Personal data is processed as described in our Privacy Policy at /privacy, which forms part of how we operate the Site and Meta integrations.",
+          ],
+        },
+        {
+          title: "Changes and governing law",
+          paragraphs: [
+            "We may update these Terms from time to time by posting a revised version on this page. Continued use after changes means you accept the updated Terms where permitted by law.",
+            "These Terms are governed by the laws of Spain. Courts of Málaga, Spain, shall have jurisdiction, without prejudice to mandatory consumer protections that may apply in your country of residence.",
+          ],
+        },
+        {
+          title: "Contact",
+          paragraphs: [
+            "Questions about these Terms: info@mmproperty.es or +34 653 223 015.",
+          ],
+        },
+      ],
     },
     notFound: {
       title: "This page is not on the site.",

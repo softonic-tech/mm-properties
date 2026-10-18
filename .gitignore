@@ -13,7 +13,9 @@ dist-ssr
 *.local
 .env
 data/admin.json
+data/social.json
 data/*.tmp
+data/oauth-debug.json
 
 # Editor directories and files
 .vscode/*

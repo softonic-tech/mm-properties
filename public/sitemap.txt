@@ -58,3 +58,13 @@ https://mmproperty.io/faq?lang=es
 https://mmproperty.io/faq?lang=nl
 https://mmproperty.io/faq?lang=sv
 https://mmproperty.io/faq?lang=de
+https://mmproperty.io/privacy
+https://mmproperty.io/privacy?lang=es
+https://mmproperty.io/privacy?lang=nl
+https://mmproperty.io/privacy?lang=sv
+https://mmproperty.io/privacy?lang=de
+https://mmproperty.io/terms
+https://mmproperty.io/terms?lang=es
+https://mmproperty.io/terms?lang=nl
+https://mmproperty.io/terms?lang=sv
+https://mmproperty.io/terms?lang=de

@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "convert:properties": "node scripts/convert-properties.mjs",
+    "enrich:image-labels": "node scripts/enrich-image-labels.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

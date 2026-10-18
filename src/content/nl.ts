@@ -174,7 +174,7 @@ export const nl: SiteContent = {
       { label: "BESTAAND", value: "Aanbod", position: "right-bottom" },
     ],
     cta: "Alle woningen",
-    ctaHref: "https://www.mmproperty.es/en",
+    ctaHref: "/homes",
   },
   feature: {
     index: "05",
@@ -401,6 +401,8 @@ export const nl: SiteContent = {
       { label: "Over ons", href: "/about" },
       { label: "FAQ", href: "/faq" },
       { label: "Contact", href: "/contact" },
+      { label: "Privacy", href: "/privacy" },
+      { label: "Voorwaarden", href: "/terms" },
     ],
     footerNote: "M&M Property · Benalmádena",
     photoCredit:
@@ -416,17 +418,96 @@ export const nl: SiteContent = {
     homes: {
       eyebrow: "WONINGEN",
       title: "Woningen te koop aan de Costa del Sol.",
+      listingTitle: "Woningen te koop aan de Costa del Sol",
       description:
-        "Appartementen, villa’s en nieuwbouw vanuit het kantoor in Benalmádena. Dit is een selectie. Bevestig de prijs in de live advertentie.",
+        "Appartementen, villa’s en nieuwbouw vanuit het kantoor in Benalmádena. Bekijk het volledige aanbod hieronder.",
       seoTitle: "Woningen te koop aan de Costa del Sol | M&M Property",
       seoDescription:
         "Appartementen, villa’s en nieuwbouw te koop in Marbella, Fuengirola, Benalmádena en Mijas. M&M Property, kantoor in Benalmádena.",
-      viewListing: "Bekijk op mmproperty.es",
+      viewListing: "Bekijk woning",
+      prev: "Vorige",
+      next: "Volgende",
+      pageLabel: "Pagina",
+      loading: "Woningen laden…",
+      results: "{from}–{to} van {total} woningen",
+      showing: "Resultaten {from} - {to} van {total}",
+      sortBy: "Sorteren op:",
+      sortDate: "Datum",
+      sortPrice: "Prijs",
+      sortSize: "Oppervlakte",
+      sortBeds: "Slaapkamers",
+      sortDirection: "Sorteerrichting wisselen",
+      gridView: "Rasterweergave",
+      listView: "Lijstweergave",
+      searchLabel: "Zoeken",
+      searchPlaceholder: "Titel, ref. of trefwoord…",
+      cityLabel: "Stad",
+      typeLabel: "Type",
+      bedsLabel: "Slaapkamers",
+      priceLabel: "Max. prijs",
+      anyCity: "Alle steden",
+      anyType: "Alle types",
+      anyBeds: "Alle",
+      anyPrice: "Elke prijs",
+      upToPrice: "Tot {price}",
+      searchButton: "Zoeken",
+      clearButton: "Wissen",
+      noResults: "Geen woningen gevonden. Probeer andere filters.",
       links: [
-        { label: "Alle woningen", href: "https://www.mmproperty.es/en/properties/s1/1907" },
-        { label: "Te koop", href: "https://www.mmproperty.es/en/browser/s1?quick_search[tof]=1" },
-        { label: "Te huur", href: "https://www.mmproperty.es/en/browser/s1?quick_search[tof]=2" },
+        { label: "Alle woningen", href: "/homes" },
+        { label: "Plaatsen", href: "/areas" },
+        { label: "Contact", href: "/contact" },
       ],
+    },
+    property: {
+      seoTitle: "Woning | M&M Property",
+      seoDescription: "Woningdetails uit het M&M Property-aanbod aan de Costa del Sol.",
+      backToHomes: "Alle woningen",
+      ref: "Ref.",
+      bedrooms: "Slaapkamers",
+      bathrooms: "Badkamers",
+      built: "Woonoppervlakte",
+      plot: "Perceel",
+      features: "Kenmerken",
+      enquire: "Bel het kantoor",
+      enquireHint: "Vraag naar bezichtigingen, prijs en beschikbaarheid.",
+      contactPage: "Contactformulier",
+      notFoundTitle: "Woning niet gevonden",
+      notFoundDescription: "Deze advertentie is niet meer beschikbaar of de link klopt niet. Bekijk alle woningen.",
+      description: "Beschrijving",
+      characteristics: "Kenmerken",
+      generals: "Algemeen",
+      surfaces: "Oppervlakten",
+      state: "Staat",
+      qualities: "Kwaliteiten",
+      security: "Beveiliging",
+      price: "Prijs",
+      pricePerM2: "per m²",
+      situation: "Situatie en omgeving",
+      situationLabel: "Situatie",
+      contact: "Contact",
+      name: "Naam",
+      email: "E-mail",
+      phone: "Telefoon",
+      message: "Bericht",
+      offer: "Bod",
+      visit: "Bezichtiging",
+      privacy: "Ik accepteer de",
+      privacyLink: "Privacyverklaring",
+      contactSubmit: "Contact",
+      sent: "Bedankt — het kantoor neemt contact op.",
+      error: "Verzenden mislukt. Probeer opnieuw.",
+      construction: "Bouw",
+      useful: "Nuttig",
+      terrace: "Terras",
+      parking: "Parkeren",
+      pool: "Zwembad",
+      newBuild: "Nieuwbouw",
+      underConstruction: "In aanbouw",
+      yearOfConstruction: "Bouwjaar",
+      type: "Type",
+      prevPhoto: "Vorige foto",
+      nextPhoto: "Volgende foto",
     },
     areas: {
       eyebrow: "DE KUST",
@@ -548,6 +629,164 @@ export const nl: SiteContent = {
       email: "info@mmproperty.es",
       address: ["Avd. de Tívoli", "Centro comercial Las Ventas, Local 48A", "29630 Benalmádena"],
       contactLabel: "Het kantoor",
+    },
+    privacy: {
+      eyebrow: "JURIDISCH",
+      title: "Privacybeleid",
+      description:
+        "Hoe M&M Property persoonsgegevens verzamelt, gebruikt en beschermt op mmproperty.io, ook bij Facebook- en Instagram-koppelingen voor publicatie.",
+      updated: "Laatst bijgewerkt: 16 oktober 2026",
+      seoTitle: "Privacybeleid | M&M Property",
+      seoDescription:
+        "Privacybeleid van M&M Property (mmproperty.io): contactformulieren, cookies en Meta Facebook/Instagram-integraties.",
+      sections: [
+        {
+          title: "Wie wij zijn",
+          paragraphs: [
+            "M&M Property (“wij”) is een vastgoedkantoor op Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena, Málaga, Spanje. Contact: info@mmproperty.es of +34 653 223 015.",
+            "Dit beleid legt uit hoe wij persoonsgegevens verwerken bij gebruik van mmproperty.io en gerelateerde diensten, inclusief tools die publiceren naar Facebook-pagina’s en Instagram Business via Meta.",
+          ],
+        },
+        {
+          title: "Gegevens die wij verzamelen",
+          paragraphs: [
+            "Contactformulieren: naam, e-mail, telefoon en uw bericht over een woning of onze diensten.",
+            "Technische gegevens: IP-adres, browser, apparaat en bezochte pagina’s via logs of analytics voor beveiliging en verbetering.",
+            "Meta-koppeling (Facebook / Instagram) alleen voor bevoegd personeel: bij koppeling ontvangen en bewaren wij toegangstokens en basisaccount-ID’s die nodig zijn om te publiceren. Bezoekers loggen niet in met Meta om woningen te bekijken.",
+          ],
+        },
+        {
+          title: "Hoe wij gegevens gebruiken",
+          paragraphs: [
+            "Om te reageren op vastgoedvragen en onze diensten te leveren.",
+            "Om mmproperty.io te laten werken, te beveiligen en te verbeteren.",
+            "Om advertenties te publiceren op Facebook en Instagram wanneer bevoegd personeel onze tools gebruikt, alleen met Meta-machtigingen.",
+            "Wij verkopen geen persoonsgegevens en gebruiken Meta-gegevens niet voor advertentiepublieken van ongerelateerde derden.",
+          ],
+        },
+        {
+          title: "Rechtsgrondslagen (AVG)",
+          paragraphs: [
+            "Waar EU/EER-recht geldt: (a) toestemming; (b) uitvoering van een overeenkomst of precontractuele stappen; (c) gerechtvaardigd belang bij het runnen en beveiligen van de site en marketing van listings, afgewogen tegen uw rechten; en (d) wettelijke verplichtingen.",
+          ],
+        },
+        {
+          title: "Delen en verwerkers",
+          paragraphs: [
+            "Wij kunnen gegevens delen met dienstverleners voor hosting, opslag of e-mail, onder passende contracten.",
+            "Bij Meta-koppelingen verwerkt Meta gegevens volgens hun voorwaarden. Gepubliceerde content verschijnt op Facebook en Instagram onder hun regels.",
+            "Wij kunnen gegevens delen als de wet dat vereist of om rechten te beschermen.",
+          ],
+        },
+        {
+          title: "Bewaartermijn",
+          paragraphs: [
+            "Aanvraaggegevens bewaren wij zolang nodig om uw verzoek te behandelen en een redelijke periode daarna, tenzij de wet langer eist.",
+            "Meta-tokens blijven bewaard zolang de koppeling actief is. U kunt Facebook of Instagram ontkoppelen in de admin; dan verwijderen of invalideren wij die tokens. Wij respecteren ook Meta-deauthorisatie en verwijderingsverzoeken.",
+          ],
+        },
+        {
+          title: "Uw rechten",
+          paragraphs: [
+            "Afhankelijk van uw locatie kunt u inzage, correctie, wissen, beperking of bezwaar vragen, en dataportabiliteit. U kunt toestemming intrekken en klagen bij een toezichthouder (in Spanje de AEPD).",
+            "Rechten uitoefenen: info@mmproperty.es. Instagram-verwijderingsverzoeken via Meta verwerken wij via ons gepubliceerde endpoint.",
+          ],
+        },
+        {
+          title: "Cookies",
+          paragraphs: [
+            "Wij kunnen essentiële cookies of lokale opslag gebruiken (bijv. taal). Niet-essentiële analytics volgen de toestemmingsregels. U beheert cookies via de browser.",
+          ],
+        },
+        {
+          title: "Kinderen",
+          paragraphs: [
+            "Onze diensten richten zich op volwassenen die willen kopen, huren of verkopen. Wij verzamelen niet bewust gegevens van kinderen onder 16.",
+          ],
+        },
+        {
+          title: "Wijzigingen",
+          paragraphs: [
+            "Wij kunnen dit beleid bijwerken. De datum “Laatst bijgewerkt” verandert dan. Voortgezet gebruik kan acceptatie betekenen waar de wet dat toelaat.",
+          ],
+        },
+        {
+          title: "Contact",
+          paragraphs: [
+            "M&M Property — Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena, Málaga, Spanje. E-mail: info@mmproperty.es. Telefoon: +34 653 223 015.",
+          ],
+        },
+      ],
+    },
+    terms: {
+      eyebrow: "JURIDISCH",
+      title: "Algemene voorwaarden",
+      description:
+        "Regels voor het gebruik van mmproperty.io en gerelateerde online diensten van M&M Property, inclusief Meta-publicatietools.",
+      updated: "Laatst bijgewerkt: 16 oktober 2026",
+      seoTitle: "Algemene voorwaarden | M&M Property",
+      seoDescription:
+        "Algemene voorwaarden voor de website van M&M Property (mmproperty.io) en Facebook-/Instagram-publicatietools.",
+      sections: [
+        {
+          title: "Overeenkomst",
+          paragraphs: [
+            "Door mmproperty.io (de “Site”) te gebruiken, gaat u akkoord met deze voorwaarden. Zo niet, gebruik de Site niet. Partijen: u en M&M Property, Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena, Málaga, Spanje (info@mmproperty.es).",
+          ],
+        },
+        {
+          title: "Onze diensten",
+          paragraphs: [
+            "De Site biedt informatie over woningen aan de Costa del Sol en contact met ons kantoor. Prijzen en beschikbaarheid kunnen wijzigen en zijn geen bindend aanbod zonder schriftelijke bevestiging.",
+            "Bevoegd personeel kan Facebook-pagina’s en Instagram Business koppelen en publiceren via Meta-API’s. Die tools zijn niet voor het algemene publiek.",
+          ],
+        },
+        {
+          title: "Aanvaardbaar gebruik",
+          paragraphs: [
+            "Misbruik de Site niet (ongeautoriseerde toegang, schadelijke scraping, malware of illegale doelen). Geef juiste gegevens in formulieren.",
+            "Wie socialepublicatiefuncties gebruikt, moet Meta’s voorwaarden en toepasselijke wetgeving naleven en is verantwoordelijk voor gepubliceerde content.",
+          ],
+        },
+        {
+          title: "Intellectueel eigendom",
+          paragraphs: [
+            "Ontwerp, teksten en merken van M&M Property zijn beschermd. Foto’s en beschrijvingen mag u niet commercieel hergebruiken zonder toestemming.",
+          ],
+        },
+        {
+          title: "Derdenplatforms",
+          paragraphs: [
+            "Koppelingen met Facebook, Instagram, WhatsApp of anderen vallen onder hun eigen voorwaarden. Wij zijn niet verantwoordelijk voor die platforms.",
+          ],
+        },
+        {
+          title: "Disclaimer en aansprakelijkheid",
+          paragraphs: [
+            "De Site wordt geleverd “as is” en “as available”. Voor zover wettelijk toegestaan sluiten wij garanties over juistheid of ononderbroken beschikbaarheid uit.",
+            "Niets beperkt aansprakelijkheid die niet mag worden beperkt. Daarbuiten zijn wij niet aansprakelijk voor indirecte schade door gebruik van de Site of enkel vertrouwen op listinginformatie.",
+          ],
+        },
+        {
+          title: "Privacy",
+          paragraphs: [
+            "Persoonsgegevens worden verwerkt zoals beschreven in ons Privacybeleid op /privacy.",
+          ],
+        },
+        {
+          title: "Wijzigingen en toepasselijk recht",
+          paragraphs: [
+            "Wij kunnen deze voorwaarden bijwerken door een herziene versie te plaatsen. Voortgezet gebruik betekent acceptatie waar de wet dat toelaat.",
+            "Spaans recht is van toepassing. Bevoegde rechter: Málaga, onverminderd dwingende consumentenbescherming.",
+          ],
+        },
+        {
+          title: "Contact",
+          paragraphs: [
+            "Vragen: info@mmproperty.es of +34 653 223 015.",
+          ],
+        },
+      ],
     },
     notFound: {
       title: "Deze pagina staat niet op de site.",

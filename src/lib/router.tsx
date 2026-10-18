@@ -62,3 +62,13 @@ export function usePathname() {
   if (path === null) throw new Error("usePathname must be used within RouteProvider");
   return path;
 }
+
+/** Programmatic in-app navigation that keeps the language query param. */
+export function navigateTo(href: string) {
+  const url = new URL(href, window.location.origin);
+  const next = destination(url);
+  const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  if (next !== current) window.history.pushState({}, "", next);
+  window.dispatchEvent(new PopStateEvent("popstate"));
+  if (!url.hash) window.scrollTo(0, 0);
+}

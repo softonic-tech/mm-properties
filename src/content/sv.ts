@@ -174,7 +174,7 @@ export const sv: SiteContent = {
       { label: "BEGAGNAT", value: "Utbud", position: "right-bottom" },
     ],
     cta: "Se alla bostäder",
-    ctaHref: "https://www.mmproperty.es/en",
+    ctaHref: "/homes",
   },
   feature: {
     index: "05",
@@ -401,6 +401,8 @@ export const sv: SiteContent = {
       { label: "Om oss", href: "/about" },
       { label: "FAQ", href: "/faq" },
       { label: "Kontakt", href: "/contact" },
+      { label: "Integritet", href: "/privacy" },
+      { label: "Villkor", href: "/terms" },
     ],
     footerNote: "M&M Property · Benalmádena",
     photoCredit:
@@ -416,17 +418,96 @@ export const sv: SiteContent = {
     homes: {
       eyebrow: "BOSTÄDER",
       title: "Bostäder till salu på Costa del Sol.",
+      listingTitle: "Bostäder till salu på Costa del Sol",
       description:
-        "Lägenheter, villor och nyproduktion från kontoret i Benalmádena. Detta är ett urval. Bekräfta priset i den live annonsen.",
+        "Lägenheter, villor och nyproduktion från kontoret i Benalmádena. Bläddra i hela utbudet nedan.",
       seoTitle: "Bostäder till salu på Costa del Sol | M&M Property",
       seoDescription:
         "Lägenheter, villor och nyproduktion till salu i Marbella, Fuengirola, Benalmádena och Mijas. M&M Property, kontor i Benalmádena.",
-      viewListing: "Se på mmproperty.es",
+      viewListing: "Visa bostad",
+      prev: "Föregående",
+      next: "Nästa",
+      pageLabel: "Sida",
+      loading: "Laddar bostäder…",
+      results: "{from}–{to} av {total} bostäder",
+      showing: "Visar {from} - {to} av {total}",
+      sortBy: "Sortera efter:",
+      sortDate: "Datum",
+      sortPrice: "Pris",
+      sortSize: "Storlek",
+      sortBeds: "Sovrum",
+      sortDirection: "Byt sorteringsriktning",
+      gridView: "Rutnätsvy",
+      listView: "Listvy",
+      searchLabel: "Sök",
+      searchPlaceholder: "Titel, ref. eller nyckelord…",
+      cityLabel: "Stad",
+      typeLabel: "Typ",
+      bedsLabel: "Sovrum",
+      priceLabel: "Maxpris",
+      anyCity: "Alla städer",
+      anyType: "Alla typer",
+      anyBeds: "Alla",
+      anyPrice: "Alla priser",
+      upToPrice: "Upp till {price}",
+      searchButton: "Sök",
+      clearButton: "Rensa",
+      noResults: "Inga bostäder matchar din sökning. Prova andra filter.",
       links: [
-        { label: "Alla bostäder", href: "https://www.mmproperty.es/en/properties/s1/1907" },
-        { label: "Till salu", href: "https://www.mmproperty.es/en/browser/s1?quick_search[tof]=1" },
-        { label: "Till hyra", href: "https://www.mmproperty.es/en/browser/s1?quick_search[tof]=2" },
+        { label: "Alla bostäder", href: "/homes" },
+        { label: "Orter", href: "/areas" },
+        { label: "Kontakt", href: "/contact" },
       ],
+    },
+    property: {
+      seoTitle: "Bostad | M&M Property",
+      seoDescription: "Bostadsdetaljer från M&M Propertys utbud på Costa del Sol.",
+      backToHomes: "Alla bostäder",
+      ref: "Ref.",
+      bedrooms: "Sovrum",
+      bathrooms: "Badrum",
+      built: "Boyta",
+      plot: "Tomt",
+      features: "Egenskaper",
+      enquire: "Ring kontoret",
+      enquireHint: "Fråga om visningar, pris och tillgänglighet.",
+      contactPage: "Kontaktformulär",
+      notFoundTitle: "Bostaden hittades inte",
+      notFoundDescription: "Den här annonsen finns inte längre eller länken är fel. Bläddra bland alla bostäder.",
+      description: "Beskrivning",
+      characteristics: "Egenskaper",
+      generals: "Allmänt",
+      surfaces: "Ytor",
+      state: "Skick",
+      qualities: "Kvaliteter",
+      security: "Säkerhet",
+      price: "Pris",
+      pricePerM2: "per m²",
+      situation: "Läge och omgivning",
+      situationLabel: "Läge",
+      contact: "Kontakt",
+      name: "Namn",
+      email: "E-post",
+      phone: "Telefon",
+      message: "Meddelande",
+      offer: "Bud",
+      visit: "Visning",
+      privacy: "Jag godkänner",
+      privacyLink: "Integritetspolicyn",
+      contactSubmit: "Kontakta",
+      sent: "Tack — kontoret återkommer.",
+      error: "Kunde inte skicka. Försök igen.",
+      construction: "Byggd yta",
+      useful: "Boarea",
+      terrace: "Terrass",
+      parking: "Parkering",
+      pool: "Pool",
+      newBuild: "Nyproduktion",
+      underConstruction: "Under uppförande",
+      yearOfConstruction: "Byggår",
+      type: "Typ",
+      prevPhoto: "Föregående foto",
+      nextPhoto: "Nästa foto",
     },
     areas: {
       eyebrow: "KUSTEN",
@@ -548,6 +629,164 @@ export const sv: SiteContent = {
       email: "info@mmproperty.es",
       address: ["Avd. de Tívoli", "Centro comercial Las Ventas, Local 48A", "29630 Benalmádena"],
       contactLabel: "Kontoret",
+    },
+    privacy: {
+      eyebrow: "JURIDIK",
+      title: "Integritetspolicy",
+      description:
+        "Hur M&M Property samlar in, använder och skyddar personuppgifter på mmproperty.io, även när Facebook och Instagram kopplas för publicering.",
+      updated: "Senast uppdaterad: 16 oktober 2026",
+      seoTitle: "Integritetspolicy | M&M Property",
+      seoDescription:
+        "Integritetspolicy för M&M Property (mmproperty.io): kontaktformulär, cookies och Meta Facebook/Instagram-integrationer.",
+      sections: [
+        {
+          title: "Vilka vi är",
+          paragraphs: [
+            "M&M Property (“vi”) är en fastighetsmäklare med kontor på Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena, Málaga, Spanien. Kontakt: info@mmproperty.es eller +34 653 223 015.",
+            "Denna policy beskriver hur vi behandlar personuppgifter när du använder mmproperty.io och relaterade tjänster, inklusive verktyg som publicerar på Facebook-sidor och Instagram Business via Meta.",
+          ],
+        },
+        {
+          title: "Uppgifter vi samlar in",
+          paragraphs: [
+            "Kontaktformulär: namn, e-post, telefon och ditt meddelande om en bostad eller våra tjänster.",
+            "Tekniska uppgifter: IP-adress, webbläsare, enhet och besökta sidor via loggar eller analys för säkerhet och förbättring.",
+            "Meta-koppling (Facebook / Instagram) endast för behörig personal: vid koppling lagrar vi åtkomsttoken och grundläggande identifierare som behövs för publicering. Besökare loggar inte in med Meta för att se bostäder.",
+          ],
+        },
+        {
+          title: "Hur vi använder uppgifterna",
+          paragraphs: [
+            "För att besvara fastighetsförfrågningar och tillhandahålla våra tjänster.",
+            "För att driva, skydda och förbättra mmproperty.io.",
+            "För att publicera annonser på Facebook och Instagram när behörig personal använder våra verktyg, endast med Meta-behörigheter.",
+            "Vi säljer inte personuppgifter och använder inte Meta-användardata för annonsmålgrupper till orelaterade tredje parter.",
+          ],
+        },
+        {
+          title: "Rättsliga grunder (GDPR)",
+          paragraphs: [
+            "När EU/EES-rätt gäller: (a) samtycke; (b) avtal eller åtgärder före avtal; (c) berättigat intresse av att driva och skydda sajten och marknadsföra våra objekt; och (d) rättsliga skyldigheter.",
+          ],
+        },
+        {
+          title: "Delning och personuppgiftsbiträden",
+          paragraphs: [
+            "Vi kan dela uppgifter med leverantörer för hosting, datalagring eller e-post under lämpliga avtal.",
+            "Vid Meta-kopplingar behandlar Meta uppgifter enligt sina villkor. Publicerat innehåll visas på Facebook och Instagram enligt deras regler.",
+            "Vi kan lämna ut uppgifter om lagen kräver det eller för att skydda rättigheter.",
+          ],
+        },
+        {
+          title: "Lagring",
+          paragraphs: [
+            "Förfrågningsuppgifter sparas så länge som behövs för din begäran och en rimlig tid därefter, om inte längre lag krävs.",
+            "Meta-token sparas medan kopplingen är aktiv. Du kan koppla från Facebook eller Instagram i admin; då raderar eller ogiltigförklarar vi token. Vi följer även Metas avauktorisering och raderingsbegäranden.",
+          ],
+        },
+        {
+          title: "Dina rättigheter",
+          paragraphs: [
+            "Beroende på plats kan du begära tillgång, rättelse, radering, begränsning eller invändning samt dataportabilitet. Du kan återkalla samtycke och klaga till en tillsynsmyndighet (i Spanien AEPD).",
+            "Utöva rättigheter: info@mmproperty.es. Instagram-raderingsbegäranden via Meta hanteras via vår publicerade endpoint.",
+          ],
+        },
+        {
+          title: "Cookies",
+          paragraphs: [
+            "Vi kan använda nödvändiga cookies eller lokal lagring (t.ex. språk). Icke-nödvändig analys följer gällande samtyckesregler. Du kan styra cookies i webbläsaren.",
+          ],
+        },
+        {
+          title: "Barn",
+          paragraphs: [
+            "Våra tjänster riktar sig till vuxna. Vi samlar inte medvetet in uppgifter från barn under 16 år.",
+          ],
+        },
+        {
+          title: "Ändringar",
+          paragraphs: [
+            "Vi kan uppdatera denna policy. Datumet ”Senast uppdaterad” ändras då. Fortsatt användning kan innebära godkännande där lagen tillåter.",
+          ],
+        },
+        {
+          title: "Kontakt",
+          paragraphs: [
+            "M&M Property — Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena, Málaga, Spanien. E-post: info@mmproperty.es. Telefon: +34 653 223 015.",
+          ],
+        },
+      ],
+    },
+    terms: {
+      eyebrow: "JURIDIK",
+      title: "Villkor",
+      description:
+        "Regler för användning av mmproperty.io och relaterade onlinetjänster från M&M Property, inklusive Meta-publiceringsverktyg.",
+      updated: "Senast uppdaterad: 16 oktober 2026",
+      seoTitle: "Villkor | M&M Property",
+      seoDescription:
+        "Villkor för M&M Propertys webbplats (mmproperty.io) och Facebook-/Instagram-publiceringsverktyg.",
+      sections: [
+        {
+          title: "Avtal",
+          paragraphs: [
+            "Genom att använda mmproperty.io (“Sajten”) godkänner du dessa villkor. Annars ska du inte använda Sajten. Avtal med M&M Property, Avd. de Tívoli, C.C. Las Ventas, Local 48A, 29630 Benalmádena, Málaga, Spanien (info@mmproperty.es).",
+          ],
+        },
+        {
+          title: "Våra tjänster",
+          paragraphs: [
+            "Sajten ger information om bostäder på Costa del Sol och kontakt med kontoret. Priser och tillgänglighet kan ändras och är inte bindande erbjudande utan skriftlig bekräftelse.",
+            "Behörig personal kan koppla Facebook-sidor och Instagram Business och publicera via Metas API:er. Verktygen är inte offentliga.",
+          ],
+        },
+        {
+          title: "Tillåten användning",
+          paragraphs: [
+            "Missbruka inte Sajten (obehörig åtkomst, skadlig scraping, skadlig kod eller olagliga syften). Formuläruppgifter ska vara korrekta.",
+            "Användare av sociala funktioner ska följa Metas villkor och tillämplig lag och ansvarar för publicerat innehåll.",
+          ],
+        },
+        {
+          title: "Immateriella rättigheter",
+          paragraphs: [
+            "Design, texter och varumärken som tillhör M&M Property är skyddade. Foton och beskrivningar får inte återanvändas kommersiellt utan tillstånd.",
+          ],
+        },
+        {
+          title: "Tredjepartsplattformar",
+          paragraphs: [
+            "Integrationer med Facebook, Instagram, WhatsApp m.fl. omfattas av deras villkor. Vi ansvarar inte för deras tillgänglighet eller agerande.",
+          ],
+        },
+        {
+          title: "Ansvarsfriskrivning",
+          paragraphs: [
+            "Sajten tillhandahålls “i befintligt skick” och “som tillgänglig”. I den mån lagen tillåter utesluter vi garantier om riktighet eller oavbruten tillgänglighet.",
+            "Inget begränsar ansvar som inte får begränsas. I övrigt ansvarar vi inte för indirekt skada från användning av Sajten eller enbart tillit till objektsinformation.",
+          ],
+        },
+        {
+          title: "Integritet",
+          paragraphs: [
+            "Personuppgifter behandlas enligt vår Integritetspolicy på /privacy.",
+          ],
+        },
+        {
+          title: "Ändringar och tillämplig lag",
+          paragraphs: [
+            "Vi kan uppdatera dessa villkor genom att publicera en ny version. Fortsatt användning innebär godkännande där lagen tillåter.",
+            "Spansk lag gäller. Domstol i Málaga, utan att åsidosätta tvingande konsumentskydd.",
+          ],
+        },
+        {
+          title: "Kontakt",
+          paragraphs: [
+            "Frågor: info@mmproperty.es eller +34 653 223 015.",
+          ],
+        },
+      ],
     },
     notFound: {
       title: "Den här sidan finns inte på sajten.",

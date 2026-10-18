@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
 import { Header } from "@/components/layout/Header";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Image } from "@/components/ui/Image";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
-import { useContent } from "@/content/language";
 import type { SiteContent } from "@/content";
+import { useContent, useLocale } from "@/content/language";
+import { loadProperties, propertyHref, propertyTitle, type Property } from "@/lib/properties";
 
 type Town = SiteContent["pages"]["areas"]["towns"][number];
 
@@ -86,17 +88,22 @@ export function AreasPage() {
   );
 }
 
-function splitMeta(meta: string) {
-  const parts = meta.split(" · ");
-  const last = parts.at(-1) ?? "";
-  if (!last.includes("€")) return { specs: meta, price: "" };
-  return { specs: parts.slice(0, -1).join(" · "), price: last };
-}
-
 export function AreaPage({ slug }: { slug: string }) {
-  const { pages, listings, brand, report } = useContent();
+  const { pages, brand } = useContent();
+  const { locale } = useLocale();
   const town = pages.areas.towns.find((item) => item.slug === slug)!;
-  const homes = listings.items.filter((item) => item.area === town.slug);
+  const [homes, setHomes] = useState<Property[] | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    loadProperties().then((data) => {
+      if (!alive) return;
+      setHomes(data.filter((item) => item.area === town.slug).slice(0, 12));
+    });
+    return () => {
+      alive = false;
+    };
+  }, [town.slug]);
 
   return (
     <div className="min-h-svh bg-background">
@@ -130,31 +137,32 @@ export function AreaPage({ slug }: { slug: string }) {
           </div>
         </article>
 
-        {homes.length > 0 ? (
-          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+        {homes && homes.length > 0 ? (
+          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {homes.map((item) => {
-              const { specs, price } = splitMeta(item.meta);
+              const title = propertyTitle(item, locale);
+              const specs = [item.built ? `${item.built} m²` : "", item.beds ? `${item.beds} bed` : ""]
+                .filter(Boolean)
+                .join(" · ");
               return (
                 <a
                   key={item.id}
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
+                  href={propertyHref(item)}
                   className="group relative block min-h-[22rem] overflow-hidden rounded-[1.75rem] ring-1 ring-white/10"
                 >
                   <Image
                     src={item.image}
-                    alt={item.title}
+                    alt={title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 45vw"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/10" />
                   <div className="relative flex min-h-[22rem] flex-col justify-end p-6">
                     {specs ? <p className="text-[11px] tracking-[0.18em] text-white/70 uppercase">{specs}</p> : null}
-                    <h2 className="mt-2 font-serif text-[1.7rem] leading-tight text-white">{item.title}</h2>
+                    <h2 className="mt-2 font-serif text-[1.7rem] leading-tight text-white">{title}</h2>
                     <div className="mt-4">
-                      {price ? <p className="font-serif text-2xl text-white">{price}</p> : null}
+                      {item.priceLabel ? <p className="font-serif text-2xl text-white">{item.priceLabel}</p> : null}
                       <span className="mt-3 inline-flex text-[11px] tracking-[0.16em] text-white/80 uppercase">
                         {pages.homes.viewListing} →
                       </span>
@@ -164,18 +172,24 @@ export function AreaPage({ slug }: { slug: string }) {
               );
             })}
           </div>
-        ) : (
+        ) : homes && homes.length === 0 ? (
           <p className="mt-8 max-w-lg rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-8 text-[15px] leading-[1.75] text-foreground-muted">
             {pages.emptyHomes}
           </p>
+        ) : (
+          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="min-h-[22rem] animate-pulse rounded-[1.75rem] bg-white/5 ring-1 ring-white/10" />
+            ))}
+          </div>
         )}
 
         <div className="mt-12 flex flex-col gap-5 border-t border-white/10 pt-8 sm:flex-row sm:items-end sm:justify-between">
           <a href={brand.phoneHref} className="font-serif text-4xl leading-none text-foreground md:text-5xl">
             {brand.phone}
           </a>
-          <a href={report.ctaHref} target="_blank" rel="noreferrer" className="text-[12px] tracking-[0.16em] text-electric-soft uppercase">
-            {pages.portfolio} →
+          <a href="/homes" className="text-[12px] tracking-[0.16em] text-electric-soft uppercase">
+            {pages.homes.links[0].label} →
           </a>
         </div>
       </main>

@@ -4,6 +4,43 @@ import type { IncomingHttpHeaders } from "node:http";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  buildFacebookAuthUrl,
+  buildInstagramAuthUrl,
+  clearInstagramLogin,
+  completeFacebookOAuth,
+  completeInstagramOAuth,
+  configFromManualToken,
+  createOAuthState,
+  facebookAppReady,
+  facebookRedirectUri,
+  generateSocialPost,
+  instagramAppReady,
+  instagramRedirectUri,
+  parseSocialConfig,
+  publishFacebook,
+  publishInstagram,
+  refreshInstagramTokenIfNeeded,
+  selectFacebookPage,
+  socialStatus,
+  verifyOAuthState,
+  type SocialConfig,
+} from "./social.js";
+import {
+  buildTikTokAuthUrl,
+  clearTikTokLogin,
+  completeTikTokOAuth,
+  getTikTokCreatorInfo,
+  publishToTikTok,
+  tiktokAppReady,
+  tiktokRedirectUri,
+  tiktokStatusFields,
+} from "./tiktok.js";
+import { loadPropertyById, publishPropertyToTikTok } from "./tiktok-property.js";
+
+function socialPayload(config: SocialConfig) {
+  return { ...socialStatus(config), ...tiktokStatusFields(config) };
+}
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(here, "../data");
@@ -54,7 +91,7 @@ export type AdminPayload = {
   storage: "atlas" | "file" | "blob" | "temporary";
 };
 
-type Bucket = "visits.json" | "leads.json" | "settings.json" | "admin.json";
+type Bucket = "visits.json" | "leads.json" | "settings.json" | "admin.json" | "social.json";
 type Stored = { _id?: string; [key: string]: unknown };
 type MongoClient = import("mongodb").MongoClient;
 type Db = import("mongodb").Db;
@@ -116,6 +153,7 @@ function collectionName(name: Bucket) {
   if (name === "visits.json") return "visits";
   if (name === "leads.json") return "leads";
   if (name === "settings.json") return "settings";
+  if (name === "social.json") return "social";
   return "admin";
 }
 
@@ -164,7 +202,7 @@ async function seedAtlas() {
       const rows = parseList<Stored>(readText(localFile(name))).map(withoutId);
       if (rows.length > 0) await collection.insertMany(rows);
     }
-    for (const name of ["settings.json", "admin.json"] as const) {
+    for (const name of ["settings.json", "admin.json", "social.json"] as const) {
       const collection = docs(database, collectionName(name));
       if (await collection.findOne({ _id: "current" })) continue;
       const text = readText(localFile(name));
@@ -312,6 +350,29 @@ async function readSettings(): Promise<Settings> {
   } catch {
     return { tracking: true, retain: 5000 };
   }
+}
+
+async function readSocial(): Promise<SocialConfig> {
+  return parseSocialConfig(await readRaw("social.json"));
+}
+
+async function writeSocial(config: SocialConfig) {
+  await writeRaw("social.json", JSON.stringify(config, null, 2));
+}
+
+function requestOrigin(headers: IncomingHttpHeaders) {
+  const base = (process.env.BASE_URL ?? "").trim().replace(/\/$/, "");
+  if (base) return base;
+  const forwardedHost = header(headers, "x-forwarded-host");
+  const host = forwardedHost || header(headers, "host") || "mmproperty.io";
+  const proto =
+    header(headers, "x-forwarded-proto") ||
+    (host.includes("localhost") || host.startsWith("127.") ? "http" : "https");
+  return `${proto}://${host.split(",")[0]?.trim()}`;
+}
+
+function adminRedirect(origin: string, query: string) {
+  return `${origin}/admin?${query}`;
 }
 
 async function readPassword() {
@@ -636,6 +697,403 @@ async function route(request: {
   }
 
   if (pathname === "/api/admin" && method === "POST") return updateAdmin(headers, body);
+
+  if (pathname === "/api/social" && method === "GET") {
+    const password = await readPassword();
+    if (!authorized(headers, password)) return json(401, { ok: false });
+    return json(200, socialPayload(await readSocial()));
+  }
+
+  if (pathname === "/api/social" && method === "POST") {
+    const password = await readPassword();
+    if (!authorized(headers, password)) return json(401, { ok: false });
+    const action = clip(body.action, 40);
+    const origin = requestOrigin(headers);
+
+    if (action === "facebook-connect") {
+      if (!facebookAppReady()) {
+        return json(400, {
+          ok: false,
+          error: "Set META_APP_ID and META_APP_SECRET (or FACEBOOK_APP_ID / FACEBOOK_APP_SECRET) first.",
+          redirectUri: facebookRedirectUri(origin),
+        });
+      }
+      const state = createOAuthState();
+      return json(200, {
+        ok: true,
+        url: buildFacebookAuthUrl(origin, state),
+        redirectUri: facebookRedirectUri(origin),
+      });
+    }
+
+    if (action === "facebook-select-page") {
+      const next = selectFacebookPage(await readSocial(), clip(body.pageId, 80));
+      if (!next) return json(400, { ok: false, error: "That Facebook Page was not found." });
+      await writeSocial(next);
+      return json(200, socialPayload(next));
+    }
+
+    if (action === "facebook-disconnect") {
+      const current = await readSocial();
+      const next = {
+        ...current,
+        pageId: "",
+        pageName: "",
+        pageToken: "",
+        pages: [],
+        connectedAt: "",
+        lastError: "",
+        facebookUserId: "",
+      };
+      await writeSocial(next);
+      return json(200, socialPayload(next));
+    }
+
+    if (action === "facebook-save-token") {
+      try {
+        const current = await readSocial();
+        const next = {
+          ...current,
+          ...configFromManualToken({
+            pageId: clip(body.pageId, 40),
+            pageToken: clip(body.pageToken, 4000),
+            pageName: clip(body.pageName, 120),
+          }),
+        };
+        await writeSocial(next);
+        console.log("[facebook] manual page token saved", next.pageId, next.pageName);
+        return json(200, socialPayload(next));
+      } catch (caught) {
+        const message = caught instanceof Error ? caught.message : "Could not save token.";
+        return json(400, { ok: false, error: message });
+      }
+    }
+
+    if (action === "instagram-connect") {
+      if (!instagramAppReady()) {
+        return json(400, {
+          ok: false,
+          error: "Set INSTAGRAM_APP_ID and INSTAGRAM_APP_SECRET first.",
+          redirectUri: instagramRedirectUri(origin),
+        });
+      }
+      const state = createOAuthState();
+      const redirectUri = instagramRedirectUri(origin);
+      const url = buildInstagramAuthUrl(origin, state);
+      console.log("[instagram-connect] redirect_uri =>", redirectUri);
+      console.log("[instagram-connect] authorize url =>", url);
+      return json(200, {
+        ok: true,
+        url,
+        redirectUri,
+      });
+    }
+
+    if (action === "instagram-disconnect") {
+      const next = clearInstagramLogin(await readSocial());
+      await writeSocial(next);
+      return json(200, socialPayload(next));
+    }
+
+    if (action === "tiktok-connect") {
+      if (!tiktokAppReady()) {
+        return json(400, {
+          ok: false,
+          error: "Set TIKTOK_CLIENT_KEY and TIKTOK_CLIENT_SECRET first.",
+          redirectUri: tiktokRedirectUri(origin),
+        });
+      }
+      const state = createOAuthState();
+      const redirectUri = tiktokRedirectUri(origin);
+      const url = buildTikTokAuthUrl(origin, state);
+      console.log("[tiktok-connect] redirect_uri =>", redirectUri);
+      return json(200, { ok: true, url, redirectUri });
+    }
+
+    if (action === "tiktok-disconnect") {
+      const next = clearTikTokLogin(await readSocial());
+      await writeSocial(next);
+      return json(200, socialPayload(next));
+    }
+
+    if (action === "tiktok-creator-info") {
+      try {
+        const result = await getTikTokCreatorInfo(await readSocial());
+        if (result.config) await writeSocial(result.config);
+        return json(result.ok ? 200 : 400, { ...result, ...socialPayload(await readSocial()) });
+      } catch (caught) {
+        const message = caught instanceof Error ? caught.message : "TikTok creator info failed.";
+        return json(400, { ok: false, error: message });
+      }
+    }
+
+    if (action === "generate") {
+      try {
+        return json(200, await generateSocialPost(body));
+      } catch {
+        return json(500, { ok: false, error: "Could not generate the post." });
+      }
+    }
+
+    if (action === "publish-facebook") {
+      try {
+        const result = await publishFacebook(body, await readSocial());
+        return json(result.ok ? 200 : 400, result);
+      } catch {
+        return json(500, { ok: false, error: "Facebook publish failed." });
+      }
+    }
+
+    if (action === "publish-instagram") {
+      try {
+        let config = await readSocial();
+        config = await refreshInstagramTokenIfNeeded(config);
+        await writeSocial(config);
+        const result = await publishInstagram(body, config);
+        return json(result.ok ? 200 : 400, result);
+      } catch {
+        return json(500, { ok: false, error: "Instagram publish failed." });
+      }
+    }
+
+    if (action === "publish-now") {
+      try {
+        let config = await readSocial();
+        config = await refreshInstagramTokenIfNeeded(config);
+        await writeSocial(config);
+        const message = String(body.message ?? "").trim();
+        const image = String(body.image ?? "").trim();
+        const link = String(body.link ?? "").trim();
+        const withPhoto = body.withPhoto !== false;
+        const wantFb = body.facebook !== false;
+        const wantIg = body.instagram !== false;
+        const results: Record<string, unknown> = { ok: true };
+        if (wantFb) {
+          const fb = await publishFacebook({ message, image, link, withPhoto }, config);
+          results.facebook = fb;
+          if (!fb.ok) results.ok = false;
+        }
+        if (wantIg) {
+          const ig = await publishInstagram({ message, image }, config);
+          results.instagram = ig;
+          if (!ig.ok) results.ok = false;
+        }
+        return json(results.ok ? 200 : 400, { ...results, ...socialPayload(config) });
+      } catch {
+        return json(500, { ok: false, error: "Publish failed." });
+      }
+    }
+
+    if (action === "publish-tiktok") {
+      try {
+        const config = await readSocial();
+        const propertyId = clip(body.propertyId, 40);
+        const message = String(body.message ?? "").trim();
+        const title = String(body.title ?? "").trim();
+        const draft = body.draft === true;
+        const privacyLevel = clip(body.privacyLevel, 60);
+
+        let result: Record<string, unknown>;
+        if (propertyId) {
+          const property = await loadPropertyById(propertyId);
+          if (!property) {
+            return json(400, { ok: false, error: `Property ${propertyId} was not found.` });
+          }
+          result = await publishPropertyToTikTok(property, config, {
+            lang: clip(body.locale || body.lang, 8) || "en",
+            privacyLevel,
+            draft,
+            title: title || undefined,
+            description: message || undefined,
+            useProxy: body.useProxy !== false,
+            limit: Number(body.limit) > 0 ? Number(body.limit) : 10,
+          });
+        } else {
+          result = await publishToTikTok(body, config);
+        }
+
+        if (result.config) await writeSocial(result.config as SocialConfig);
+        const { config: _saved, ...payload } = result;
+        return json(result.ok ? 200 : 400, payload);
+      } catch {
+        return json(500, { ok: false, error: "TikTok publish failed." });
+      }
+    }
+
+    return json(400, { ok: false, error: "Unknown social action." });
+  }
+
+  if (pathname === "/api/facebook-callback" && (method === "GET" || method === "POST")) {
+    const origin = requestOrigin(headers);
+    console.log("[facebook] callback", {
+      method,
+      origin,
+      redirectUri: facebookRedirectUri(origin),
+      hasCode: Boolean(body.code),
+      hasError: Boolean(body.error || body.error_description),
+    });
+
+    const fail = async (message: string) => {
+      console.error("[facebook] callback failed:", message);
+      const current = await readSocial();
+      await writeSocial({ ...current, lastError: message });
+      if (method === "POST") return json(400, { ok: false, error: message });
+      return {
+        status: 302,
+        redirect: adminRedirect(origin, `fb=error&tab=social&msg=${encodeURIComponent(message)}`),
+      };
+    };
+
+    const error = clip(body.error_description || body.error, 300);
+    if (error) return fail(error);
+
+    const state = clip(body.state, 400);
+    const code = clip(body.code, 4000);
+    if (!verifyOAuthState(state)) return fail("Invalid or expired login state. Click Connect Facebook again.");
+    if (!code) return fail("Missing Facebook code. Open Admin via your ngrok HTTPS URL, then Connect again.");
+
+    try {
+      const current = await readSocial();
+      const facebook = await completeFacebookOAuth(code, origin);
+      const config = { ...current, ...facebook };
+      await writeSocial(config);
+      const saved = await readSocial();
+      if (!saved.pageToken) return fail("Token was not saved to storage.");
+      console.log("[facebook] connected", saved.pageId, saved.pageName);
+      if (method === "POST") {
+        return json(200, {
+          ok: true,
+          pageId: saved.pageId,
+          pageName: saved.pageName,
+        });
+      }
+      const msg = encodeURIComponent(`Connected ${saved.pageName || "Facebook Page"}`);
+      return { status: 302, redirect: adminRedirect(origin, `fb=connected&tab=social&msg=${msg}`) };
+    } catch (caught) {
+      const message = caught instanceof Error ? caught.message : "Facebook connect failed";
+      return fail(message);
+    }
+  }
+
+  if (pathname === "/api/instagram-deauthorize" && method === "POST") {
+    console.log("[instagram] deauthorize callback received");
+    return json(200, { ok: true });
+  }
+
+  if (pathname === "/api/instagram-data-deletion" && (method === "GET" || method === "POST")) {
+    const origin = requestOrigin(headers);
+    const code = randomUUID().replace(/-/g, "").slice(0, 16);
+    console.log("[instagram] data deletion callback", code);
+    return json(200, {
+      url: `${origin}/admin?ig=data-deletion&code=${code}`,
+      confirmation_code: code,
+    });
+  }
+
+  if (pathname === "/api/instagram-callback" && (method === "GET" || method === "POST")) {
+    const origin = requestOrigin(headers);
+    console.log("[instagram] callback", {
+      method,
+      origin,
+      redirectUri: instagramRedirectUri(origin),
+      hasCode: Boolean(body.code),
+      hasError: Boolean(body.error || body.error_description || body.error_reason),
+    });
+
+    const fail = async (message: string) => {
+      console.error("[instagram] callback failed:", message);
+      const current = await readSocial();
+      await writeSocial({ ...current, instagramLastError: message });
+      if (method === "POST") return json(400, { ok: false, error: message });
+      return {
+        status: 302,
+        redirect: adminRedirect(origin, `ig=error&tab=social&msg=${encodeURIComponent(message)}`),
+      };
+    };
+
+    const error = clip(body.error_description || body.error_reason || body.error, 300);
+    if (error) return fail(error);
+
+    const state = clip(body.state, 400);
+    const code = clip(body.code, 4000);
+    if (!verifyOAuthState(state)) return fail("Invalid or expired login state. Click Connect Instagram again.");
+    if (!code) return fail("Missing Instagram code. Open Admin via your ngrok HTTPS URL, then Connect again.");
+
+    try {
+      const config = await completeInstagramOAuth(code, origin, await readSocial());
+      await writeSocial(config);
+      const saved = await readSocial();
+      if (!saved.instagramToken) return fail("Instagram token was not saved to storage.");
+      console.log("[instagram] connected", saved.instagramUserId, saved.instagramUsername);
+      if (method === "POST") {
+        return json(200, {
+          ok: true,
+          userId: saved.instagramUserId,
+          username: saved.instagramUsername,
+        });
+      }
+      const msg = encodeURIComponent(
+        saved.instagramUsername ? `Connected @${saved.instagramUsername}` : "Instagram connected",
+      );
+      return { status: 302, redirect: adminRedirect(origin, `ig=connected&tab=social&msg=${msg}`) };
+    } catch (caught) {
+      const message = caught instanceof Error ? caught.message : "Instagram connect failed";
+      return fail(message);
+    }
+  }
+
+  if (pathname === "/api/tiktok-callback" && (method === "GET" || method === "POST")) {
+    const origin = requestOrigin(headers);
+    console.log("[tiktok] callback", {
+      method,
+      origin,
+      redirectUri: tiktokRedirectUri(origin),
+      hasCode: Boolean(body.code),
+      hasError: Boolean(body.error || body.error_description),
+    });
+
+    const fail = async (message: string) => {
+      console.error("[tiktok] callback failed:", message);
+      const current = await readSocial();
+      await writeSocial({ ...current, tiktokLastError: message });
+      if (method === "POST") return json(400, { ok: false, error: message });
+      return {
+        status: 302,
+        redirect: adminRedirect(origin, `tt=error&tab=social&msg=${encodeURIComponent(message)}`),
+      };
+    };
+
+    const error = clip(body.error_description || body.error, 300);
+    if (error) return fail(error);
+
+    const state = clip(body.state, 400);
+    const code = clip(body.code, 4000);
+    if (!verifyOAuthState(state)) return fail("Invalid or expired login state. Click Connect TikTok again.");
+    if (!code) return fail("Missing TikTok code. Open Admin via your ngrok HTTPS URL, then Connect again.");
+
+    try {
+      const config = await completeTikTokOAuth(code, origin, await readSocial());
+      await writeSocial(config);
+      const saved = await readSocial();
+      if (!saved.tiktokAccessToken) return fail("TikTok token was not saved to storage.");
+      console.log("[tiktok] connected", saved.tiktokOpenId, saved.tiktokUsername);
+      if (method === "POST") {
+        return json(200, {
+          ok: true,
+          openId: saved.tiktokOpenId,
+          username: saved.tiktokUsername,
+        });
+      }
+      const msg = encodeURIComponent(
+        saved.tiktokUsername ? `Connected @${saved.tiktokUsername}` : "TikTok connected",
+      );
+      return { status: 302, redirect: adminRedirect(origin, `tt=connected&tab=social&msg=${msg}`) };
+    } catch (caught) {
+      const message = caught instanceof Error ? caught.message : "TikTok connect failed";
+      return fail(message);
+    }
+  }
+
   return json(404, { ok: false });
 }
 

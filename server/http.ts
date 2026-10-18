@@ -1,5 +1,12 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { dispatch } from "./store.js";
+import { handleTikTokMediaProxy } from "./tiktok-property.js";
+
+type DispatchResult = {
+  status: number;
+  body?: unknown;
+  redirect?: string;
+};
 
 function send(res: ServerResponse, status: number, payload: unknown) {
   if (res.writableEnded) return;
@@ -7,6 +14,14 @@ function send(res: ServerResponse, status: number, payload: unknown) {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Cache-Control", "no-store");
   res.end(JSON.stringify(payload));
+}
+
+function sendRedirect(res: ServerResponse, location: string, status = 302) {
+  if (res.writableEnded) return;
+  res.statusCode = status;
+  res.setHeader("Location", location);
+  res.setHeader("Cache-Control", "no-store");
+  res.end();
 }
 
 async function readBody(req: IncomingMessage & { body?: unknown }) {
@@ -55,14 +70,31 @@ function parseBody(text: string) {
   return {};
 }
 
+function queryBody(req: IncomingMessage) {
+  try {
+    const host = req.headers.host || "localhost";
+    const url = new URL(req.url || "/", `http://${host}`);
+    return Object.fromEntries(url.searchParams.entries()) as Record<string, unknown>;
+  } catch {
+    return {};
+  }
+}
+
 export async function handleNode(req: IncomingMessage & { body?: unknown }, res: ServerResponse, pathname: string) {
   try {
-    const result = await dispatch({
-      method: req.method ?? "GET",
+    if (await handleTikTokMediaProxy(req, res, pathname)) return;
+
+    const method = req.method ?? "GET";
+    const result = (await dispatch({
+      method,
       pathname,
       headers: req.headers,
-      body: parseBody(await readBody(req)),
-    });
+      body: method === "GET" || method === "HEAD" ? queryBody(req) : parseBody(await readBody(req)),
+    })) as DispatchResult;
+    if (result.redirect) {
+      sendRedirect(res, result.redirect, result.status || 302);
+      return;
+    }
     send(res, result.status, result.body);
   } catch {
     send(res, 500, { ok: false, error: "storage" });

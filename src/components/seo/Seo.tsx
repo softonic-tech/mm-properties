@@ -1,6 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useContent, useLocale } from "@/content/language";
 import { matchPage, pageSeo } from "@/lib/pages";
+import {
+  findProperty,
+  loadProperties,
+  propertyDescription,
+  propertyTitle,
+  truncateText,
+  type Property,
+} from "@/lib/properties";
 import { usePathname } from "@/lib/router";
 import { LOCALES, LOGO_URL, OG_IMAGE, SITE_URL, pageUrl, seo, upsertLink, upsertMeta } from "@/lib/seo";
 
@@ -21,7 +29,32 @@ export function Seo() {
   const content = useContent();
   const { faq, brand, contact } = content;
   const match = matchPage(path, content);
-  const copy = pageSeo(match, content, seo[locale]);
+  const [property, setProperty] = useState<Property | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    if (match.id !== "property") {
+      setProperty(null);
+      return;
+    }
+    loadProperties().then((data) => {
+      if (!alive) return;
+      setProperty(findProperty(data, match.slug));
+    });
+    return () => {
+      alive = false;
+    };
+  }, [match]);
+
+  const localizedProperty =
+    property && match.id === "property"
+      ? {
+          ...property,
+          title: propertyTitle(property, locale),
+          description: propertyDescription(property, locale),
+        }
+      : property;
+  const copy = pageSeo(match, content, seo[locale], localizedProperty);
   const url = pageUrl(locale, match.id === "notFound" ? "/" : match.path);
 
   useEffect(() => {
@@ -38,11 +71,27 @@ export function Seo() {
     upsertMeta("property", "og:description", copy.description);
     upsertMeta("property", "og:url", url);
     upsertMeta("property", "og:locale", seo[locale].locale);
-    upsertMeta("property", "og:image", OG_IMAGE);
-    upsertMeta("property", "og:image:alt", brand.name);
+    upsertMeta(
+      "property",
+      "og:image",
+      localizedProperty?.image?.startsWith("http")
+        ? localizedProperty.image
+        : localizedProperty?.image
+          ? new URL(localizedProperty.image, SITE_URL).href
+          : OG_IMAGE,
+    );
+    upsertMeta("property", "og:image:alt", localizedProperty?.title ?? brand.name);
     upsertMeta("name", "twitter:title", copy.title);
     upsertMeta("name", "twitter:description", copy.description);
-    upsertMeta("name", "twitter:image", OG_IMAGE);
+    upsertMeta(
+      "name",
+      "twitter:image",
+      localizedProperty?.image?.startsWith("http")
+        ? localizedProperty.image
+        : localizedProperty?.image
+          ? new URL(localizedProperty.image, SITE_URL).href
+          : OG_IMAGE,
+    );
 
     const canonicalPath = match.id === "notFound" ? "/" : match.path;
     upsertLink("canonical", url);
@@ -74,7 +123,47 @@ export function Seo() {
       document.getElementById("schema-faq")?.remove();
     }
 
-    if (match.id !== "home" && match.id !== "notFound") {
+    if (match.id === "property" && localizedProperty) {
+      setJsonLd("schema-breadcrumb", {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: content.pages.homeLabel, item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: content.pages.homes.title, item: pageUrl(locale, "/homes") },
+          { "@type": "ListItem", position: 3, name: localizedProperty.title, item: pageUrl(locale, match.path) },
+        ],
+      });
+      setJsonLd("schema-property", {
+        "@context": "https://schema.org",
+        "@type": "RealEstateListing",
+        name: localizedProperty.title,
+        description: truncateText(localizedProperty.description || copy.description),
+        url: pageUrl(locale, match.path),
+        image: localizedProperty.images?.length
+          ? localizedProperty.images.map((img) => img.url)
+          : localizedProperty.image?.startsWith("http")
+            ? localizedProperty.image
+            : new URL(localizedProperty.image, SITE_URL).href,
+        ...(localizedProperty.price
+          ? {
+              offers: {
+                "@type": "Offer",
+                price: localizedProperty.price,
+                priceCurrency: "EUR",
+                availability: "https://schema.org/InStock",
+              },
+            }
+          : {}),
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: localizedProperty.address || undefined,
+          addressLocality: localizedProperty.city || undefined,
+          addressRegion: localizedProperty.province || undefined,
+          postalCode: localizedProperty.postalCode || undefined,
+          addressCountry: "ES",
+        },
+      });
+    } else if (match.id !== "home" && match.id !== "notFound") {
       setJsonLd("schema-breadcrumb", {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -83,8 +172,10 @@ export function Seo() {
           { "@type": "ListItem", position: 2, name: copy.title, item: pageUrl(locale, match.path) },
         ],
       });
+      document.getElementById("schema-property")?.remove();
     } else {
       document.getElementById("schema-breadcrumb")?.remove();
+      document.getElementById("schema-property")?.remove();
     }
 
     setJsonLd("schema-agency", {
@@ -122,7 +213,21 @@ export function Seo() {
       sameAs: [...contact.socials.map((social) => social.href), "https://www.mmproperty.es/en"],
       priceRange: "€€€",
     });
-  }, [brand.name, contact.email, contact.socials, content.pages.homeLabel, copy.description, copy.title, faq.items, locale, match.id, match.path, url]);
+  }, [
+    brand.name,
+    contact.email,
+    contact.socials,
+    content.pages.homeLabel,
+    content.pages.homes.title,
+    copy.description,
+    copy.title,
+    faq.items,
+    locale,
+    match,
+    localizedProperty,
+    property,
+    url,
+  ]);
 
   return null;
 }

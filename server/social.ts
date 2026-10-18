@@ -469,7 +469,8 @@ async function assertAllowedUser(userToken: string) {
   }
   if (!allowed.includes(data.id)) {
     throw new Error(
-      `This Facebook account (${data.id}) is not allowed. Add it to ALLOWED_FACEBOOK_USER_IDS or clear that variable.`,
+      `This Facebook account (${data.id}) is not on ALLOWED_FACEBOOK_USER_IDS. ` +
+        `Meta App Roles alone are not enough while that env is set — add this ID, or remove ALLOWED_FACEBOOK_USER_ID(S) from Vercel so any Admin/Developer/Tester can connect.`,
     );
   }
 }

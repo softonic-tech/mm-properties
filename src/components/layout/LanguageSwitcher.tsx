@@ -76,7 +76,11 @@ export function LanguageSwitcher() {
     <div ref={root} className="relative">
       <button
         type="button"
-        className="flex items-center gap-2 rounded-full border border-white/25 bg-white/10 py-1.5 pl-2.5 pr-2 text-[12px] font-medium tracking-[0.04em] text-white backdrop-blur-md"
+        className={`flex items-center gap-2 rounded-full border py-1.5 pl-2.5 pr-2 text-[12px] font-medium tracking-[0.04em] text-white backdrop-blur-md transition-colors ${
+          open
+            ? "border-[#c9a227]/45 bg-[#c9a227]/15"
+            : "border-white/25 bg-white/10 hover:bg-white/15"
+        }`}
         aria-label={`Language: ${localeLabel(locale)}`}
         aria-haspopup="listbox"
         aria-expanded={open}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { Header } from "@/components/layout/Header";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { CustomSelect } from "@/components/ui/CustomSelect";
 import { Image } from "@/components/ui/Image";
 import { useContent, useLocale } from "@/content/language";
 import {
@@ -258,8 +259,28 @@ export function HomesPage({ page = 1 }: { page?: number }) {
   }
 
   const fieldClass =
-    "h-11 w-full border border-[#d1d5db] bg-white px-3 text-[13px] text-[#374151] outline-none focus:border-[#c9a227]";
+    "h-11 w-full border border-[#d1d5db] bg-white px-3 text-[13px] text-[#374151] outline-none transition-colors focus:border-[#c9a227]";
   const labelClass = "mb-1.5 block text-[11px] tracking-[0.08em] text-[#6b7280] uppercase";
+
+  const cityOptions = [{ value: "", label: copy.anyCity }, ...cities.map((city) => ({ value: city, label: city }))];
+  const typeOptions = [{ value: "", label: copy.anyType }, ...types.map((type) => ({ value: type, label: type }))];
+  const bedsOptions = [
+    { value: "", label: copy.anyBeds },
+    ...[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: `${n}+` })),
+  ];
+  const priceOptions = [
+    { value: "", label: copy.anyPrice },
+    ...[300000, 500000, 750000, 1000000, 1500000, 2000000, 3000000].map((n) => ({
+      value: String(n),
+      label: copy.upToPrice.replace("{price}", formatEuro(n)),
+    })),
+  ];
+  const sortOptions = [
+    { value: "date", label: copy.sortDate },
+    { value: "price", label: copy.sortPrice },
+    { value: "size", label: copy.sortSize },
+    { value: "beds", label: copy.sortBeds },
+  ];
 
   return (
     <div className="min-h-svh bg-[#f3f4f6]">
@@ -282,66 +303,30 @@ export function HomesPage({ page = 1 }: { page?: number }) {
               className={fieldClass}
             />
           </label>
-          <label className="block">
-            <span className={labelClass}>{copy.cityLabel}</span>
-            <select
-              value={draft.city}
-              onChange={(e) => setDraft((prev) => ({ ...prev, city: e.target.value }))}
-              className={fieldClass}
-            >
-              <option value="">{copy.anyCity}</option>
-              {cities.map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
-            <span className={labelClass}>{copy.typeLabel}</span>
-            <select
-              value={draft.type}
-              onChange={(e) => setDraft((prev) => ({ ...prev, type: e.target.value }))}
-              className={fieldClass}
-            >
-              <option value="">{copy.anyType}</option>
-              {types.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
-            <span className={labelClass}>{copy.bedsLabel}</span>
-            <select
-              value={draft.beds}
-              onChange={(e) => setDraft((prev) => ({ ...prev, beds: e.target.value }))}
-              className={fieldClass}
-            >
-              <option value="">{copy.anyBeds}</option>
-              {[1, 2, 3, 4, 5].map((n) => (
-                <option key={n} value={String(n)}>
-                  {n}+
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
-            <span className={labelClass}>{copy.priceLabel}</span>
-            <select
-              value={draft.maxPrice}
-              onChange={(e) => setDraft((prev) => ({ ...prev, maxPrice: e.target.value }))}
-              className={fieldClass}
-            >
-              <option value="">{copy.anyPrice}</option>
-              {[300000, 500000, 750000, 1000000, 1500000, 2000000, 3000000].map((n) => (
-                <option key={n} value={String(n)}>
-                  {copy.upToPrice.replace("{price}", formatEuro(n))}
-                </option>
-              ))}
-            </select>
-          </label>
+          <CustomSelect
+            label={copy.cityLabel}
+            value={draft.city}
+            options={cityOptions}
+            onChange={(city) => setDraft((prev) => ({ ...prev, city }))}
+          />
+          <CustomSelect
+            label={copy.typeLabel}
+            value={draft.type}
+            options={typeOptions}
+            onChange={(type) => setDraft((prev) => ({ ...prev, type }))}
+          />
+          <CustomSelect
+            label={copy.bedsLabel}
+            value={draft.beds}
+            options={bedsOptions}
+            onChange={(beds) => setDraft((prev) => ({ ...prev, beds }))}
+          />
+          <CustomSelect
+            label={copy.priceLabel}
+            value={draft.maxPrice}
+            options={priceOptions}
+            onChange={(maxPrice) => setDraft((prev) => ({ ...prev, maxPrice }))}
+          />
           <div className="flex gap-2 sm:col-span-2 lg:col-span-6">
             <button
               type="submit"
@@ -352,7 +337,7 @@ export function HomesPage({ page = 1 }: { page?: number }) {
             <button
               type="button"
               onClick={clearSearch}
-              className="inline-flex h-11 items-center justify-center border border-[#d1d5db] bg-white px-4 text-[13px] font-medium text-[#6b7280]"
+              className="inline-flex h-11 items-center justify-center border border-[#d1d5db] bg-white px-4 text-[13px] font-medium text-[#6b7280] transition-colors hover:border-[#c9a227]/50 hover:text-[#374151]"
             >
               {copy.clearButton}
             </button>
@@ -369,19 +354,17 @@ export function HomesPage({ page = 1 }: { page?: number }) {
               : copy.loading}
           </p>
           <div className="flex flex-wrap items-center gap-2">
-            <label className="flex items-center gap-2 text-[14px] text-[#6b7280]">
-              <span>{copy.sortBy}</span>
-              <select
+            <div className="flex items-center gap-2 text-[14px] text-[#6b7280]">
+              <span className="shrink-0">{copy.sortBy}</span>
+              <CustomSelect
                 value={sortKey}
-                onChange={(e) => setSortKey(e.target.value as PropertySortKey)}
-                className="h-9 border border-[#d1d5db] bg-white px-3 text-[13px] text-[#374151] outline-none"
-              >
-                <option value="date">{copy.sortDate}</option>
-                <option value="price">{copy.sortPrice}</option>
-                <option value="size">{copy.sortSize}</option>
-                <option value="beds">{copy.sortBeds}</option>
-              </select>
-            </label>
+                options={sortOptions}
+                onChange={(next) => setSortKey(next as PropertySortKey)}
+                ariaLabel={copy.sortBy}
+                size="sm"
+                className="min-w-[8.5rem]"
+              />
+            </div>
             <button
               type="button"
               onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}

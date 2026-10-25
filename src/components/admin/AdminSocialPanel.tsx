@@ -188,7 +188,7 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
         : network === "instagram"
           ? "instagram-connect"
           : "tiktok-connect";
-    showBanner("working", "Connecting", `Opening ${network}…`, "connecting");
+    showBanner("working", "Connecting", `Opening ${network} login…`, "connecting");
     const result = await socialCall({ action });
     if (!result) return;
     const url = String(result.url || "");
@@ -199,10 +199,10 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
     window.location.href = url;
   };
 
-  const disconnect = async (network: "facebook" | "instagram" | "tiktok") => {
+  const disconnect = async (network: "facebook" | "instagram" | "tiktok", { silent = false } = {}) => {
     const label = network === "facebook" ? "Facebook" : network === "instagram" ? "Instagram" : "TikTok";
-    if (!window.confirm(`Disconnect ${label}?`)) return;
-    showBanner("working", "Working", `Disconnecting ${label}…`, "connecting");
+    if (!silent && !window.confirm(`Disconnect ${label}?`)) return;
+    if (!silent) showBanner("working", "Working", `Disconnecting ${label}…`, "connecting");
     const action =
       network === "facebook"
         ? "facebook-disconnect"
@@ -212,7 +212,17 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
     const result = await socialCall({ action });
     if (!result) return;
     setSocial(result as unknown as SocialStatus);
-    showBanner("info", "Disconnected", `${label} disconnected.`);
+    if (!silent) showBanner("info", "Disconnected", `${label} disconnected.`);
+    return true;
+  };
+
+  /** Disconnect then open OAuth again — useful for App Review demo videos. */
+  const reconnect = async (network: "facebook" | "instagram" | "tiktok") => {
+    const label = network === "facebook" ? "Facebook" : network === "instagram" ? "Instagram" : "TikTok";
+    showBanner("working", "Reconnecting", `Opening ${label} login again…`, "connecting");
+    const cleared = await disconnect(network, { silent: true });
+    if (!cleared) return;
+    await connect(network);
   };
 
   const selectPage = async (pageId: string) => {
@@ -409,14 +419,24 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
               </div>
               <div className="flex flex-wrap gap-2">
                 {row.connected ? (
-                  <button
-                    type="button"
-                    disabled={busy}
-                    onClick={() => void disconnect(row.key)}
-                    className="h-10 cursor-pointer rounded-full border border-white/20 px-5 text-[11px] tracking-[0.12em] uppercase transition hover:border-white/40 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    Disconnect
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => void reconnect(row.key)}
+                      className={`h-10 cursor-pointer rounded-full px-5 text-[11px] font-semibold tracking-[0.12em] text-white uppercase shadow-md transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 ${row.color}`}
+                    >
+                      {phase === "connecting" ? "Opening login…" : "Reconnect"}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => void disconnect(row.key)}
+                      className="h-10 cursor-pointer rounded-full border border-white/20 px-5 text-[11px] tracking-[0.12em] uppercase transition hover:border-white/40 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      Disconnect
+                    </button>
+                  </>
                 ) : (
                   <button
                     type="button"
@@ -424,7 +444,7 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
                     onClick={() => void connect(row.key)}
                     className={`h-10 cursor-pointer rounded-full px-5 text-[11px] font-semibold tracking-[0.12em] text-white uppercase shadow-md transition hover:brightness-110 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40 ${row.color}`}
                   >
-                    {phase === "connecting" ? "Connecting…" : "Connect"}
+                    {phase === "connecting" ? "Opening login…" : "Connect"}
                   </button>
                 )}
               </div>

@@ -120,6 +120,9 @@ export function buildTikTokAuthUrl(origin: string, state: string) {
     response_type: "code",
     scope: TIKTOK_SCOPES,
     state,
+    // Always show TikTok login/consent (needed after Disconnect and for App Review demos).
+    // Without this, TikTok silently redirects users who already authorized the same scopes.
+    disable_auto_auth: "1",
   });
   console.log("[tiktok] authorize redirect_uri=", tiktokRedirectUri(origin));
   return `${TIKTOK_AUTH_URL}?${params}`;

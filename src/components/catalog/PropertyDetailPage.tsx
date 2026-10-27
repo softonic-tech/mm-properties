@@ -55,13 +55,13 @@ function ContactSidebar({
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!privacy) return;
+    if (!intent) {
+      setStatus("error");
+      return;
+    }
     setStatus("saving");
-    const intentNote = intent === "offer" ? "[OFFER]" : intent === "visit" ? "[VISIT]" : "";
-    const note = [
-      intentNote,
-      `Property ${property.ref} (${property.id}) — ${title}`,
-      message.trim(),
-    ]
+    const intentNote = intent === "offer" ? "[OFFER]" : "[VISIT]";
+    const note = [intentNote, `Property ${property.ref} — ${title}`, message.trim()]
       .filter(Boolean)
       .join("\n");
 
@@ -70,14 +70,20 @@ function ContactSidebar({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          kind: "contact",
+          intent,
           name: name.trim(),
           email: email.trim(),
           phone: phone.trim(),
           note,
+          propertyId: property.id,
+          propertyRef: property.ref,
+          propertyTitle: title,
           ...leadMeta(),
         }),
       });
-      if (!response.ok) throw new Error("save failed");
+      const payload = (await response.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+      if (!response.ok || payload.ok === false) throw new Error(payload.error || "save failed");
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -129,23 +135,32 @@ function ContactSidebar({
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() => setIntent("offer")}
+                onClick={() => {
+                  setIntent("offer");
+                  if (status === "error") setStatus("idle");
+                }}
                 className={`h-10 text-[12px] font-semibold tracking-[0.08em] text-white uppercase transition ${
-                  intent === "offer" ? "bg-[#b8911f]" : "bg-[#c9a227] hover:bg-[#b8911f]"
+                  intent === "offer" ? "bg-[#b8911f] ring-2 ring-[#b8911f]/40" : "bg-[#c9a227] hover:bg-[#b8911f]"
                 }`}
               >
                 {copy.offer}
               </button>
               <button
                 type="button"
-                onClick={() => setIntent("visit")}
+                onClick={() => {
+                  setIntent("visit");
+                  if (status === "error") setStatus("idle");
+                }}
                 className={`h-10 text-[12px] font-semibold tracking-[0.08em] text-white uppercase transition ${
-                  intent === "visit" ? "bg-[#b8911f]" : "bg-[#c9a227] hover:bg-[#b8911f]"
+                  intent === "visit" ? "bg-[#b8911f] ring-2 ring-[#b8911f]/40" : "bg-[#c9a227] hover:bg-[#b8911f]"
                 }`}
               >
                 {copy.visit}
               </button>
             </div>
+            {!intent && status === "error" ? (
+              <p className="text-[12px] text-red-600">Choose Offer or Visit before sending.</p>
+            ) : null}
 
             <textarea
               name="message"
@@ -173,7 +188,9 @@ function ContactSidebar({
               </span>
             </label>
 
-            {status === "error" ? <p className="text-[13px] text-red-600">{copy.error}</p> : null}
+            {status === "error" && intent ? (
+              <p className="text-[13px] text-red-600">{copy.error}</p>
+            ) : null}
 
             <button
               type="submit"

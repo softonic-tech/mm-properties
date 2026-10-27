@@ -19,10 +19,16 @@ type Visit = {
 };
 
 type Lead = {
+  id: string;
   email: string;
   name: string;
   phone: string;
   note: string;
+  kind: "offer" | "contact";
+  intent: string;
+  propertyId: string;
+  propertyRef: string;
+  propertyTitle: string;
   joinedAt: string;
   path: string;
   source: string;
@@ -36,7 +42,7 @@ type AdminData = {
   storage: "atlas" | "file" | "blob" | "temporary";
 };
 
-type Tab = "overview" | "traffic" | "subscribers" | "social" | "settings";
+type Tab = "overview" | "traffic" | "subscribers" | "contacts" | "social" | "settings";
 
 const PASSWORD_KEY = "mm-admin-password";
 
@@ -50,8 +56,18 @@ const storageNote: Record<AdminData["storage"], string> = {
 
 function formatWhen(value: string) {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "â€”";
+  if (Number.isNaN(date.getTime())) return "—";
   return new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(date);
+}
+
+function leadKind(lead: Lead): "offer" | "contact" {
+  return lead.kind === "contact" ? "contact" : "offer";
+}
+
+function intentLabel(intent: string) {
+  if (intent === "offer") return "Offer";
+  if (intent === "visit") return "Visit";
+  return intent || "—";
 }
 
 function dayKey(value: string) {
@@ -63,7 +79,7 @@ function dayKey(value: string) {
 }
 
 function countryName(code: string) {
-  if (!code) return "â€”";
+  if (!code) return "—";
   try {
     return new Intl.DisplayNames(["en"], { type: "region" }).of(code) ?? code;
   } catch {
@@ -203,7 +219,7 @@ export function AdminPage() {
       pages: tally(people.map(pageLabel)).slice(0, 6),
       locales: tally(arrivals.map((visit) => localeName(visit.locale))),
       devices: tally(arrivals.map((visit) => visit.device).filter(Boolean)),
-      countries: tally(arrivals.map((visit) => countryName(visit.country)).filter((name) => name !== "â€”")),
+      countries: tally(arrivals.map((visit) => countryName(visit.country)).filter((name) => name !== "—")),
     };
   }, [data]);
 
@@ -222,9 +238,24 @@ export function AdminPage() {
 
   const subscribers = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return (data?.leads ?? []).filter(
-      (lead) => !needle || `${lead.name} ${lead.phone} ${lead.email} ${lead.note} ${lead.path}`.toLowerCase().includes(needle),
-    );
+    return (data?.leads ?? []).filter((lead) => {
+      if (leadKind(lead) !== "offer") return false;
+      if (!needle) return true;
+      return `${lead.name} ${lead.phone} ${lead.email} ${lead.note} ${lead.path}`
+        .toLowerCase()
+        .includes(needle);
+    });
+  }, [data, query]);
+
+  const contacts = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return (data?.leads ?? []).filter((lead) => {
+      if (leadKind(lead) !== "contact") return false;
+      if (!needle) return true;
+      return `${lead.name} ${lead.phone} ${lead.email} ${lead.note} ${lead.intent} ${lead.propertyRef} ${lead.propertyTitle} ${lead.path}`
+        .toLowerCase()
+        .includes(needle);
+    });
   }, [data, query]);
 
   const change = async (body: Record<string, unknown>) => {
@@ -272,16 +303,16 @@ export function AdminPage() {
       <main className="min-h-svh bg-background px-5 py-10 text-foreground md:px-10">
         <div className="mx-auto max-w-sm">
           <a href="/" className="text-sm text-foreground-muted">
-            â† M&M Property
+            ← M&M Property
           </a>
           <h1 className="mt-6 font-serif text-4xl">Admin</h1>
           <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
-            Traffic, subscribers, and the settings for this site.
+            Traffic, contacts, subscribers, and the settings for this site.
           </p>
           {notice ? <p className="mt-4 text-sm text-[#d7dee6]">{notice}</p> : null}
           {error ? <p className="mt-4 text-sm text-foreground-muted">{error}</p> : null}
           {password ? (
-            <p className="mt-8 text-sm text-foreground-muted">Openingâ€¦</p>
+            <p className="mt-8 text-sm text-foreground-muted">Opening…</p>
           ) : (
             <form
               className="mt-8 flex flex-col gap-3"
@@ -314,10 +345,14 @@ export function AdminPage() {
     );
   }
 
+  const offerCount = data.leads.filter((lead) => leadKind(lead) === "offer").length;
+  const contactCount = data.leads.filter((lead) => leadKind(lead) === "contact").length;
+
   const tabs: { id: Tab; label: string }[] = [
     { id: "overview", label: "Overview" },
     { id: "traffic", label: "Traffic" },
-    { id: "subscribers", label: `Subscribers Â· ${data.leads.length}` },
+    { id: "contacts", label: `Contacts · ${contactCount}` },
+    { id: "subscribers", label: `Subscribers · ${offerCount}` },
     { id: "social", label: "Social" },
     { id: "settings", label: "Settings" },
   ];
@@ -328,7 +363,7 @@ export function AdminPage() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <a href="/" className="text-sm text-foreground-muted">
-              â† M&M Property
+              ← M&M Property
             </a>
             <h1 className="mt-4 font-serif text-4xl">Admin</h1>
           </div>
@@ -367,11 +402,12 @@ export function AdminPage() {
 
         {tab === "overview" ? (
           <div className="mt-8 space-y-5">
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
               <Stat label="Landings" value={stats.landings} note={`${stats.today.toLocaleString()} today`} />
               <Stat label="People" value={stats.unique} note="A person is counted once" />
               <Stat label="Page views" value={stats.views} note="Landings and later pages" />
-              <Stat label="Subscribers" value={data.leads.length} note="Early-access emails" />
+              <Stat label="Contacts" value={contactCount} note="Property form submissions" />
+              <Stat label="Subscribers" value={offerCount} note="Early-access emails" />
             </div>
 
             <Panel title="Landings, last 14 days">
@@ -503,7 +539,7 @@ export function AdminPage() {
                           ) : null}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-foreground-muted">
-                          {visit.device || "â€”"} Â· {visit.locale.toUpperCase()}
+                          {visit.device || "—"} · {visit.locale.toUpperCase()}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <button
@@ -523,6 +559,93 @@ export function AdminPage() {
             {traffic.length > 300 ? (
               <p className="mt-3 text-sm text-foreground-muted">Showing the latest 300. Export includes the full filter.</p>
             ) : null}
+          </section>
+        ) : null}
+
+        {tab === "contacts" ? (
+          <section className="mt-8">
+            <div className="flex flex-wrap items-center gap-3">
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search name, phone, email, or property"
+                className="h-11 w-full max-w-sm rounded-full border border-white/15 bg-white/5 px-4 text-sm outline-none"
+              />
+              <button
+                type="button"
+                className="text-sm text-foreground-muted"
+                onClick={() =>
+                  download("contacts.csv", [
+                    ["Name", "Phone", "Email", "Intent", "Property", "Ref", "Note", "Source", "Page", "Submitted"],
+                    ...contacts.map((lead) => [
+                      lead.name,
+                      lead.phone,
+                      lead.email,
+                      intentLabel(lead.intent),
+                      lead.propertyTitle,
+                      lead.propertyRef,
+                      lead.note,
+                      lead.source,
+                      lead.path,
+                      lead.joinedAt,
+                    ]),
+                  ])
+                }
+              >
+                Export
+              </button>
+            </div>
+            {contacts.length === 0 ? (
+              <p className="mt-6 text-sm text-foreground-muted">
+                No contact submissions yet. Property detail form Offer and Visit requests appear here.
+              </p>
+            ) : (
+              <ul className="mt-4 divide-y divide-white/10 rounded-2xl border border-white/10">
+                {contacts.map((lead) => (
+                  <li key={lead.id} className="flex items-start justify-between gap-4 px-4 py-3 text-sm">
+                    <span>
+                      <span className="block font-medium">{lead.name || lead.email}</span>
+                      <span className="mt-1 block text-foreground-muted">
+                        {lead.phone ? (
+                          <a href={`tel:${lead.phone.replace(/[^\d+]/g, "")}`} className="hover:text-white">
+                            {lead.phone}
+                          </a>
+                        ) : null}
+                        {lead.phone ? " · " : ""}
+                        <a href={`mailto:${lead.email}`} className="hover:text-white">
+                          {lead.email}
+                        </a>
+                      </span>
+                      <span className="mt-1 block text-foreground-muted">
+                        {intentLabel(lead.intent)}
+                        {lead.propertyRef || lead.propertyTitle
+                          ? ` · ${[lead.propertyRef, lead.propertyTitle].filter(Boolean).join(" — ")}`
+                          : ""}
+                      </span>
+                      {lead.note ? (
+                        <span className="mt-1 block whitespace-pre-wrap text-foreground-muted">{lead.note}</span>
+                      ) : null}
+                      <span className="mt-1 block text-xs text-foreground-subtle">
+                        {formatWhen(lead.joinedAt)}
+                        {lead.source ? ` · ${lead.source}` : ""}
+                        {lead.path ? ` · ${lead.path}` : ""}
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      className="text-xs text-foreground-subtle"
+                      onClick={() => {
+                        if (window.confirm(`Remove contact from ${lead.email}?`)) {
+                          void change({ action: "delete-lead", id: lead.id });
+                        }
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
         ) : null}
 
@@ -558,12 +681,12 @@ export function AdminPage() {
             </div>
             {subscribers.length === 0 ? (
               <p className="mt-6 text-sm text-foreground-muted">
-                No leads yet. Name, phone and email appear here when someone sends the form.
+                No subscribers yet. Early-access emails appear here when someone joins the offer list.
               </p>
             ) : (
               <ul className="mt-4 divide-y divide-white/10 rounded-2xl border border-white/10">
                 {subscribers.map((lead) => (
-                  <li key={lead.email} className="flex items-start justify-between gap-4 px-4 py-3 text-sm">
+                  <li key={lead.id} className="flex items-start justify-between gap-4 px-4 py-3 text-sm">
                     <span>
                       <span className="block">{lead.name || lead.email}</span>
                       <span className="mt-1 block text-foreground-muted">
@@ -572,7 +695,7 @@ export function AdminPage() {
                             {lead.phone}
                           </a>
                         ) : null}
-                        {lead.phone ? " Â· " : ""}
+                        {lead.phone ? " · " : ""}
                         <a href={`mailto:${lead.email}`} className="hover:text-white">
                           {lead.email}
                         </a>
@@ -580,15 +703,17 @@ export function AdminPage() {
                       {lead.note ? <span className="mt-1 block text-foreground-muted">{lead.note}</span> : null}
                       <span className="mt-1 block text-xs text-foreground-subtle">
                         {formatWhen(lead.joinedAt)}
-                        {lead.source ? ` Â· ${lead.source}` : ""}
-                        {lead.path ? ` Â· ${lead.path}` : ""}
+                        {lead.source ? ` · ${lead.source}` : ""}
+                        {lead.path ? ` · ${lead.path}` : ""}
                       </span>
                     </span>
                     <button
                       type="button"
                       className="text-xs text-foreground-subtle"
                       onClick={() => {
-                        if (window.confirm(`Remove ${lead.email}?`)) void change({ action: "delete-lead", email: lead.email });
+                        if (window.confirm(`Remove ${lead.email}?`)) {
+                          void change({ action: "delete-lead", id: lead.id });
+                        }
                       }}
                     >
                       Remove

@@ -69,10 +69,16 @@ export type Visit = {
 };
 
 export type Lead = {
+  id: string;
   email: string;
   name: string;
   phone: string;
   note: string;
+  kind: "offer" | "contact";
+  intent: string;
+  propertyId: string;
+  propertyRef: string;
+  propertyTitle: string;
   joinedAt: string;
   path: string;
   source: string;
@@ -535,14 +541,21 @@ function cleanPhone(value: unknown) {
   return phone;
 }
 
-function normalizeLead(raw: Partial<Lead>): Lead | null {
+function normalizeLead(raw: Partial<Lead> & { id?: string }): Lead | null {
   const email = String(raw.email ?? "").trim().toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
+  const kind = raw.kind === "contact" ? "contact" : "offer";
   return {
+    id: String(raw.id || "").trim() || `lead-${email}-${raw.joinedAt || "0"}`,
     email,
     name: raw.name || "",
     phone: raw.phone || "",
     note: raw.note || "",
+    kind,
+    intent: String(raw.intent || "").trim(),
+    propertyId: String(raw.propertyId || "").trim(),
+    propertyRef: String(raw.propertyRef || "").trim(),
+    propertyTitle: String(raw.propertyTitle || "").trim(),
     joinedAt: raw.joinedAt || new Date(0).toISOString(),
     path: raw.path || "",
     source: raw.source || "",
@@ -619,30 +632,48 @@ async function recordVisit(headers: IncomingHttpHeaders, input: Record<string, u
 async function recordLead(input: Record<string, unknown>) {
   const email = clip(input.email, 180).toLowerCase();
   const rawName = clip(input.name, 80);
-  const rawPhone = clip(input.phone, 24);
+  const rawPhone = clip(input.phone, 32);
   const name = rawName ? cleanName(input.name) : "";
   const phone = rawPhone ? cleanPhone(input.phone) : "";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json(400, { ok: false });
-  if ((rawName && !name) || (rawPhone && !phone)) return json(400, { ok: false });
+  const kind = clip(input.kind, 20) === "contact" ? "contact" : "offer";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return json(400, { ok: false, error: "Enter a valid email address." });
+  }
+  if (kind === "contact") {
+    if (!name || !phone) {
+      return json(400, { ok: false, error: "Name and phone are required." });
+    }
+    const intent = clip(input.intent, 40);
+    if (intent !== "offer" && intent !== "visit") {
+      return json(400, { ok: false, error: "Choose Offer or Visit." });
+    }
+  } else if ((rawName && !name) || (rawPhone && !phone)) {
+    return json(400, { ok: false, error: "Check the name and phone number." });
+  }
+  const referrer = cleanReferrer(input.referrer);
+  const utm = clip(input.utm, 160);
   const leads = parseList<Partial<Lead>>(await readRaw("leads.json"))
     .map(normalizeLead)
     .filter((lead): lead is Lead => lead !== null);
-  const existing = leads.find((lead) => lead.email === email);
-  const next = leads.filter((lead) => lead.email !== email);
-  const referrer = cleanReferrer(input.referrer);
-  const utm = clip(input.utm, 160);
-  next.push({
+  const lead: Lead = {
+    id: randomUUID(),
     email,
-    name: name || existing?.name || "",
-    phone: phone || existing?.phone || "",
-    note: clip(input.note, 400) || existing?.note || "",
-    joinedAt: existing?.joinedAt ?? new Date().toISOString(),
+    name,
+    phone,
+    note: clip(input.note, 1200),
+    kind,
+    intent: clip(input.intent, 40),
+    propertyId: clip(input.propertyId, 80),
+    propertyRef: clip(input.propertyRef, 80),
+    propertyTitle: clip(input.propertyTitle, 200),
+    joinedAt: new Date().toISOString(),
     path: cleanPath(input.path),
     source: sourceFrom(referrer, utm),
     locale: asLocale(input.locale),
-  });
-  await writeRaw("leads.json", JSON.stringify(next, null, 2));
-  return json(200, { ok: true });
+  };
+  leads.push(lead);
+  await writeRaw("leads.json", JSON.stringify(leads.slice(-5000), null, 2));
+  return json(200, { ok: true, id: lead.id });
 }
 
 async function updateAdmin(headers: IncomingHttpHeaders, input: Record<string, unknown>) {
@@ -651,10 +682,16 @@ async function updateAdmin(headers: IncomingHttpHeaders, input: Record<string, u
   const action = clip(input.action, 40);
 
   if (action === "delete-lead") {
+    const id = clip(input.id, 80);
     const email = clip(input.email, 180).toLowerCase();
     const leads = parseList<Partial<Lead>>(await readRaw("leads.json"))
       .map(normalizeLead)
-      .filter((lead): lead is Lead => lead !== null && lead.email !== email);
+      .filter((lead): lead is Lead => {
+        if (!lead) return false;
+        if (id) return lead.id !== id;
+        if (email) return lead.email !== email;
+        return true;
+      });
     await writeRaw("leads.json", JSON.stringify(leads, null, 2));
   } else if (action === "delete-visit") {
     const id = clip(input.id, 80);

@@ -57,6 +57,7 @@ export function InquiryForm({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          kind: "offer",
           email: details.email,
           ...(emailOnly ? {} : { name: details.name, phone: details.phone, note: note.trim() }),
           ...leadMeta(),

@@ -57,7 +57,14 @@ function allowedIds(...envNames: string[]) {
 }
 
 const SITE = "https://mmproperty.io";
-const SCOPES = ["public_profile", "pages_show_list", "pages_read_engagement", "pages_manage_posts"].join(",");
+// business_management is required for /me/accounts once a Page is linked to a Meta Business portfolio.
+const SCOPES = [
+  "public_profile",
+  "pages_show_list",
+  "pages_read_engagement",
+  "pages_manage_posts",
+  "business_management",
+].join(",");
 const IG_SCOPES = [
   "instagram_business_basic",
   "instagram_business_content_publish",
@@ -485,7 +492,50 @@ function mapPages(rows: { id?: string; name?: string; access_token?: string }[] 
     .filter((page) => page.id && page.accessToken);
 }
 
+type GraphError = { message?: string; type?: string; code?: number; error_subcode?: number; fbtrace_id?: string };
+
+async function facebookPermissions(userToken: string) {
+  try {
+    const response = await fetch(`${graphBase()}/me/permissions?access_token=${encodeURIComponent(userToken)}`);
+    const data = (await response.json()) as {
+      data?: { permission?: string; status?: string }[];
+      error?: GraphError;
+    };
+    if (!response.ok || data.error) {
+      console.warn("[facebook] permissions lookup failed", data.error || { status: response.status });
+      return [];
+    }
+    return (data.data ?? []).map((row) => ({
+      permission: String(row.permission || ""),
+      status: String(row.status || ""),
+    }));
+  } catch (caught) {
+    console.warn("[facebook] permissions lookup error", caught instanceof Error ? caught.message : caught);
+    return [];
+  }
+}
+
+function summarizePageRows(rows: { id?: string; name?: string; access_token?: string }[] | undefined) {
+  return (rows ?? []).map((page) => ({
+    id: String(page.id ?? "").trim(),
+    name: String(page.name ?? "").trim(),
+    hasToken: Boolean(String(page.access_token ?? "").trim()),
+  }));
+}
+
 export async function fetchFacebookPages(userToken: string): Promise<FacebookPage[]> {
+  const permissions = await facebookPermissions(userToken);
+  const granted = permissions.filter((row) => row.status === "granted").map((row) => row.permission);
+  const declined = permissions.filter((row) => row.status === "declined").map((row) => row.permission);
+  console.log("[facebook] token permissions", {
+    granted,
+    declined,
+    need: ["pages_show_list", "pages_manage_posts", "business_management"],
+    missing: ["pages_show_list", "pages_manage_posts", "business_management"].filter(
+      (scope) => !granted.includes(scope),
+    ),
+  });
+
   const params = new URLSearchParams({
     fields: "id,name,access_token",
     access_token: userToken,
@@ -493,11 +543,25 @@ export async function fetchFacebookPages(userToken: string): Promise<FacebookPag
   const response = await fetch(`${graphBase()}/me/accounts?${params}`);
   const data = (await response.json()) as {
     data?: { id?: string; name?: string; access_token?: string }[];
-    error?: { message?: string };
+    error?: GraphError;
   };
+  const rawAccounts = summarizePageRows(data.data);
+  console.log("[facebook] /me/accounts", {
+    http: response.status,
+    ok: response.ok,
+    error: data.error || null,
+    rawCount: rawAccounts.length,
+    pages: rawAccounts,
+    usableWithToken: rawAccounts.filter((page) => page.hasToken).length,
+  });
   if (response.ok && !data.error) {
     const pages = mapPages(data.data);
     if (pages.length > 0) return pages;
+    if (rawAccounts.length > 0) {
+      console.warn(
+        "[facebook] Pages returned but none had access_token — usually missing pages_manage_posts or Page role too low",
+      );
+    }
   }
 
   // Fallback used by some Login-for-Business apps.
@@ -508,14 +572,27 @@ export async function fetchFacebookPages(userToken: string): Promise<FacebookPag
   const nestedRes = await fetch(`${graphBase()}/me?${nested}`);
   const nestedData = (await nestedRes.json()) as {
     accounts?: { data?: { id?: string; name?: string; access_token?: string }[] };
-    error?: { message?: string };
+    error?: GraphError;
   };
+  const nestedRows = summarizePageRows(nestedData.accounts?.data);
+  console.log("[facebook] /me?fields=accounts fallback", {
+    http: nestedRes.status,
+    ok: nestedRes.ok,
+    error: nestedData.error || null,
+    rawCount: nestedRows.length,
+    pages: nestedRows,
+    usableWithToken: nestedRows.filter((page) => page.hasToken).length,
+  });
   const pages = mapPages(nestedData.accounts?.data);
   if (pages.length > 0) return pages;
 
   const message = data.error?.message || nestedData.error?.message || "Could not load Facebook Pages.";
+  const detail =
+    rawAccounts.length > 0 || nestedRows.length > 0
+      ? " Pages were listed but without usable Page tokens."
+      : " Graph returned zero Pages for this user.";
   throw new Error(
-    `${message} Grant Page access (pages_show_list / pages_manage_posts) and make sure this user is a Page admin.`,
+    `${message}${detail} Grant Page access (pages_show_list / pages_manage_posts) and make sure this user is a Page admin.`,
   );
 }
 
@@ -523,12 +600,22 @@ export async function completeFacebookOAuth(code: string, origin: string): Promi
   const shortToken = await exchangeCode(code, publicOrigin(origin));
   const userToken = await longLivedUserToken(shortToken);
   await assertAllowedUser(userToken);
-  const meRes = await fetch(`${graphBase()}/me?fields=id&access_token=${encodeURIComponent(userToken)}`);
-  const me = (await meRes.json()) as { id?: string };
+  const meRes = await fetch(`${graphBase()}/me?fields=id,name&access_token=${encodeURIComponent(userToken)}`);
+  const me = (await meRes.json()) as { id?: string; name?: string; error?: GraphError };
+  console.log("[facebook] oauth user", {
+    id: me.id || null,
+    name: me.name || null,
+    error: me.error || null,
+    redirectUri: facebookRedirectUri(origin),
+  });
   const pages = await fetchFacebookPages(userToken);
   if (pages.length === 0) {
     throw new Error("No Facebook Pages found. Make sure this Facebook user is a Page admin.");
   }
+  console.log(
+    "[facebook] usable pages",
+    pages.map((page) => ({ id: page.id, name: page.name })),
+  );
   const selected = pages[0];
   return {
     pageId: selected.id,

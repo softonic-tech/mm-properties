@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "convert:properties": "node scripts/convert-properties.mjs",
-    "enrich:image-labels": "node scripts/enrich-image-labels.mjs"
+    "enrich:image-labels": "node scripts/enrich-image-labels.mjs",
+    "update:properties": "node scripts/update-properties.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -26,6 +27,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
+    "@xmldom/xmldom": "^0.9.8",
     "oxlint": "^1.81.0",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"

@@ -949,6 +949,15 @@ export async function generateSocialPost(input: Record<string, unknown>) {
   };
 }
 
+function collectImageUrls(input: Record<string, unknown>, limit = 10) {
+  const fromList = Array.isArray(input.images)
+    ? input.images.map((item) => String(item ?? "").trim()).filter((url) => /^https:\/\//i.test(url))
+    : [];
+  const single = String(input.image ?? "").trim();
+  if (single && /^https:\/\//i.test(single) && !fromList.includes(single)) fromList.unshift(single);
+  return [...new Set(fromList)].slice(0, Math.max(1, Math.min(limit, 10)));
+}
+
 export async function publishFacebook(input: Record<string, unknown>, config: SocialConfig) {
   const creds = resolveFacebookCreds(config);
   if (!creds) {
@@ -962,8 +971,58 @@ export async function publishFacebook(input: Record<string, unknown>, config: So
   if (message.length < 8) return { ok: false, error: "Write a longer post before publishing." };
 
   const link = String(input.link ?? "").trim().slice(0, 500);
-  const image = String(input.image ?? "").trim().slice(0, 500);
-  const withPhoto = input.withPhoto === true && /^https:\/\//i.test(image);
+  const images = collectImageUrls(input);
+  const withPhoto = input.withPhoto === true && images.length > 0;
+
+  if (withPhoto && images.length > 1) {
+    const mediaIds: string[] = [];
+    for (const url of images) {
+      const upload = new URLSearchParams({
+        url,
+        published: "false",
+        access_token: creds.pageToken,
+      });
+      const uploadRes = await fetch(`${graphBase()}/${encodeURIComponent(creds.pageId)}/photos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: upload,
+      });
+      const uploadData = (await uploadRes.json()) as { id?: string; error?: { message?: string } };
+      if (!uploadRes.ok || uploadData.error || !uploadData.id) {
+        return {
+          ok: false,
+          error: uploadData.error?.message || `Facebook photo upload failed (${uploadRes.status}).`,
+        };
+      }
+      mediaIds.push(uploadData.id);
+    }
+
+    const feed = new URLSearchParams();
+    feed.set("message", message);
+    feed.set("access_token", creds.pageToken);
+    mediaIds.forEach((id, index) => {
+      feed.set(`attached_media[${index}]`, JSON.stringify({ media_fbid: id }));
+    });
+    const feedRes = await fetch(`${graphBase()}/${encodeURIComponent(creds.pageId)}/feed`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: feed,
+    });
+    const feedData = (await feedRes.json()) as { id?: string; error?: { message?: string } };
+    if (!feedRes.ok || feedData.error) {
+      return {
+        ok: false,
+        error: feedData.error?.message || `Facebook multi-photo post failed (${feedRes.status}).`,
+      };
+    }
+    return {
+      ok: true,
+      id: feedData.id || "",
+      mode: "album",
+      photos: mediaIds.length,
+      pageName: creds.pageName,
+    };
+  }
 
   const endpoint = withPhoto
     ? `${graphBase()}/${encodeURIComponent(creds.pageId)}/photos`
@@ -972,7 +1031,7 @@ export async function publishFacebook(input: Record<string, unknown>, config: So
   const body = new URLSearchParams();
   body.set("access_token", creds.pageToken);
   if (withPhoto) {
-    body.set("url", image);
+    body.set("url", images[0]);
     body.set("caption", message);
   } else {
     body.set("message", message);
@@ -997,6 +1056,7 @@ export async function publishFacebook(input: Record<string, unknown>, config: So
     ok: true,
     id: data.id || data.post_id || "",
     mode: withPhoto ? "photo" : "feed",
+    photos: withPhoto ? 1 : 0,
     pageName: creds.pageName,
   };
 }
@@ -1026,6 +1086,31 @@ async function waitForInstagramContainer(creationId: string, accessToken: string
   throw new Error("Instagram is still processing the photo. Try again in a moment.");
 }
 
+async function createInstagramImageContainer(
+  userId: string,
+  accessToken: string,
+  imageUrl: string,
+  options: { caption?: string; carouselItem?: boolean } = {},
+) {
+  const body = new URLSearchParams({
+    image_url: imageUrl,
+    access_token: accessToken,
+  });
+  if (options.caption) body.set("caption", options.caption);
+  if (options.carouselItem) body.set("is_carousel_item", "true");
+  const response = await fetch(`${igGraphBase()}/${encodeURIComponent(userId)}/media`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body,
+  });
+  const data = (await response.json()) as { id?: string; error?: { message?: string } };
+  if (!response.ok || data.error || !data.id) {
+    throw new Error(data.error?.message || `Instagram media create failed (${response.status}).`);
+  }
+  await waitForInstagramContainer(data.id, accessToken);
+  return data.id;
+}
+
 export async function publishInstagram(input: Record<string, unknown>, config: SocialConfig) {
   const ig = resolveInstagram(config);
   if (!ig) {
@@ -1038,64 +1123,82 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
   const message = String(input.message ?? "").trim().slice(0, 2200);
   if (message.length < 8) return { ok: false, error: "Write a longer caption before publishing." };
 
-  const image = String(input.image ?? "").trim().slice(0, 1000);
-  if (!/^https:\/\//i.test(image)) {
+  const images = collectImageUrls(input);
+  if (!images.length) {
     return {
       ok: false,
       error: "Instagram requires a public https image URL. Enable Include photo and set Image URL.",
     };
   }
 
-  const createBody = new URLSearchParams({
-    image_url: image,
-    caption: message,
-    access_token: ig.accessToken,
-  });
-  const createRes = await fetch(`${igGraphBase()}/${encodeURIComponent(ig.userId)}/media`, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: createBody,
-  });
-  const createData = (await createRes.json()) as { id?: string; error?: { message?: string } };
-  if (!createRes.ok || createData.error || !createData.id) {
-    return {
-      ok: false,
-      error: createData.error?.message || `Instagram media create failed (${createRes.status}).`,
-    };
-  }
-
   try {
-    await waitForInstagramContainer(createData.id, ig.accessToken);
+    let creationId = "";
+    let mode: "photo" | "carousel" = "photo";
+
+    if (images.length === 1) {
+      creationId = await createInstagramImageContainer(ig.userId, ig.accessToken, images[0], {
+        caption: message,
+      });
+    } else {
+      mode = "carousel";
+      const children: string[] = [];
+      for (const url of images) {
+        children.push(
+          await createInstagramImageContainer(ig.userId, ig.accessToken, url, { carouselItem: true }),
+        );
+      }
+      const carouselBody = new URLSearchParams({
+        media_type: "CAROUSEL",
+        children: children.join(","),
+        caption: message,
+        access_token: ig.accessToken,
+      });
+      const carouselRes = await fetch(`${igGraphBase()}/${encodeURIComponent(ig.userId)}/media`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: carouselBody,
+      });
+      const carouselData = (await carouselRes.json()) as { id?: string; error?: { message?: string } };
+      if (!carouselRes.ok || carouselData.error || !carouselData.id) {
+        return {
+          ok: false,
+          error: carouselData.error?.message || `Instagram carousel create failed (${carouselRes.status}).`,
+        };
+      }
+      await waitForInstagramContainer(carouselData.id, ig.accessToken);
+      creationId = carouselData.id;
+    }
+
+    const publishBody = new URLSearchParams({
+      creation_id: creationId,
+      access_token: ig.accessToken,
+    });
+    const publishRes = await fetch(`${igGraphBase()}/${encodeURIComponent(ig.userId)}/media_publish`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: publishBody,
+    });
+    const publishData = (await publishRes.json()) as { id?: string; error?: { message?: string } };
+    if (!publishRes.ok || publishData.error) {
+      return {
+        ok: false,
+        error: publishData.error?.message || `Instagram publish failed (${publishRes.status}).`,
+      };
+    }
+
+    return {
+      ok: true,
+      id: publishData.id || "",
+      mode,
+      photos: images.length,
+      username: ig.username,
+    };
   } catch (caught) {
     return {
       ok: false,
       error: caught instanceof Error ? caught.message : "Instagram media processing failed.",
     };
   }
-
-  const publishBody = new URLSearchParams({
-    creation_id: createData.id,
-    access_token: ig.accessToken,
-  });
-  const publishRes = await fetch(`${igGraphBase()}/${encodeURIComponent(ig.userId)}/media_publish`, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: publishBody,
-  });
-  const publishData = (await publishRes.json()) as { id?: string; error?: { message?: string } };
-  if (!publishRes.ok || publishData.error) {
-    return {
-      ok: false,
-      error: publishData.error?.message || `Instagram publish failed (${publishRes.status}).`,
-    };
-  }
-
-  return {
-    ok: true,
-    id: publishData.id || "",
-    mode: "photo",
-    username: ig.username,
-  };
 }
 
 export function selectFacebookPage(config: SocialConfig, pageId: string): SocialConfig | null {

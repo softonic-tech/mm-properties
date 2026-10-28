@@ -900,18 +900,27 @@ async function route(request: {
         await writeSocial(config);
         const message = String(body.message ?? "").trim();
         const image = String(body.image ?? "").trim();
+        const images = Array.isArray(body.images)
+          ? body.images.map((item) => String(item ?? "").trim()).filter(Boolean)
+          : [];
         const link = String(body.link ?? "").trim();
+        // Instagram has no separate link field; Facebook photo posts use caption only.
+        // Always put the listing URL in the text so people can open the property page.
+        const messageWithLink =
+          link && /^https:\/\//i.test(link) && !message.includes(link)
+            ? `${message}\n\n${link}`.trim()
+            : message;
         const withPhoto = body.withPhoto !== false;
         const wantFb = body.facebook !== false;
         const wantIg = body.instagram !== false;
-        const results: Record<string, unknown> = { ok: true };
+        const results: Record<string, unknown> = { ok: true, link, photos: images.length || (image ? 1 : 0) };
         if (wantFb) {
-          const fb = await publishFacebook({ message, image, link, withPhoto }, config);
+          const fb = await publishFacebook({ message: messageWithLink, image, images, link, withPhoto }, config);
           results.facebook = fb;
           if (!fb.ok) results.ok = false;
         }
         if (wantIg) {
-          const ig = await publishInstagram({ message, image }, config);
+          const ig = await publishInstagram({ message: messageWithLink, image, images }, config);
           results.instagram = ig;
           if (!ig.ok) results.ok = false;
         }

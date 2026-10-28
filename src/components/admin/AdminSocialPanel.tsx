@@ -39,6 +39,36 @@ type Props = {
   onAuthFail: () => void;
 };
 
+const SKIPPED_PHOTO_LABELS = ["house plan", "plano", "plan"];
+const PHOTO_LABEL_PRIORITY = [
+  "facade",
+  "pool",
+  "terrace",
+  "living room",
+  "kitchen",
+  "dining room",
+  "bedroom",
+  "bathroom",
+  "common area",
+];
+
+function selectListingPhotos(property: Property | null, limit = 10) {
+  if (!property) return [] as string[];
+  const ranked = [...(property.images || [])]
+    .filter((image) => {
+      const label = String(image.label || "").toLowerCase();
+      return image.url && /^https:\/\//i.test(image.url) && !SKIPPED_PHOTO_LABELS.some((skip) => label.includes(skip));
+    })
+    .sort((a, b) => {
+      const rankA = PHOTO_LABEL_PRIORITY.indexOf(String(a.label || "").toLowerCase());
+      const rankB = PHOTO_LABEL_PRIORITY.indexOf(String(b.label || "").toLowerCase());
+      return (rankA === -1 ? 99 : rankA) - (rankB === -1 ? 99 : rankB);
+    })
+    .map((image) => image.url);
+  if (!ranked.length && property.image && /^https:\/\//i.test(property.image)) ranked.push(property.image);
+  return [...new Set(ranked)].slice(0, limit);
+}
+
 export function AdminSocialPanel({ password, onAuthFail }: Props) {
   const [social, setSocial] = useState<SocialStatus | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
@@ -57,6 +87,7 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
   const [hashtags, setHashtags] = useState("");
   const [postLink, setPostLink] = useState(`${SITE_URL}/`);
   const [postImage, setPostImage] = useState(`${SITE_URL}/media/costa-marbella.jpg`);
+  const [postImages, setPostImages] = useState<string[]>([`${SITE_URL}/media/costa-marbella.jpg`]);
   const [postVideo, setPostVideo] = useState("");
   const [tiktokPrivacy, setTiktokPrivacy] = useState("SELF_ONLY");
   const [withPhoto, setWithPhoto] = useState(true);
@@ -151,13 +182,17 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
   function chooseProperty(property: Property | null) {
     setSelectedPropertyId(property?.id ?? "");
     if (!property) {
+      const fallback = `${SITE_URL}/media/costa-marbella.jpg`;
       setPostLink(`${SITE_URL}/`);
-      setPostImage(`${SITE_URL}/media/costa-marbella.jpg`);
+      setPostImage(fallback);
+      setPostImages([fallback]);
       return;
     }
     const payload = propertyPayload(property);
+    const photos = selectListingPhotos(property, 10);
     setPostLink(payload.href);
-    setPostImage(payload.image);
+    setPostImage(photos[0] || payload.image);
+    setPostImages(photos.length ? photos : payload.image ? [payload.image] : []);
   }
 
   const socialCall = async (body: Record<string, unknown>) => {
@@ -246,9 +281,22 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
     setCaption(String(result.caption ?? ""));
     setHashtags(String(result.hashtags ?? ""));
     if (result.link) setPostLink(String(result.link));
-    if (result.image) setPostImage(String(result.image));
+    if (result.image) {
+      const nextImage = String(result.image);
+      setPostImage(nextImage);
+      setPostImages((prev) => {
+        if (prev.includes(nextImage)) return prev;
+        return [nextImage, ...prev].slice(0, 10);
+      });
+    }
     setGenSource(String(result.source || "ai"));
-    showBanner("success", "Draft ready", "Edit the caption, then post.");
+    showBanner(
+      "success",
+      "Draft ready",
+      postImages.length > 1
+        ? `Edit the caption, then post (${postImages.length} photos).`
+        : "Edit the caption, then post.",
+    );
   };
 
   const publishNow = async () => {
@@ -269,7 +317,8 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
       showBanner("error", "Error", "Connect Instagram first.", "error");
       return;
     }
-    if (postInstagram && (!withPhoto || !/^https:\/\//i.test(postImage.trim()))) {
+    const photos = (postImages.length ? postImages : [postImage.trim()]).filter((url) => /^https:\/\//i.test(url));
+    if (postInstagram && (!withPhoto || photos.length === 0)) {
       showBanner("error", "Error", "Instagram needs a public https image.", "error");
       return;
     }
@@ -278,12 +327,14 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
       postFacebook ? "Facebook" : null,
       postInstagram ? "Instagram" : null,
     ].filter(Boolean);
-    showBanner("working", "Posting", `Posting to ${targets.join(" & ")}…`, "posting");
+    const photoNote = withPhoto && photos.length > 1 ? ` (${photos.length} photos)` : "";
+    showBanner("working", "Posting", `Posting to ${targets.join(" & ")}${photoNote}…`, "posting");
 
     const result = await socialCall({
       action: "publish-now",
       message: messageText,
-      image: postImage.trim(),
+      image: photos[0] || postImage.trim(),
+      images: photos,
       link: postLink.trim(),
       withPhoto,
       facebook: postFacebook,
@@ -291,14 +342,20 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
     });
     if (!result) return;
 
-    const fb = result.facebook as { ok?: boolean; error?: string } | undefined;
-    const ig = result.instagram as { ok?: boolean; error?: string; username?: string } | undefined;
+    const fb = result.facebook as { ok?: boolean; error?: string; photos?: number } | undefined;
+    const ig = result.instagram as { ok?: boolean; error?: string; username?: string; photos?: number } | undefined;
     const parts: string[] = [];
-    if (postFacebook) parts.push(fb?.ok ? "Facebook posted" : `Facebook failed: ${fb?.error || "error"}`);
+    if (postFacebook) {
+      parts.push(
+        fb?.ok
+          ? `Facebook posted${fb.photos && fb.photos > 1 ? ` (${fb.photos} photos)` : ""}`
+          : `Facebook failed: ${fb?.error || "error"}`,
+      );
+    }
     if (postInstagram) {
       parts.push(
         ig?.ok
-          ? `Instagram posted${ig.username ? ` (@${ig.username})` : ""}`
+          ? `Instagram posted${ig.username ? ` (@${ig.username})` : ""}${ig.photos && ig.photos > 1 ? ` · ${ig.photos} photos` : ""}`
           : `Instagram failed: ${ig?.error || "error"}`,
       );
     }
@@ -750,22 +807,36 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
             </label>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="block text-[11px] tracking-[0.16em] text-foreground-subtle uppercase">
-                Link
+                Property link (added to caption)
                 <input
                   value={postLink}
                   onChange={(event) => setPostLink(event.target.value)}
+                  placeholder="https://mmproperty.io/homes/…"
                   className="mt-2 w-full rounded-full border border-white/15 bg-black/20 px-4 py-2.5 text-sm tracking-normal normal-case outline-none"
                 />
               </label>
               <label className="block text-[11px] tracking-[0.16em] text-foreground-subtle uppercase">
-                Image URL
+                Cover image URL
                 <input
                   value={postImage}
-                  onChange={(event) => setPostImage(event.target.value)}
+                  onChange={(event) => {
+                    const next = event.target.value;
+                    setPostImage(next);
+                    setPostImages((prev) => {
+                      const rest = prev.filter((url) => url !== next);
+                      return next ? [next, ...rest].slice(0, 10) : rest;
+                    });
+                  }}
                   className="mt-2 w-full rounded-full border border-white/15 bg-black/20 px-4 py-2.5 text-sm tracking-normal normal-case outline-none"
                 />
               </label>
             </div>
+            {postImages.length > 0 ? (
+              <p className="text-xs text-foreground-muted">
+                {postImages.length} photo{postImages.length === 1 ? "" : "s"} will post
+                {postImages.length > 1 ? " as a carousel / multi-photo album" : ""}.
+              </p>
+            ) : null}
             <div className="flex flex-wrap gap-4">
               <label className="flex cursor-pointer items-center gap-2 text-sm text-foreground-muted">
                 <input
@@ -800,16 +871,30 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
           </div>
 
           <aside className="rounded-2xl border border-white/10 bg-black/25 p-3">
-            <p className="px-1 text-[10px] tracking-[0.16em] text-foreground-subtle uppercase">Preview</p>
-            {postImage ? (
-              <img src={postImage} alt="" className="mt-2 aspect-[4/3] w-full rounded-xl object-cover" />
+            <p className="px-1 text-[10px] tracking-[0.16em] text-foreground-subtle uppercase">
+              Preview{postImages.length > 1 ? ` · ${postImages.length} photos` : ""}
+            </p>
+            {postImages[0] || postImage ? (
+              <img
+                src={postImages[0] || postImage}
+                alt=""
+                className="mt-2 aspect-[4/3] w-full rounded-xl object-cover"
+              />
             ) : (
               <div className="mt-2 flex aspect-[4/3] items-center justify-center rounded-xl bg-white/5 text-xs text-foreground-subtle">
                 No image
               </div>
             )}
-            <p className="mt-3 line-clamp-6 whitespace-pre-wrap px-1 text-xs text-foreground-muted">
+            {postImages.length > 1 ? (
+              <div className="mt-2 grid grid-cols-5 gap-1">
+                {postImages.slice(0, 10).map((url) => (
+                  <img key={url} src={url} alt="" className="aspect-square w-full rounded object-cover" />
+                ))}
+              </div>
+            ) : null}
+            <p className="mt-3 line-clamp-8 whitespace-pre-wrap px-1 text-xs text-foreground-muted">
               {caption || "Your caption will appear here."}
+              {postLink && caption && !caption.includes(postLink) ? `\n\n${postLink}` : ""}
             </p>
           </aside>
         </div>

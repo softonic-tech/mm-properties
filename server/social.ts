@@ -6,6 +6,7 @@
  */
 
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { prepareInstagramImageUrls } from "./instagram-media.js";
 
 export type SocialTopic = {
   id: string;
@@ -1126,7 +1127,9 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
   const message = String(input.message ?? "").trim().slice(0, 2200);
   if (message.length < 8) return { ok: false, error: "Write a longer caption before publishing." };
 
-  const images = collectImageUrls(input);
+  const rawImages = collectImageUrls(input);
+  // Crop to 1:1 via /media/instagram so Graph accepts every listing photo.
+  const images = prepareInstagramImageUrls(rawImages);
   if (!images.length) {
     return {
       ok: false,
@@ -1134,7 +1137,11 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
     };
   }
 
-  console.log("[instagram] publish start", { photos: images.length, user: ig.username || ig.userId });
+  console.log("[instagram] publish start", {
+    photos: images.length,
+    user: ig.username || ig.userId,
+    cropped: true,
+  });
 
   try {
     let creationId = "";

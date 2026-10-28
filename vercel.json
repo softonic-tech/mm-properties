@@ -12,6 +12,10 @@
       "destination": "/api/tiktok-media?sig=:sig&payload=:payload"
     },
     {
+      "source": "/media/instagram/:sig/:payload",
+      "destination": "/api/instagram-media?sig=:sig&payload=:payload"
+    },
+    {
       "source": "/((?!api/|media/|facebook-callback\\.html|instagram-callback\\.html|tiktok-callback\\.html|sitemap\\.xml|sitemap\\.txt|robots\\.txt).*)",
       "destination": "/index.html"
     }

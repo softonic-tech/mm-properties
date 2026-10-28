@@ -22,10 +22,10 @@ const apiRoutes = new Set([
 function siteDataPlugin(): Connect.NextHandleFunction {
   return (req, res, next) => {
     const url = req.url?.split("?")[0] ?? "";
-    // Proxy only signed image URLs: /media/tiktok/<sig>/<payload>.jpg
-    // Leave verification files like /media/tiktok/tiktokXXXX.txt to Vite static (public/).
+    // Signed image proxies for TikTok / Instagram (leave verification txt files to static).
     const isTikTokImageProxy = /^\/media\/tiktok\/[^/]+\/.+\.(jpg|jpeg|png|webp)$/i.test(url);
-    if (!apiRoutes.has(url) && !isTikTokImageProxy) {
+    const isInstagramImageProxy = /^\/media\/instagram\/[^/]+\/.+\.(jpg|jpeg|png|webp)$/i.test(url);
+    if (!apiRoutes.has(url) && !isTikTokImageProxy && !isInstagramImageProxy) {
       next();
       return;
     }

@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { handleInstagramMediaProxy } from "./instagram-media.js";
 import { dispatch } from "./store.js";
 import { handleTikTokMediaProxy } from "./tiktok-property.js";
 
@@ -83,6 +84,7 @@ function queryBody(req: IncomingMessage) {
 export async function handleNode(req: IncomingMessage & { body?: unknown }, res: ServerResponse, pathname: string) {
   try {
     if (await handleTikTokMediaProxy(req, res, pathname)) return;
+    if (await handleInstagramMediaProxy(req, res, pathname)) return;
 
     const method = req.method ?? "GET";
     const result = (await dispatch({

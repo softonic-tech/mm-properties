@@ -1065,8 +1065,9 @@ export async function publishFacebook(input: Record<string, unknown>, config: So
   };
 }
 
-async function waitForInstagramContainer(creationId: string, accessToken: string) {
-  for (let attempt = 0; attempt < 20; attempt += 1) {
+async function waitForInstagramContainer(creationId: string, accessToken: string, label = "media") {
+  let lastCode = "";
+  for (let attempt = 0; attempt < 30; attempt += 1) {
     const params = new URLSearchParams({
       fields: "status_code,status",
       access_token: accessToken,
@@ -1078,16 +1079,23 @@ async function waitForInstagramContainer(creationId: string, accessToken: string
       error?: { message?: string };
     };
     if (!response.ok || data.error) {
-      throw new Error(data.error?.message || `Instagram container check failed (${response.status}).`);
+      throw new Error(data.error?.message || `Instagram ${label} check failed (${response.status}).`);
     }
     const code = String(data.status_code || "").toUpperCase();
-    if (code === "FINISHED" || code === "PUBLISHED") return;
-    if (code === "ERROR" || code === "EXPIRED") {
-      throw new Error(data.status || `Instagram media container status: ${code || "ERROR"}`);
+    lastCode = code || lastCode;
+    if (code === "FINISHED" || code === "PUBLISHED") {
+      // Brief settle time — publishing immediately after FINISHED often returns Media ID unavailable.
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      return;
     }
-    await new Promise((resolve) => setTimeout(resolve, attempt < 4 ? 600 : 1000));
+    if (code === "ERROR" || code === "EXPIRED") {
+      throw new Error(data.status || `Instagram ${label} status: ${code}`);
+    }
+    await new Promise((resolve) => setTimeout(resolve, attempt < 3 ? 1200 : 2000));
   }
-  throw new Error("Instagram is still processing the photo. Try again in a moment.");
+  throw new Error(
+    `Instagram is still processing the ${label}${lastCode ? ` (${lastCode})` : ""}. Try again in a moment.`,
+  );
 }
 
 async function createInstagramImageContainer(
@@ -1100,8 +1108,9 @@ async function createInstagramImageContainer(
     image_url: imageUrl,
     access_token: accessToken,
   });
-  if (options.caption) body.set("caption", options.caption);
   if (options.carouselItem) body.set("is_carousel_item", "true");
+  else body.set("media_type", "IMAGE");
+  if (options.caption) body.set("caption", options.caption);
   const response = await fetch(`${igGraphBase()}/${encodeURIComponent(userId)}/media`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -1111,8 +1120,60 @@ async function createInstagramImageContainer(
   if (!response.ok || data.error || !data.id) {
     throw new Error(data.error?.message || `Instagram media create failed (${response.status}).`);
   }
-  if (options.wait !== false) await waitForInstagramContainer(data.id, accessToken);
+  if (options.wait !== false) await waitForInstagramContainer(data.id, accessToken, "photo");
   return data.id;
+}
+
+async function publishInstagramContainer(userId: string, accessToken: string, creationId: string) {
+  await waitForInstagramContainer(creationId, accessToken, "container");
+
+  const attempt = async () => {
+    const publishBody = new URLSearchParams({
+      creation_id: creationId,
+      access_token: accessToken,
+    });
+    const publishRes = await fetch(`${igGraphBase()}/${encodeURIComponent(userId)}/media_publish`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: publishBody,
+    });
+    const publishData = (await publishRes.json()) as {
+      id?: string;
+      error?: { message?: string; code?: number; error_subcode?: number };
+    };
+    return { publishRes, publishData };
+  };
+
+  let { publishRes, publishData } = await attempt();
+  const unavailable = /media id is not available/i.test(publishData.error?.message || "");
+  if ((!publishRes.ok || publishData.error) && unavailable) {
+    console.warn("[instagram] publish too early, waiting and retrying…");
+    await waitForInstagramContainer(creationId, accessToken, "container-retry");
+    ({ publishRes, publishData } = await attempt());
+  }
+
+  if (!publishRes.ok || publishData.error) {
+    throw new Error(publishData.error?.message || `Instagram publish failed (${publishRes.status}).`);
+  }
+  return publishData.id || "";
+}
+
+async function assertInstagramImageReachable(url: string) {
+  try {
+    const response = await fetch(url, { method: "GET", redirect: "follow" });
+    if (!response.ok) {
+      throw new Error(`Cropped image URL returned ${response.status}. Check BASE_URL /media/instagram deploy.`);
+    }
+    const type = response.headers.get("content-type") || "";
+    if (type && !type.startsWith("image/")) {
+      throw new Error("Cropped image URL did not return an image. Check /media/instagram routing.");
+    }
+  } catch (caught) {
+    if (caught instanceof Error && caught.message.startsWith("Cropped")) throw caught;
+    throw new Error(
+      `Cannot reach Instagram image URL (${url.slice(0, 80)}…). Ensure production BASE_URL is https://mmproperty.io.`,
+    );
+  }
 }
 
 export async function publishInstagram(input: Record<string, unknown>, config: SocialConfig) {
@@ -1140,10 +1201,12 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
   console.log("[instagram] publish start", {
     photos: images.length,
     user: ig.username || ig.userId,
-    cropped: true,
+    sample: images[0],
   });
 
   try {
+    await assertInstagramImageReachable(images[0]);
+
     let creationId = "";
     let mode: "photo" | "carousel" = "photo";
 
@@ -1153,16 +1216,17 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
       });
     } else {
       mode = "carousel";
-      // Create children in parallel, then wait — much faster than serial upload+wait.
-      const childIds = await Promise.all(
-        images.map((url) =>
-          createInstagramImageContainer(ig.userId, ig.accessToken, url, {
+      // Sequential create+wait is slower but avoids Meta "Media ID is not available" races.
+      const childIds: string[] = [];
+      for (const [index, url] of images.entries()) {
+        console.log("[instagram] carousel item", index + 1, "/", images.length);
+        childIds.push(
+          await createInstagramImageContainer(ig.userId, ig.accessToken, url, {
             carouselItem: true,
-            wait: false,
+            wait: true,
           }),
-        ),
-      );
-      await Promise.all(childIds.map((id) => waitForInstagramContainer(id, ig.accessToken)));
+        );
+      }
 
       const carouselBody = new URLSearchParams({
         media_type: "CAROUSEL",
@@ -1183,32 +1247,14 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
           error: carouselData.error?.message || `Instagram carousel create failed (${carouselRes.status}).`,
         };
       }
-      await waitForInstagramContainer(carouselData.id, ig.accessToken);
       creationId = carouselData.id;
     }
 
-    const publishBody = new URLSearchParams({
-      creation_id: creationId,
-      access_token: ig.accessToken,
-    });
-    const publishRes = await fetch(`${igGraphBase()}/${encodeURIComponent(ig.userId)}/media_publish`, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: publishBody,
-    });
-    const publishData = (await publishRes.json()) as { id?: string; error?: { message?: string } };
-    if (!publishRes.ok || publishData.error) {
-      console.error("[instagram] publish failed", publishData.error || publishRes.status);
-      return {
-        ok: false,
-        error: publishData.error?.message || `Instagram publish failed (${publishRes.status}).`,
-      };
-    }
-
-    console.log("[instagram] published", { id: publishData.id, mode, photos: images.length });
+    const publishedId = await publishInstagramContainer(ig.userId, ig.accessToken, creationId);
+    console.log("[instagram] published", { id: publishedId, mode, photos: images.length });
     return {
       ok: true,
-      id: publishData.id || "",
+      id: publishedId,
       mode,
       photos: images.length,
       username: ig.username,

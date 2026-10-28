@@ -13,7 +13,9 @@ const OUTPUT_SIZE = 1080;
 
 function publicOrigin(fallback = "https://mmproperty.io") {
   const base = (process.env.BASE_URL ?? "").trim().replace(/\/$/, "");
-  return base || fallback;
+  // Instagram's crawler must reach a stable public host — skip dead/local tunnels.
+  if (base && !/ngrok|localhost|127\.0\.0\.1/i.test(base)) return base;
+  return fallback;
 }
 
 function proxySecret() {

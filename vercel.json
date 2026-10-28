@@ -1,6 +1,14 @@
 {
   "trailingSlash": false,
   "functions": {
+    "api/social.ts": {
+      "maxDuration": 120,
+      "includeFiles": "data/**"
+    },
+    "api/instagram-media.ts": {
+      "maxDuration": 30,
+      "includeFiles": "data/**"
+    },
     "api/*.ts": {
       "maxDuration": 30,
       "includeFiles": "data/**"

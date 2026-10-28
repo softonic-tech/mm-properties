@@ -949,13 +949,16 @@ export async function generateSocialPost(input: Record<string, unknown>) {
   };
 }
 
-function collectImageUrls(input: Record<string, unknown>, limit = 10) {
+/** Cap keeps carousel publish inside serverless time limits. */
+const MAX_SOCIAL_PHOTOS = 6;
+
+function collectImageUrls(input: Record<string, unknown>, limit = MAX_SOCIAL_PHOTOS) {
   const fromList = Array.isArray(input.images)
     ? input.images.map((item) => String(item ?? "").trim()).filter((url) => /^https:\/\//i.test(url))
     : [];
   const single = String(input.image ?? "").trim();
   if (single && /^https:\/\//i.test(single) && !fromList.includes(single)) fromList.unshift(single);
-  return [...new Set(fromList)].slice(0, Math.max(1, Math.min(limit, 10)));
+  return [...new Set(fromList)].slice(0, Math.max(1, Math.min(limit, MAX_SOCIAL_PHOTOS)));
 }
 
 export async function publishFacebook(input: Record<string, unknown>, config: SocialConfig) {
@@ -1062,7 +1065,7 @@ export async function publishFacebook(input: Record<string, unknown>, config: So
 }
 
 async function waitForInstagramContainer(creationId: string, accessToken: string) {
-  for (let attempt = 0; attempt < 12; attempt += 1) {
+  for (let attempt = 0; attempt < 20; attempt += 1) {
     const params = new URLSearchParams({
       fields: "status_code,status",
       access_token: accessToken,
@@ -1081,7 +1084,7 @@ async function waitForInstagramContainer(creationId: string, accessToken: string
     if (code === "ERROR" || code === "EXPIRED") {
       throw new Error(data.status || `Instagram media container status: ${code || "ERROR"}`);
     }
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, attempt < 4 ? 600 : 1000));
   }
   throw new Error("Instagram is still processing the photo. Try again in a moment.");
 }
@@ -1090,7 +1093,7 @@ async function createInstagramImageContainer(
   userId: string,
   accessToken: string,
   imageUrl: string,
-  options: { caption?: string; carouselItem?: boolean } = {},
+  options: { caption?: string; carouselItem?: boolean; wait?: boolean } = {},
 ) {
   const body = new URLSearchParams({
     image_url: imageUrl,
@@ -1107,7 +1110,7 @@ async function createInstagramImageContainer(
   if (!response.ok || data.error || !data.id) {
     throw new Error(data.error?.message || `Instagram media create failed (${response.status}).`);
   }
-  await waitForInstagramContainer(data.id, accessToken);
+  if (options.wait !== false) await waitForInstagramContainer(data.id, accessToken);
   return data.id;
 }
 
@@ -1131,6 +1134,8 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
     };
   }
 
+  console.log("[instagram] publish start", { photos: images.length, user: ig.username || ig.userId });
+
   try {
     let creationId = "";
     let mode: "photo" | "carousel" = "photo";
@@ -1141,15 +1146,20 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
       });
     } else {
       mode = "carousel";
-      const children: string[] = [];
-      for (const url of images) {
-        children.push(
-          await createInstagramImageContainer(ig.userId, ig.accessToken, url, { carouselItem: true }),
-        );
-      }
+      // Create children in parallel, then wait — much faster than serial upload+wait.
+      const childIds = await Promise.all(
+        images.map((url) =>
+          createInstagramImageContainer(ig.userId, ig.accessToken, url, {
+            carouselItem: true,
+            wait: false,
+          }),
+        ),
+      );
+      await Promise.all(childIds.map((id) => waitForInstagramContainer(id, ig.accessToken)));
+
       const carouselBody = new URLSearchParams({
         media_type: "CAROUSEL",
-        children: children.join(","),
+        children: childIds.join(","),
         caption: message,
         access_token: ig.accessToken,
       });
@@ -1160,6 +1170,7 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
       });
       const carouselData = (await carouselRes.json()) as { id?: string; error?: { message?: string } };
       if (!carouselRes.ok || carouselData.error || !carouselData.id) {
+        console.error("[instagram] carousel create failed", carouselData.error || carouselRes.status);
         return {
           ok: false,
           error: carouselData.error?.message || `Instagram carousel create failed (${carouselRes.status}).`,
@@ -1180,12 +1191,14 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
     });
     const publishData = (await publishRes.json()) as { id?: string; error?: { message?: string } };
     if (!publishRes.ok || publishData.error) {
+      console.error("[instagram] publish failed", publishData.error || publishRes.status);
       return {
         ok: false,
         error: publishData.error?.message || `Instagram publish failed (${publishRes.status}).`,
       };
     }
 
+    console.log("[instagram] published", { id: publishData.id, mode, photos: images.length });
     return {
       ok: true,
       id: publishData.id || "",
@@ -1194,6 +1207,7 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
       username: ig.username,
     };
   } catch (caught) {
+    console.error("[instagram] publish error", caught instanceof Error ? caught.message : caught);
     return {
       ok: false,
       error: caught instanceof Error ? caught.message : "Instagram media processing failed.",

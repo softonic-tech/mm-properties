@@ -52,7 +52,7 @@ const PHOTO_LABEL_PRIORITY = [
   "common area",
 ];
 
-function selectListingPhotos(property: Property | null, limit = 10) {
+function selectListingPhotos(property: Property | null, limit = 6) {
   if (!property) return [] as string[];
   const ranked = [...(property.images || [])]
     .filter((image) => {
@@ -94,6 +94,9 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
   const [postFacebook, setPostFacebook] = useState(true);
   const [postInstagram, setPostInstagram] = useState(true);
   const [genSource, setGenSource] = useState("");
+  const [publishLog, setPublishLog] = useState<{ text: string; tone: "working" | "success" | "error" | "info" }[]>(
+    [],
+  );
 
   const busy = phase === "connecting" || phase === "generating" || phase === "posting";
 
@@ -189,13 +192,13 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
       return;
     }
     const payload = propertyPayload(property);
-    const photos = selectListingPhotos(property, 10);
+    const photos = selectListingPhotos(property, 6);
     setPostLink(payload.href);
     setPostImage(photos[0] || payload.image);
     setPostImages(photos.length ? photos : payload.image ? [payload.image] : []);
   }
 
-  const socialCall = async (body: Record<string, unknown>) => {
+  const socialCall = async (body: Record<string, unknown>, options?: { allowFail?: boolean }) => {
     const response = await fetch("/api/social", {
       method: "POST",
       headers: {
@@ -204,16 +207,21 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
       },
       body: JSON.stringify(body),
     });
-    const payload = (await response.json()) as Record<string, unknown>;
+    const payload = (await response.json().catch(() => ({}))) as Record<string, unknown>;
     if (response.status === 401) {
       onAuthFail();
       return null;
     }
     if (!response.ok || payload.ok === false) {
+      if (options?.allowFail) return { ...payload, ok: false };
       showBanner("error", "Error", String(payload.error || "Request failed."), "error");
       return null;
     }
     return payload;
+  };
+
+  const pushPublishLog = (text: string, tone: "working" | "success" | "error" | "info" = "info") => {
+    setPublishLog((prev) => [...prev, { text, tone }]);
   };
 
   const connect = async (network: "facebook" | "instagram" | "tiktok") => {
@@ -302,65 +310,89 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
   const publishNow = async () => {
     const messageText = `${caption.trim()}\n\n${hashtags.trim()}`.trim();
     if (messageText.length < 8) {
-      showBanner("error", "Error", "Write or generate a caption first.", "error");
+      setPublishLog([{ text: "Write or generate a caption first.", tone: "error" }]);
       return;
     }
     if (!postFacebook && !postInstagram) {
-      showBanner("error", "Error", "Choose Facebook and/or Instagram.", "error");
+      setPublishLog([{ text: "Choose Facebook and/or Instagram.", tone: "error" }]);
       return;
     }
     if (postFacebook && !social?.facebook) {
-      showBanner("error", "Error", "Connect Facebook first.", "error");
+      setPublishLog([{ text: "Connect Facebook first.", tone: "error" }]);
       return;
     }
     if (postInstagram && !social?.instagram) {
-      showBanner("error", "Error", "Connect Instagram first.", "error");
+      setPublishLog([{ text: "Connect Instagram first.", tone: "error" }]);
       return;
     }
-    const photos = (postImages.length ? postImages : [postImage.trim()]).filter((url) => /^https:\/\//i.test(url));
+    const photos = (postImages.length ? postImages : [postImage.trim()])
+      .filter((url) => /^https:\/\//i.test(url))
+      .slice(0, 6);
     if (postInstagram && (!withPhoto || photos.length === 0)) {
-      showBanner("error", "Error", "Instagram needs a public https image.", "error");
+      setPublishLog([{ text: "Instagram needs a public https image.", tone: "error" }]);
       return;
     }
 
-    const targets = [
-      postFacebook ? "Facebook" : null,
-      postInstagram ? "Instagram" : null,
-    ].filter(Boolean);
-    const photoNote = withPhoto && photos.length > 1 ? ` (${photos.length} photos)` : "";
-    showBanner("working", "Posting", `Posting to ${targets.join(" & ")}${photoNote}…`, "posting");
-
-    const result = await socialCall({
-      action: "publish-now",
+    setPhase("posting");
+    setPublishLog([]);
+    const base = {
       message: messageText,
       image: photos[0] || postImage.trim(),
       images: photos,
       link: postLink.trim(),
       withPhoto,
-      facebook: postFacebook,
-      instagram: postInstagram,
-    });
-    if (!result) return;
-
-    const fb = result.facebook as { ok?: boolean; error?: string; photos?: number } | undefined;
-    const ig = result.instagram as { ok?: boolean; error?: string; username?: string; photos?: number } | undefined;
+    };
     const parts: string[] = [];
+    let allOk = true;
+
     if (postFacebook) {
-      parts.push(
-        fb?.ok
-          ? `Facebook posted${fb.photos && fb.photos > 1 ? ` (${fb.photos} photos)` : ""}`
-          : `Facebook failed: ${fb?.error || "error"}`,
+      pushPublishLog(
+        photos.length > 1 ? `Posting to Facebook (${photos.length} photos)…` : "Posting to Facebook…",
+        "working",
       );
+      const fb = await socialCall({ action: "publish-facebook", ...base }, { allowFail: true });
+      if (!fb) {
+        allOk = false;
+        pushPublishLog("Facebook failed: session expired. Unlock Admin and try again.", "error");
+      } else if (fb.ok) {
+        const count = Number(fb.photos || photos.length || 0);
+        const text = count > 1 ? `Facebook posted (${count} photos).` : "Facebook posted.";
+        parts.push(text);
+        pushPublishLog(text, "success");
+      } else {
+        allOk = false;
+        const text = `Facebook failed: ${String(fb.error || "error")}`;
+        parts.push(text);
+        pushPublishLog(text, "error");
+      }
     }
+
     if (postInstagram) {
-      parts.push(
-        ig?.ok
-          ? `Instagram posted${ig.username ? ` (@${ig.username})` : ""}${ig.photos && ig.photos > 1 ? ` · ${ig.photos} photos` : ""}`
-          : `Instagram failed: ${ig?.error || "error"}`,
+      pushPublishLog(
+        photos.length > 1 ? `Posting to Instagram carousel (${photos.length} photos)…` : "Posting to Instagram…",
+        "working",
       );
+      const ig = await socialCall({ action: "publish-instagram", ...base }, { allowFail: true });
+      if (!ig) {
+        allOk = false;
+        pushPublishLog("Instagram failed: session expired. Unlock Admin and try again.", "error");
+      } else if (ig.ok) {
+        const count = Number(ig.photos || photos.length || 0);
+        const user = ig.username ? ` (@${String(ig.username)})` : "";
+        const text =
+          count > 1 ? `Instagram posted${user} · ${count} photos.` : `Instagram posted${user}.`;
+        parts.push(text);
+        pushPublishLog(text, "success");
+      } else {
+        allOk = false;
+        const text = `Instagram failed: ${String(ig.error || "error")}`;
+        parts.push(text);
+        pushPublishLog(text, "error");
+      }
     }
-    if (result.ok) showBanner("success", "Posted", parts.join(" · "), "posted");
-    else showBanner("error", "Error", parts.join(" · "), "error");
+
+    pushPublishLog(allOk ? "All done." : "Finished with errors.", allOk ? "success" : "error");
+    setPhase(allOk ? "posted" : "error");
     await loadSocial();
   };
 
@@ -899,28 +931,55 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
           </aside>
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-5">
-          <button
-            type="button"
-            disabled={busy || !caption.trim()}
-            onClick={() => void publishNow()}
-            className="h-12 min-w-[12rem] cursor-pointer rounded-full bg-white px-8 text-[11px] font-semibold tracking-[0.16em] text-black uppercase shadow-lg transition hover:bg-white/90 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            {phase === "posting" ? "Posting…" : "Post now"}
-          </button>
-          <button
-            type="button"
-            disabled={
-              busy ||
-              !caption.trim() ||
-              !social?.tiktok ||
-              (!selectedProperty && !/^https:\/\//i.test(postVideo.trim()))
-            }
-            onClick={() => void publishTikTok()}
-            className="h-12 cursor-pointer rounded-full border border-white/20 bg-black px-6 text-[11px] font-semibold tracking-[0.14em] text-white uppercase shadow-md transition hover:border-white/40 hover:bg-[#111] disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            Post to TikTok
-          </button>
+        <div className="mt-6 border-t border-white/10 pt-5">
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              disabled={busy || !caption.trim()}
+              onClick={() => void publishNow()}
+              className="h-12 min-w-[12rem] cursor-pointer rounded-full bg-white px-8 text-[11px] font-semibold tracking-[0.16em] text-black uppercase shadow-lg transition hover:bg-white/90 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {phase === "posting" ? "Posting…" : "Post now"}
+            </button>
+            <button
+              type="button"
+              disabled={
+                busy ||
+                !caption.trim() ||
+                !social?.tiktok ||
+                (!selectedProperty && !/^https:\/\//i.test(postVideo.trim()))
+              }
+              onClick={() => void publishTikTok()}
+              className="h-12 cursor-pointer rounded-full border border-white/20 bg-black px-6 text-[11px] font-semibold tracking-[0.14em] text-white uppercase shadow-md transition hover:border-white/40 hover:bg-[#111] disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Post to TikTok
+            </button>
+          </div>
+          {publishLog.length > 0 ? (
+            <ul className="mt-4 space-y-1.5 rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-sm">
+              {publishLog.map((item, index) => (
+                <li
+                  key={`${index}-${item.text}`}
+                  className={
+                    item.tone === "success"
+                      ? "text-emerald-300"
+                      : item.tone === "error"
+                        ? "text-red-300"
+                        : item.tone === "working"
+                          ? "text-[#d7dee6]"
+                          : "text-foreground-muted"
+                  }
+                >
+                  {item.tone === "working" ? "… " : item.tone === "success" ? "✓ " : item.tone === "error" ? "✕ " : ""}
+                  {item.text}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-3 text-xs text-foreground-subtle">
+              Status appears here: Facebook first, then Instagram.
+            </p>
+          )}
         </div>
 
         <div className="mt-4 grid gap-4 md:grid-cols-2">

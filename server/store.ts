@@ -872,24 +872,30 @@ async function route(request: {
       }
     }
 
-    if (action === "publish-facebook") {
-      try {
-        const result = await publishFacebook(body, await readSocial());
-        return json(result.ok ? 200 : 400, result);
-      } catch {
-        return json(500, { ok: false, error: "Facebook publish failed." });
-      }
-    }
-
-    if (action === "publish-instagram") {
+    if (action === "publish-facebook" || action === "publish-instagram") {
       try {
         let config = await readSocial();
-        config = await refreshInstagramTokenIfNeeded(config);
-        await writeSocial(config);
-        const result = await publishInstagram(body, config);
+        if (action === "publish-instagram") {
+          config = await refreshInstagramTokenIfNeeded(config);
+          await writeSocial(config);
+        }
+        const message = String(body.message ?? "").trim();
+        const link = String(body.link ?? "").trim();
+        const messageWithLink =
+          link && /^https:\/\//i.test(link) && !message.includes(link)
+            ? `${message}\n\n${link}`.trim()
+            : message;
+        const payload = { ...body, message: messageWithLink, link };
+        const result =
+          action === "publish-facebook"
+            ? await publishFacebook(payload, config)
+            : await publishInstagram(payload, config);
         return json(result.ok ? 200 : 400, result);
       } catch {
-        return json(500, { ok: false, error: "Instagram publish failed." });
+        return json(500, {
+          ok: false,
+          error: action === "publish-facebook" ? "Facebook publish failed." : "Instagram publish failed.",
+        });
       }
     }
 

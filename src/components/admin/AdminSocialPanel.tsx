@@ -847,7 +847,7 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
                   className="mt-2 w-full rounded-full border border-white/15 bg-black/20 px-4 py-2.5 text-sm tracking-normal normal-case outline-none"
                 />
                 <span className="mt-1.5 block text-[10px] tracking-normal normal-case text-foreground-muted">
-                  “Talk with M&M Property” opens WhatsApp (+34 653 223 015)
+                  Instagram only makes full https:// URLs tappable (blue). We put WhatsApp and the listing URL on their own lines. Facebook also gets a Learn more button.
                 </span>
               </label>
               <label className="block text-[11px] tracking-[0.16em] text-foreground-subtle uppercase">
@@ -928,11 +928,33 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
               </div>
             ) : null}
             <p className="mt-3 line-clamp-8 whitespace-pre-wrap px-1 text-xs text-foreground-muted">
-              {caption || "Your caption will appear here."}
-              {postLink && caption && !caption.includes(postLink) ? `\n\n${postLink}` : ""}
-              {caption && !/wa\.me\/34653223015/i.test(`${caption}\n${postLink}`)
-                ? `\n\nTalk with M&M Property: https://wa.me/34653223015`
-                : ""}
+              {(() => {
+                const raw = [
+                  caption || "Your caption will appear here.",
+                  postLink && caption && !caption.includes(postLink) ? postLink : "",
+                  caption && !/wa\.me\/34653223015/i.test(`${caption}\n${postLink}`)
+                    ? `Talk with M&M Property\nhttps://wa.me/34653223015`
+                    : "",
+                ]
+                  .filter(Boolean)
+                  .join("\n\n");
+                const parts = raw.split(/(https?:\/\/[^\s]+)/g);
+                return parts.map((part, index) =>
+                  /^https?:\/\//i.test(part) ? (
+                    <a
+                      key={`${part}-${index}`}
+                      href={part}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="break-all text-sky-400 underline"
+                    >
+                      {part}
+                    </a>
+                  ) : (
+                    <span key={`${index}-${part.slice(0, 12)}`}>{part}</span>
+                  ),
+                );
+              })()}
             </p>
           </aside>
         </div>

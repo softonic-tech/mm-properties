@@ -60,6 +60,7 @@ function allowedIds(...envNames: string[]) {
 const SITE = "https://mmproperty.io";
 /** Listing page includes the contact sidebar (call / WhatsApp / inquiry) — preferred CTA target. */
 const CONTACT_URL = `${SITE}/contact`;
+/** Short WhatsApp link — Instagram/Facebook turn full https URLs blue and tappable. */
 const WHATSAPP_URL = "https://wa.me/34653223015";
 // business_management is required for /me/accounts once a Page is linked to a Meta Business portfolio.
 const SCOPES = [
@@ -149,9 +150,22 @@ function cleanCaptionUrls(text: string) {
 }
 
 /**
+ * Put each https URL on its own line so Instagram/Facebook make it a blue tappable link.
+ * Custom anchor text is not supported in IG captions — only the raw URL is clickable.
+ */
+function isolateUrlsForTaps(text: string) {
+  return text
+    .replace(/[ \t]+(https?:\/\/[^\s<]+)/g, "\n$1")
+    .replace(/(https?:\/\/[^\s<]+)[ \t]+/g, "$1\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+/**
  * Keep Instagram/Facebook captions on mmproperty.io (not .es).
  * Listing URL = property page with contact sidebar.
- * Talk CTA = WhatsApp so “Talk with M&M Property” opens a real chat (not a random web page).
+ * Talk CTA = WhatsApp so “Talk with M&M Property” opens a real chat.
+ * URLs sit alone on lines so the apps treat them as clickable links, not plain text.
  */
 export function finalizeSocialCaption(message: string, listingLink = "") {
   const link = listingLink.trim();
@@ -161,10 +175,13 @@ export function finalizeSocialCaption(message: string, listingLink = "") {
       if (link && /^https:\/\//i.test(link)) return link;
       return CONTACT_URL;
     })
-    // Old captions pointed “Talk with…” at /contact — swap to WhatsApp chat.
     .replace(
       /((?:Talk with|Talk to|Habla con|Kontakt zu|Neem contact op met|Kontakta)\s+M&M Property[:\s]*)(https?:\/\/mmproperty\.io\/contact\/?)/gi,
-      `$1${WHATSAPP_URL}`,
+      `$1\n${WHATSAPP_URL}`,
+    )
+    .replace(
+      /((?:Talk with|Talk to|Habla con|Kontakt zu|Neem contact op met|Kontakta)\s+M&M Property)\s*:\s*/gi,
+      "$1\n",
     )
     .trim();
 
@@ -172,9 +189,17 @@ export function finalizeSocialCaption(message: string, listingLink = "") {
     text = `${text}\n\n${link}`.trim();
   }
   if (!text.includes(WHATSAPP_URL) && !/wa\.me\/34653223015/i.test(text)) {
-    text = `${text}\n\nTalk with M&M Property: ${WHATSAPP_URL}`.trim();
+    text = `${text}\n\nTalk with M&M Property\n${WHATSAPP_URL}`.trim();
   }
-  return cleanCaptionUrls(text);
+  return isolateUrlsForTaps(cleanCaptionUrls(text));
+}
+
+function facebookCallToAction(link: string) {
+  const href = /^https:\/\//i.test(link) ? link : WHATSAPP_URL;
+  return JSON.stringify({
+    type: "LEARN_MORE",
+    value: { link: href },
+  });
 }
 
 function env(name: string) {
@@ -870,24 +895,24 @@ function templatePost(topic: SocialTopic, locale: string, tone: string) {
   let caption: string;
   if (locale === "es") {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nEn M&M Property te acompañamos desde la primera visita hasta el notario. Oficina en Benalmádena.\n\nVer propiedad: ${topic.href}\nHabla con M&M Property: ${WHATSAPP_URL}`
-      : `Nueva oportunidad en ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nVer propiedad: ${topic.href}\nHabla con M&M Property: ${WHATSAPP_URL}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nEn M&M Property te acompañamos desde la primera visita hasta el notario. Oficina en Benalmádena.\n\nVer propiedad\n${topic.href}\n\nHabla con M&M Property\n${WHATSAPP_URL}`
+      : `Nueva oportunidad en ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nVer propiedad\n${topic.href}\n\nHabla con M&M Property\n${WHATSAPP_URL}`;
   } else if (locale === "de") {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property begleitet Sie von der ersten Besichtigung bis zum Notar. Büro in Benalmádena.\n\nObjekt ansehen: ${topic.href}\nKontakt zu M&M Property: ${WHATSAPP_URL}`
-      : `Neues Angebot in ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nObjekt ansehen: ${topic.href}\nKontakt zu M&M Property: ${WHATSAPP_URL}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property begleitet Sie von der ersten Besichtigung bis zum Notar. Büro in Benalmádena.\n\nObjekt ansehen\n${topic.href}\n\nKontakt zu M&M Property\n${WHATSAPP_URL}`
+      : `Neues Angebot in ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nObjekt ansehen\n${topic.href}\n\nKontakt zu M&M Property\n${WHATSAPP_URL}`;
   } else if (locale === "nl") {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property begeleidt u van de eerste bezichtiging tot de notaris. Kantoor in Benalmádena.\n\nBekijk woning: ${topic.href}\nNeem contact op met M&M Property: ${WHATSAPP_URL}`
-      : `Nieuwe woning in ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nBekijk woning: ${topic.href}\nNeem contact op met M&M Property: ${WHATSAPP_URL}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property begeleidt u van de eerste bezichtiging tot de notaris. Kantoor in Benalmádena.\n\nBekijk woning\n${topic.href}\n\nNeem contact op met M&M Property\n${WHATSAPP_URL}`
+      : `Nieuwe woning in ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nBekijk woning\n${topic.href}\n\nNeem contact op met M&M Property\n${WHATSAPP_URL}`;
   } else if (locale === "sv") {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property följer dig från första visningen till notarien. Kontor i Benalmádena.\n\nSe bostaden: ${topic.href}\nKontakta M&M Property: ${WHATSAPP_URL}`
-      : `Nytt objekt i ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nSe bostaden: ${topic.href}\nKontakta M&M Property: ${WHATSAPP_URL}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property följer dig från första visningen till notarien. Kontor i Benalmádena.\n\nSe bostaden\n${topic.href}\n\nKontakta M&M Property\n${WHATSAPP_URL}`
+      : `Nytt objekt i ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nSe bostaden\n${topic.href}\n\nKontakta M&M Property\n${WHATSAPP_URL}`;
   } else {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property walks you from the first viewing to the notary. Office in Benalmádena.\n\nView listing: ${topic.href}\nTalk with M&M Property: ${WHATSAPP_URL}`
-      : `New listing on the Costa del Sol 🏡\n\n${topic.title}\n${topic.meta}\n\nView listing: ${topic.href}\nTalk with M&M Property: ${WHATSAPP_URL}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property walks you from the first viewing to the notary. Office in Benalmádena.\n\nView listing\n${topic.href}\n\nTalk with M&M Property\n${WHATSAPP_URL}`
+      : `New listing on the Costa del Sol 🏡\n\n${topic.title}\n${topic.meta}\n\nView listing\n${topic.href}\n\nTalk with M&M Property\n${WHATSAPP_URL}`;
   }
   return { caption, hashtags: baseHashtags(topic, locale), source: "template" as const };
 }
@@ -1047,6 +1072,8 @@ export async function publishFacebook(input: Record<string, unknown>, config: So
     mediaIds.forEach((id, index) => {
       feed.set(`attached_media[${index}]`, JSON.stringify({ media_fbid: id }));
     });
+    // Clickable “Learn more” button under the album (not only a plain URL in the caption).
+    feed.set("call_to_action", facebookCallToAction(link || WHATSAPP_URL));
     const feedRes = await fetch(`${graphBase()}/${encodeURIComponent(creds.pageId)}/feed`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -1068,18 +1095,61 @@ export async function publishFacebook(input: Record<string, unknown>, config: So
     };
   }
 
-  const endpoint = withPhoto
-    ? `${graphBase()}/${encodeURIComponent(creds.pageId)}/photos`
-    : `${graphBase()}/${encodeURIComponent(creds.pageId)}/feed`;
+  // Single photo + link: publish via /feed so we can attach a clickable Learn more button.
+  if (withPhoto && images.length === 1) {
+    const upload = new URLSearchParams({
+      url: images[0],
+      published: "false",
+      access_token: creds.pageToken,
+    });
+    const uploadRes = await fetch(`${graphBase()}/${encodeURIComponent(creds.pageId)}/photos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: upload,
+    });
+    const uploadData = (await uploadRes.json()) as { id?: string; error?: { message?: string } };
+    if (!uploadRes.ok || uploadData.error || !uploadData.id) {
+      return {
+        ok: false,
+        error: uploadData.error?.message || `Facebook photo upload failed (${uploadRes.status}).`,
+      };
+    }
+    const feed = new URLSearchParams();
+    feed.set("message", message);
+    feed.set("access_token", creds.pageToken);
+    feed.set("attached_media[0]", JSON.stringify({ media_fbid: uploadData.id }));
+    feed.set("call_to_action", facebookCallToAction(link || WHATSAPP_URL));
+    const feedRes = await fetch(`${graphBase()}/${encodeURIComponent(creds.pageId)}/feed`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: feed,
+    });
+    const feedData = (await feedRes.json()) as { id?: string; error?: { message?: string } };
+    if (!feedRes.ok || feedData.error) {
+      return {
+        ok: false,
+        error: feedData.error?.message || `Facebook photo post failed (${feedRes.status}).`,
+      };
+    }
+    return {
+      ok: true,
+      id: feedData.id || "",
+      mode: "photo",
+      photos: 1,
+      pageName: creds.pageName,
+    };
+  }
+
+  const endpoint = `${graphBase()}/${encodeURIComponent(creds.pageId)}/feed`;
 
   const body = new URLSearchParams();
   body.set("access_token", creds.pageToken);
-  if (withPhoto) {
-    body.set("url", images[0]);
-    body.set("caption", message);
+  body.set("message", message);
+  if (/^https:\/\//i.test(link)) {
+    body.set("link", link);
+    body.set("call_to_action", facebookCallToAction(link));
   } else {
-    body.set("message", message);
-    if (/^https:\/\//i.test(link)) body.set("link", link);
+    body.set("call_to_action", facebookCallToAction(WHATSAPP_URL));
   }
 
   const response = await fetch(endpoint, {

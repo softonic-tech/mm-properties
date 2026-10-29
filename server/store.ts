@@ -908,8 +908,7 @@ async function route(request: {
           ? body.images.map((item) => String(item ?? "").trim()).filter(Boolean)
           : [];
         const link = String(body.link ?? "").trim();
-        // Instagram has no separate link field; Facebook photo posts use caption only.
-        // Keep listing URL + contact URL so “Talk with M&M Property” opens /contact.
+        // Same website listing URL for Facebook + Instagram (clickable https line in caption).
         const messageWithLink = finalizeSocialCaption(message, link);
         const withPhoto = body.withPhoto !== false;
         const wantFb = body.facebook !== false;

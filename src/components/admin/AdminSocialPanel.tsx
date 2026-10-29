@@ -847,7 +847,7 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
                   className="mt-2 w-full rounded-full border border-white/15 bg-black/20 px-4 py-2.5 text-sm tracking-normal normal-case outline-none"
                 />
                 <span className="mt-1.5 block text-[10px] tracking-normal normal-case text-foreground-muted">
-                  Instagram only makes full https:// URLs tappable (blue). We put WhatsApp and the listing URL on their own lines. Facebook also gets a Learn more button.
+                  Same website link as Facebook. Instagram makes the https:// URL blue/tappable when it sits on its own line. Facebook also gets a Learn more button.
                 </span>
               </label>
               <label className="block text-[11px] tracking-[0.16em] text-foreground-subtle uppercase">
@@ -931,9 +931,8 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
               {(() => {
                 const raw = [
                   caption || "Your caption will appear here.",
-                  postLink && caption && !caption.includes(postLink) ? postLink : "",
-                  caption && !/wa\.me\/34653223015/i.test(`${caption}\n${postLink}`)
-                    ? `Talk with M&M Property\nhttps://wa.me/34653223015`
+                  postLink && caption && !caption.includes(postLink)
+                    ? `Talk with M&M Property\n${postLink}`
                     : "",
                 ]
                   .filter(Boolean)

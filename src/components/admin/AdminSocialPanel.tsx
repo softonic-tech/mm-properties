@@ -847,7 +847,7 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
                   className="mt-2 w-full rounded-full border border-white/15 bg-black/20 px-4 py-2.5 text-sm tracking-normal normal-case outline-none"
                 />
                 <span className="mt-1.5 block text-[10px] tracking-normal normal-case text-foreground-muted">
-                  “Talk with M&M Property” always uses {SITE_URL}/contact
+                  “Talk with M&M Property” opens WhatsApp (+34 653 223 015)
                 </span>
               </label>
               <label className="block text-[11px] tracking-[0.16em] text-foreground-subtle uppercase">
@@ -930,8 +930,8 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
             <p className="mt-3 line-clamp-8 whitespace-pre-wrap px-1 text-xs text-foreground-muted">
               {caption || "Your caption will appear here."}
               {postLink && caption && !caption.includes(postLink) ? `\n\n${postLink}` : ""}
-              {caption && !`${caption}\n${postLink}`.includes(`${SITE_URL}/contact`)
-                ? `\n\n${SITE_URL}/contact`
+              {caption && !/wa\.me\/34653223015/i.test(`${caption}\n${postLink}`)
+                ? `\n\nTalk with M&M Property: https://wa.me/34653223015`
                 : ""}
             </p>
           </aside>

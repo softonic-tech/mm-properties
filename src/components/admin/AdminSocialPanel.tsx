@@ -839,13 +839,16 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
             </label>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="block text-[11px] tracking-[0.16em] text-foreground-subtle uppercase">
-                Property link (added to caption)
+                Property link (listing URL in caption)
                 <input
                   value={postLink}
                   onChange={(event) => setPostLink(event.target.value)}
                   placeholder="https://mmproperty.io/homes/…"
                   className="mt-2 w-full rounded-full border border-white/15 bg-black/20 px-4 py-2.5 text-sm tracking-normal normal-case outline-none"
                 />
+                <span className="mt-1.5 block text-[10px] tracking-normal normal-case text-foreground-muted">
+                  “Talk with M&M Property” always uses {SITE_URL}/contact
+                </span>
               </label>
               <label className="block text-[11px] tracking-[0.16em] text-foreground-subtle uppercase">
                 Cover image URL
@@ -927,6 +930,9 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
             <p className="mt-3 line-clamp-8 whitespace-pre-wrap px-1 text-xs text-foreground-muted">
               {caption || "Your caption will appear here."}
               {postLink && caption && !caption.includes(postLink) ? `\n\n${postLink}` : ""}
+              {caption && !`${caption}\n${postLink}`.includes(`${SITE_URL}/contact`)
+                ? `\n\n${SITE_URL}/contact`
+                : ""}
             </p>
           </aside>
         </div>

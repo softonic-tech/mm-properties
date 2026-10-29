@@ -14,6 +14,7 @@ import {
   createOAuthState,
   facebookAppReady,
   facebookRedirectUri,
+  finalizeSocialCaption,
   generateSocialPost,
   instagramAppReady,
   instagramRedirectUri,
@@ -881,10 +882,7 @@ async function route(request: {
         }
         const message = String(body.message ?? "").trim();
         const link = String(body.link ?? "").trim();
-        const messageWithLink =
-          link && /^https:\/\//i.test(link) && !message.includes(link)
-            ? `${message}\n\n${link}`.trim()
-            : message;
+        const messageWithLink = finalizeSocialCaption(message, link);
         const payload = { ...body, message: messageWithLink, link };
         const result =
           action === "publish-facebook"
@@ -911,11 +909,8 @@ async function route(request: {
           : [];
         const link = String(body.link ?? "").trim();
         // Instagram has no separate link field; Facebook photo posts use caption only.
-        // Always put the listing URL in the text so people can open the property page.
-        const messageWithLink =
-          link && /^https:\/\//i.test(link) && !message.includes(link)
-            ? `${message}\n\n${link}`.trim()
-            : message;
+        // Keep listing URL + contact URL so “Talk with M&M Property” opens /contact.
+        const messageWithLink = finalizeSocialCaption(message, link);
         const withPhoto = body.withPhoto !== false;
         const wantFb = body.facebook !== false;
         const wantIg = body.instagram !== false;

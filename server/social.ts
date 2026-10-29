@@ -58,6 +58,8 @@ function allowedIds(...envNames: string[]) {
 }
 
 const SITE = "https://mmproperty.io";
+/** Contact page for “Talk with M&M Property” CTAs (never the old mmproperty.es site). */
+const CONTACT_URL = `${SITE}/contact`;
 // business_management is required for /me/accounts once a Page is linked to a Meta Business portfolio.
 const SCOPES = [
   "public_profile",
@@ -82,7 +84,7 @@ const topics: SocialTopic[] = [
     meta: "116 m² · 2 bed · 495.000 €",
     area: "Fuengirola",
     image: `${SITE}/listings/higueron.jpg`,
-    href: "https://www.mmproperty.es/en/flat-for-sale-in-el-higueron-fuengirola/279799/s2",
+    href: `${SITE}/homes`,
   },
   {
     id: "fuengirola",
@@ -91,7 +93,7 @@ const topics: SocialTopic[] = [
     meta: "123 m² · 3 bed · 1.051.500 €",
     area: "Fuengirola",
     image: `${SITE}/listings/fuengirola.jpg`,
-    href: "https://www.mmproperty.es/en/flat-for-sale-in-fuengirola/279182/s2",
+    href: `${SITE}/homes`,
   },
   {
     id: "mijas-pueblo",
@@ -100,7 +102,7 @@ const topics: SocialTopic[] = [
     meta: "4 bed · 1.965.000 €",
     area: "Mijas",
     image: `${SITE}/listings/mijas-pueblo.jpg`,
-    href: "https://www.mmproperty.es/en/villa-for-sale-in-mijas-pueblo-pena-blanquilla/273381/s2",
+    href: `${SITE}/homes`,
   },
   {
     id: "monteros",
@@ -109,7 +111,7 @@ const topics: SocialTopic[] = [
     meta: "125 m² · 3 bed · 835.000 €",
     area: "Marbella",
     image: `${SITE}/listings/monteros.jpg`,
-    href: "https://www.mmproperty.es/en/flat-for-sale-in-alto-de-los-monteros-marbella/273145/s2",
+    href: `${SITE}/homes`,
   },
   {
     id: "monteros-two",
@@ -118,7 +120,7 @@ const topics: SocialTopic[] = [
     meta: "98 m² · 2 bed · 530.000 €",
     area: "Marbella",
     image: `${SITE}/listings/monteros-2.jpg`,
-    href: "https://www.mmproperty.es/en/flat-for-sale-in-alto-de-los-monteros-marbella/273116/s2",
+    href: `${SITE}/homes`,
   },
   {
     id: "mijas-aguila",
@@ -127,7 +129,7 @@ const topics: SocialTopic[] = [
     meta: "117 m² · 3 bed · 425.000 €",
     area: "Mijas",
     image: `${SITE}/listings/mijas-aguila.jpg`,
-    href: "https://www.mmproperty.es/en/flat-for-sale-in-hipodromo-cerrado-del-aguila-mijas/273062/s2",
+    href: `${SITE}/homes`,
   },
   {
     id: "general",
@@ -136,9 +138,29 @@ const topics: SocialTopic[] = [
     meta: "Apartments, villas and new builds · Benalmádena office",
     area: "Costa del Sol",
     image: `${SITE}/media/costa-marbella.jpg`,
-    href: `${SITE}/`,
+    href: `${SITE}/homes`,
   },
 ];
+
+/** Rewrite old .es links and keep listing + contact URLs clear for Instagram taps. */
+export function finalizeSocialCaption(message: string, listingLink = "") {
+  const link = listingLink.trim();
+  let text = String(message ?? "")
+    .replace(/https?:\/\/(?:www\.)?mmproperty\.es\S*/gi, (url) => {
+      if (/^https?:\/\/(?:www\.)?mmproperty\.es\/?(?:en\/?)?$/i.test(url)) return `${SITE}/`;
+      if (link && /^https:\/\//i.test(link)) return link;
+      return CONTACT_URL;
+    })
+    .trim();
+
+  if (link && /^https:\/\//i.test(link) && !text.includes(link)) {
+    text = `${text}\n\n${link}`.trim();
+  }
+  if (!text.includes(CONTACT_URL)) {
+    text = `${text}\n\n${CONTACT_URL}`.trim();
+  }
+  return text;
+}
 
 function env(name: string) {
   return (process.env[name] ?? "").trim();
@@ -833,24 +855,24 @@ function templatePost(topic: SocialTopic, locale: string, tone: string) {
   let caption: string;
   if (locale === "es") {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nEn M&M Property te acompañamos desde la primera visita hasta el notario. Oficina en Benalmádena.\n\n${topic.href}`
-      : `Nueva oportunidad en ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nConsulta con el equipo de M&M Property · Benalmádena.\n${topic.href}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nEn M&M Property te acompañamos desde la primera visita hasta el notario. Oficina en Benalmádena.\n\nVer propiedad: ${topic.href}\nHabla con M&M Property: ${CONTACT_URL}`
+      : `Nueva oportunidad en ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nVer propiedad: ${topic.href}\nHabla con M&M Property: ${CONTACT_URL}`;
   } else if (locale === "de") {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property begleitet Sie von der ersten Besichtigung bis zum Notar. Büro in Benalmádena.\n\n${topic.href}`
-      : `Neues Angebot in ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nM&M Property · Benalmádena.\n${topic.href}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property begleitet Sie von der ersten Besichtigung bis zum Notar. Büro in Benalmádena.\n\nObjekt ansehen: ${topic.href}\nKontakt zu M&M Property: ${CONTACT_URL}`
+      : `Neues Angebot in ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nObjekt ansehen: ${topic.href}\nKontakt zu M&M Property: ${CONTACT_URL}`;
   } else if (locale === "nl") {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property begeleidt u van de eerste bezichtiging tot de notaris. Kantoor in Benalmádena.\n\n${topic.href}`
-      : `Nieuwe woning in ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nM&M Property · Benalmádena.\n${topic.href}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property begeleidt u van de eerste bezichtiging tot de notaris. Kantoor in Benalmádena.\n\nBekijk woning: ${topic.href}\nNeem contact op met M&M Property: ${CONTACT_URL}`
+      : `Nieuwe woning in ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nBekijk woning: ${topic.href}\nNeem contact op met M&M Property: ${CONTACT_URL}`;
   } else if (locale === "sv") {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property följer dig från första visningen till notarien. Kontor i Benalmádena.\n\n${topic.href}`
-      : `Nytt objekt i ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nM&M Property · Benalmádena.\n${topic.href}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property följer dig från första visningen till notarien. Kontor i Benalmádena.\n\nSe bostaden: ${topic.href}\nKontakta M&M Property: ${CONTACT_URL}`
+      : `Nytt objekt i ${topic.area} 🏡\n\n${topic.title}\n${topic.meta}\n\nSe bostaden: ${topic.href}\nKontakta M&M Property: ${CONTACT_URL}`;
   } else {
     caption = soft
-      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property walks you from the first viewing to the notary. Office in Benalmádena.\n\n${topic.href}`
-      : `New listing on the Costa del Sol 🏡\n\n${topic.title}\n${topic.meta}\n\nTalk to M&M Property · Benalmádena office.\n${topic.href}`;
+      ? `${topic.title}\n\n${topic.meta}\n\nM&M Property walks you from the first viewing to the notary. Office in Benalmádena.\n\nView listing: ${topic.href}\nTalk with M&M Property: ${CONTACT_URL}`
+      : `New listing on the Costa del Sol 🏡\n\n${topic.title}\n${topic.meta}\n\nView listing: ${topic.href}\nTalk with M&M Property: ${CONTACT_URL}`;
   }
   return { caption, hashtags: baseHashtags(topic, locale), source: "template" as const };
 }
@@ -876,11 +898,13 @@ Tone: ${tone === "soft" ? "warm and professional" : "engaging and sales-ready"}
 Property: ${topic.title}
 Details: ${topic.meta}
 Area: ${topic.area}
-Link to include at the end: ${topic.href}
+Listing link (include once, labeled as the property/listing URL): ${topic.href}
+Contact link for any "Talk with / Contact M&M Property" CTA — use this exact URL only: ${CONTACT_URL}
+Never use mmproperty.es or any other domain.
 Extra notes from agent: ${notes || "none"}
 
 Return JSON only with keys:
-- caption: post body without hashtags (include the link once near the end, no more than 900 characters)
+- caption: post body without hashtags (include listing link then contact link near the end, no more than 900 characters)
 - hashtags: one string of 6 to 10 relevant hashtags separated by spaces`;
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {

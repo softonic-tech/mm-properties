@@ -920,7 +920,7 @@ async function route(request: {
           if (!fb.ok) results.ok = false;
         }
         if (wantIg) {
-          const ig = await publishInstagram({ message: messageWithLink, image, images }, config);
+          const ig = await publishInstagram({ message: messageWithLink, image, images, link }, config);
           results.instagram = ig;
           if (!ig.ok) results.ok = false;
         }

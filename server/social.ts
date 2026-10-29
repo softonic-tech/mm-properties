@@ -147,8 +147,7 @@ function cleanCaptionUrls(text: string) {
 }
 
 /**
- * Put each https URL on its own line so Instagram/Facebook make it a blue tappable link.
- * Custom anchor text is not supported in IG captions — only the raw URL is clickable.
+ * Put each https URL on its own line (helps Facebook linkify; Instagram still cannot).
  */
 function isolateUrlsForTaps(text: string) {
   return text
@@ -159,9 +158,7 @@ function isolateUrlsForTaps(text: string) {
 }
 
 /**
- * Same website link as Facebook (listing on mmproperty.io).
- * Put the URL alone on a line so Instagram makes it blue/tappable.
- * Never inject WhatsApp — use the property/website URL only.
+ * Facebook captions: keep the website listing URL (FB Learn more button + linkified URL).
  */
 export function finalizeSocialCaption(message: string, listingLink = "") {
   const link = (/^https:\/\//i.test(listingLink.trim()) ? listingLink.trim() : "") || CONTACT_URL;
@@ -178,6 +175,46 @@ export function finalizeSocialCaption(message: string, listingLink = "") {
     text = `${text}\n\nTalk with M&M Property\n${link}`.trim();
   }
   return isolateUrlsForTaps(cleanCaptionUrls(text));
+}
+
+/**
+ * Instagram feed captions cannot contain clickable website links (Instagram platform rule).
+ * Hashtags/@mentions are blue; https URLs stay plain text. Point people to the bio website instead.
+ * Set the Instagram profile Website field to https://mmproperty.io (clickable on the profile).
+ */
+export function finalizeInstagramCaption(message: string, listingLink = "") {
+  const link = (/^https:\/\//i.test(listingLink.trim()) ? listingLink.trim() : "") || `${SITE}/`;
+  let path = "mmproperty.io";
+  try {
+    const parsed = new URL(link);
+    if (parsed.hostname.replace(/^www\./, "") === "mmproperty.io") {
+      path = `${parsed.hostname.replace(/^www\./, "")}${parsed.pathname}`.replace(/\/$/, "") || "mmproperty.io";
+    }
+  } catch {
+    /* keep short domain */
+  }
+
+  let text = cleanCaptionUrls(String(message ?? ""))
+    // Strip non-clickable https URLs (they look broken as plain white text next to blue hashtags).
+    .replace(/https?:\/\/[^\s]+/gi, "")
+    .replace(
+      /(?:Explore more details here|View listing|Ver propiedad|Objekt ansehen|Bekijk woning|Se bostaden)\s*:?\s*/gi,
+      "",
+    )
+    .replace(
+      /((?:Talk with|Talk to|Habla con|Kontakt zu|Neem contact op met|Kontakta)\s+M&M Property)\s*:?\s*/gi,
+      "$1",
+    )
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
+  if (!/link in bio/i.test(text)) {
+    text = `${text}\n\nTalk with M&M Property → link in bio\n${path}`.trim();
+  } else if (!text.includes(path)) {
+    text = `${text}\n${path}`.trim();
+  }
+  return text.slice(0, 2200);
 }
 
 function facebookCallToAction(link: string) {
@@ -1280,7 +1317,8 @@ export async function publishInstagram(input: Record<string, unknown>, config: S
     };
   }
 
-  const message = String(input.message ?? "").trim().slice(0, 2200);
+  const listingLink = String(input.link ?? "").trim();
+  const message = finalizeInstagramCaption(String(input.message ?? "").trim(), listingLink).slice(0, 2200);
   if (message.length < 8) return { ok: false, error: "Write a longer caption before publishing." };
 
   const rawImages = collectImageUrls(input);

@@ -847,7 +847,7 @@ export function AdminSocialPanel({ password, onAuthFail }: Props) {
                   className="mt-2 w-full rounded-full border border-white/15 bg-black/20 px-4 py-2.5 text-sm tracking-normal normal-case outline-none"
                 />
                 <span className="mt-1.5 block text-[10px] tracking-normal normal-case text-foreground-muted">
-                  Same website link as Facebook. Instagram makes the https:// URL blue/tappable when it sits on its own line. Facebook also gets a Learn more button.
+                  Facebook: clickable Learn more button to this URL. Instagram: feed captions cannot make https:// links blue/tappable (Instagram rule) — posts say “link in bio”; set Instagram Website to https://mmproperty.io.
                 </span>
               </label>
               <label className="block text-[11px] tracking-[0.16em] text-foreground-subtle uppercase">

@@ -11,14 +11,12 @@ node_modules
 dist
 dist-ssr
 *.local
-.env
 data/admin.json
 data/social.json
 data/*.tmp
 data/oauth-debug.json
 
 # Editor directories and files
-.vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
@@ -27,3 +25,4 @@ data/oauth-debug.json
 *.njsproj
 *.sln
 *.sw?
+config.bat
